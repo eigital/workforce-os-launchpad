@@ -10,9 +10,10 @@ import { useState } from "react";
 
 interface NavigationProps {
   onOpenSignUp?: () => void;
+  onOpenSignIn?: () => void;
 }
 
-const Navigation = ({ onOpenSignUp }: NavigationProps) => {
+const Navigation = ({ onOpenSignUp, onOpenSignIn }: NavigationProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const products = [
@@ -112,8 +113,8 @@ const Navigation = ({ onOpenSignUp }: NavigationProps) => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" className="text-foreground hover:text-primary" asChild>
-              <a href="/auth/signin">Sign In</a>
+            <Button variant="ghost" className="text-foreground hover:text-primary" onClick={onOpenSignIn}>
+              Sign In
             </Button>
             <Button variant="hero" size="sm" onClick={onOpenSignUp}>
               Start Free Trial
@@ -184,8 +185,8 @@ const Navigation = ({ onOpenSignUp }: NavigationProps) => {
                 Integrations
               </a>
               <div className="flex flex-col space-y-2 pt-4">
-                <Button variant="ghost" className="w-full" asChild>
-                  <a href="/auth/signin">Sign In</a>
+                <Button variant="ghost" className="w-full" onClick={onOpenSignIn}>
+                  Sign In
                 </Button>
                 <Button variant="hero" className="w-full" onClick={onOpenSignUp}>
                   Start Free Trial

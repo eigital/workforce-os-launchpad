@@ -75,30 +75,30 @@ export default function SignInForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+      <div className="space-y-1">
+        <Label htmlFor="email" className="text-xs font-medium">Email</Label>
         <Input
           id="email"
           type="email"
           placeholder="Enter your email"
           {...register('email')}
-          className={errors.email ? 'border-destructive' : ''}
+          className={errors.email ? 'border-destructive h-9' : 'h-9'}
         />
         {errors.email && (
-          <p className="text-sm text-destructive">{errors.email.message}</p>
+          <p className="text-xs text-destructive">{errors.email.message}</p>
         )}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
+      <div className="space-y-1">
+        <Label htmlFor="password" className="text-xs font-medium">Password</Label>
         <div className="relative">
           <Input
             id="password"
             type={showPassword ? 'text' : 'password'}
             placeholder="Enter your password"
             {...register('password')}
-            className={errors.password ? 'border-destructive pr-10' : 'pr-10'}
+            className={errors.password ? 'border-destructive pr-10 h-9' : 'pr-10 h-9'}
           />
           <button
             type="button"
@@ -109,20 +109,27 @@ export default function SignInForm() {
           </button>
         </div>
         {errors.password && (
-          <p className="text-sm text-destructive">{errors.password.message}</p>
+          <p className="text-xs text-destructive">{errors.password.message}</p>
         )}
       </div>
 
-      <Button type="submit" className="w-full" disabled={loading}>
+      <Button type="submit" className="w-full h-9 text-sm" disabled={loading}>
         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         Sign In
       </Button>
 
-      <div className="text-center text-sm">
+      <div className="text-center text-xs">
         <span className="text-muted-foreground">Don't have an account? </span>
-        <Link to="/auth/signup" className="text-primary hover:underline font-medium">
+        <button 
+          type="button"
+          onClick={() => {
+            // This will be handled by the parent component
+            window.dispatchEvent(new CustomEvent('openSignUp'));
+          }}
+          className="text-primary hover:underline font-medium"
+        >
           Sign up
-        </Link>
+        </button>
       </div>
     </form>
   );
