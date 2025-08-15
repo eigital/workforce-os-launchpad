@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { PhoneInput } from '@/components/ui/phone-input';
 import { toast } from '@/hooks/use-toast';
 import { Eye, EyeOff, Loader2, Check, X, Building2, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -66,6 +67,7 @@ export default function SignUpForm() {
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors },
   } = useForm<SignUpForm>({
     resolver: zodResolver(signUpSchema),
@@ -231,12 +233,17 @@ export default function SignUpForm() {
 
       <div className="space-y-2">
         <Label htmlFor="phoneNumber">Phone Number</Label>
-        <Input
-          id="phoneNumber"
-          type="tel"
-          placeholder="+1 (555) 123-4567"
-          {...register('phoneNumber')}
-          className={errors.phoneNumber ? 'border-destructive' : ''}
+        <Controller
+          name="phoneNumber"
+          control={control}
+          render={({ field }) => (
+            <PhoneInput
+              placeholder="Enter phone number"
+              value={field.value}
+              onChange={field.onChange}
+              className={errors.phoneNumber ? 'border-destructive' : ''}
+            />
+          )}
         />
         {errors.phoneNumber && (
           <p className="text-sm text-destructive">{errors.phoneNumber.message}</p>
