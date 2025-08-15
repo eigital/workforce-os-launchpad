@@ -2,7 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Play, ArrowRight, CheckCircle } from "lucide-react";
 import dashboardHero from "@/assets/dashboard-hero.jpg";
 
-const Hero = () => {
+interface HeroProps {
+  onOpenSignUp?: () => void;
+}
+
+const Hero = ({ onOpenSignUp }: HeroProps) => {
   return (
     <section className="pt-20 pb-16 bg-gradient-to-br from-background via-feature to-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -47,7 +51,7 @@ const Hero = () => {
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="hero" size="lg" className="group">
+              <Button variant="hero" size="lg" className="group" onClick={onOpenSignUp}>
                 Start Free Trial
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>

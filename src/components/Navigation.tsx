@@ -8,7 +8,11 @@ import {
 import { Menu, X, ChevronDown, Calendar, Clock, DollarSign, Users, BarChart3, Smartphone } from "lucide-react";
 import { useState } from "react";
 
-const Navigation = () => {
+interface NavigationProps {
+  onOpenSignUp?: () => void;
+}
+
+const Navigation = ({ onOpenSignUp }: NavigationProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const products = [
@@ -111,8 +115,8 @@ const Navigation = () => {
             <Button variant="ghost" className="text-foreground hover:text-primary" asChild>
               <a href="/auth/signin">Sign In</a>
             </Button>
-            <Button variant="hero" size="sm" asChild>
-              <a href="/auth/signup">Start Free Trial</a>
+            <Button variant="hero" size="sm" onClick={onOpenSignUp}>
+              Start Free Trial
             </Button>
           </div>
 
@@ -183,8 +187,8 @@ const Navigation = () => {
                 <Button variant="ghost" className="w-full" asChild>
                   <a href="/auth/signin">Sign In</a>
                 </Button>
-                <Button variant="hero" className="w-full" asChild>
-                  <a href="/auth/signup">Start Free Trial</a>
+                <Button variant="hero" className="w-full" onClick={onOpenSignUp}>
+                  Start Free Trial
                 </Button>
               </div>
             </div>
