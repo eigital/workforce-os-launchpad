@@ -181,26 +181,26 @@ export default function SignUpForm() {
         console.log('Form onSubmit triggered');
         handleSubmit(onSubmit)(e);
       }} 
-      className="space-y-6"
+      className="space-y-4"
     >
-      <div className="space-y-3">
-        <Label>I am a</Label>
-        <div className="grid grid-cols-2 gap-3">
+      <div className="space-y-2">
+        <Label className="text-sm">I am a</Label>
+        <div className="grid grid-cols-2 gap-2">
           <button
             type="button"
             onClick={() => {
               setSelectedRole('business_owner');
               setValue('role', 'business_owner');
             }}
-            className={`p-4 rounded-lg border-2 transition-all hover:border-primary/50 ${
+            className={`p-3 rounded-lg border-2 transition-all hover:border-primary/50 ${
               selectedRole === 'business_owner'
                 ? 'border-primary bg-primary/5 text-primary'
                 : 'border-border hover:border-border/80'
             }`}
           >
-            <div className="flex flex-col items-center gap-2">
-              <Building2 className="h-6 w-6" />
-              <span className="text-sm font-medium">Business Owner</span>
+            <div className="flex flex-col items-center gap-1">
+              <Building2 className="h-5 w-5" />
+              <span className="text-xs font-medium">Business Owner</span>
             </div>
           </button>
           
@@ -210,15 +210,15 @@ export default function SignUpForm() {
               setSelectedRole('employee');
               setValue('role', 'employee');
             }}
-            className={`p-4 rounded-lg border-2 transition-all hover:border-primary/50 ${
+            className={`p-3 rounded-lg border-2 transition-all hover:border-primary/50 ${
               selectedRole === 'employee'
                 ? 'border-primary bg-primary/5 text-primary'
                 : 'border-border hover:border-border/80'
             }`}
           >
-            <div className="flex flex-col items-center gap-2">
-              <User className="h-6 w-6" />
-              <span className="text-sm font-medium">Employee</span>
+            <div className="flex flex-col items-center gap-1">
+              <User className="h-5 w-5" />
+              <span className="text-xs font-medium">Employee</span>
             </div>
           </button>
         </div>
@@ -227,7 +227,7 @@ export default function SignUpForm() {
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
           <Label htmlFor="firstName">First Name</Label>
           <Input
