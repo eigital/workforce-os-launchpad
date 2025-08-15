@@ -14,7 +14,167 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      companies: {
+        Row: {
+          address: Json | null
+          created_at: string | null
+          id: string
+          industry: string | null
+          location_count: number | null
+          name: string
+          phone_number: string | null
+          settings: Json | null
+          size_range: string | null
+          timezone: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          address?: Json | null
+          created_at?: string | null
+          id?: string
+          industry?: string | null
+          location_count?: number | null
+          name: string
+          phone_number?: string | null
+          settings?: Json | null
+          size_range?: string | null
+          timezone?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          address?: Json | null
+          created_at?: string | null
+          id?: string
+          industry?: string | null
+          location_count?: number | null
+          name?: string
+          phone_number?: string | null
+          settings?: Json | null
+          size_range?: string | null
+          timezone?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      onboarding_progress: {
+        Row: {
+          completed: boolean | null
+          completed_at: string | null
+          created_at: string | null
+          data: Json | null
+          id: string
+          step_name: string
+          user_id: string | null
+        }
+        Insert: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          data?: Json | null
+          id?: string
+          step_name: string
+          user_id?: string | null
+        }
+        Update: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          data?: Json | null
+          id?: string
+          step_name?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "onboarding_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+          onboarding_completed: boolean | null
+          phone_number: string | null
+          role: string
+          trial_ends_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          first_name?: string | null
+          id: string
+          last_name?: string | null
+          onboarding_completed?: boolean | null
+          phone_number?: string | null
+          role?: string
+          trial_ends_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          onboarding_completed?: boolean | null
+          phone_number?: string | null
+          role?: string
+          trial_ends_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      user_companies: {
+        Row: {
+          company_id: string | null
+          created_at: string | null
+          id: string
+          permissions: Json | null
+          role: string
+          user_id: string | null
+        }
+        Insert: {
+          company_id?: string | null
+          created_at?: string | null
+          id?: string
+          permissions?: Json | null
+          role: string
+          user_id?: string | null
+        }
+        Update: {
+          company_id?: string | null
+          created_at?: string | null
+          id?: string
+          permissions?: Json | null
+          role?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_companies_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_companies_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
