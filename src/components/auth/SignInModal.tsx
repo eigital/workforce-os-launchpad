@@ -17,7 +17,7 @@ export default function SignInModal({ isOpen, onClose }: SignInModalProps) {
           </DialogDescription>
         </DialogHeader>
         <div className="mt-2">
-          <SignInForm />
+          <SignInForm onSuccess={onClose} />
         </div>
       </DialogContent>
     </Dialog>

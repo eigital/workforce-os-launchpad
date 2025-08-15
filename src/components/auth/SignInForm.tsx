@@ -17,7 +17,11 @@ const signInSchema = z.object({
 
 type SignInForm = z.infer<typeof signInSchema>;
 
-export default function SignInForm() {
+interface SignInFormProps {
+  onSuccess?: () => void;
+}
+
+export default function SignInForm({ onSuccess }: SignInFormProps = {}) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -61,19 +65,13 @@ export default function SignInForm() {
         return;
       }
 
-      // Check if onboarding is completed
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('onboarding_completed')
-        .eq('id', (await supabase.auth.getUser()).data.user?.id)
-        .single();
-
-      // Redirect based on onboarding status
-      if (profile?.onboarding_completed) {
-        window.location.href = '/dashboard';
-      } else {
-        window.location.href = '/onboarding';
-      }
+      toast({
+        title: 'Welcome back!',
+        description: 'You have been signed in successfully.',
+      });
+      
+      // Call the success callback to close modal
+      onSuccess?.();
     } catch (error) {
       toast({
         title: 'An error occurred',
