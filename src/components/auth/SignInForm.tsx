@@ -61,8 +61,19 @@ export default function SignInForm() {
         return;
       }
 
-      // Redirect will be handled by auth state change
-      window.location.href = '/';
+      // Check if onboarding is completed
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('onboarding_completed')
+        .eq('id', (await supabase.auth.getUser()).data.user?.id)
+        .single();
+
+      // Redirect based on onboarding status
+      if (profile?.onboarding_completed) {
+        window.location.href = '/dashboard';
+      } else {
+        window.location.href = '/onboarding';
+      }
     } catch (error) {
       toast({
         title: 'An error occurred',

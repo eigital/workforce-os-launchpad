@@ -95,7 +95,7 @@ export default function SignUpForm() {
     setLoading(true);
     
     try {
-      const redirectUrl = `${window.location.origin}/`;
+      const redirectUrl = `${window.location.origin}/onboarding`;
       console.log('Calling supabase.auth.signUp with:', {
         email: data.email,
         redirectUrl,
