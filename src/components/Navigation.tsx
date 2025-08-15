@@ -24,7 +24,7 @@ const Navigation = () => {
             <a href="#how-it-works" className="text-foreground hover:text-primary transition-colors">
               How it Works
             </a>
-            <a href="#pricing" className="text-foreground hover:text-primary transition-colors">
+            <a href="/pricing" className="text-foreground hover:text-primary transition-colors">
               Pricing
             </a>
             <a href="#integrations" className="text-foreground hover:text-primary transition-colors">
@@ -73,7 +73,7 @@ const Navigation = () => {
                 How it Works
               </a>
               <a
-                href="#pricing"
+                href="/pricing"
                 className="block px-3 py-2 text-foreground hover:text-primary transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
