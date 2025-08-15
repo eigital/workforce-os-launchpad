@@ -65,6 +65,13 @@ export default function SignInForm({ onSuccess }: SignInFormProps = {}) {
         return;
       }
 
+      // Check if onboarding is completed
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('onboarding_completed')
+        .eq('id', (await supabase.auth.getUser()).data.user?.id)
+        .single();
+
       toast({
         title: 'Welcome back!',
         description: 'You have been signed in successfully.',
@@ -72,6 +79,15 @@ export default function SignInForm({ onSuccess }: SignInFormProps = {}) {
       
       // Call the success callback to close modal
       onSuccess?.();
+      
+      // Redirect based on onboarding status after modal closes
+      setTimeout(() => {
+        if (profile?.onboarding_completed) {
+          window.location.href = '/dashboard';
+        } else {
+          window.location.href = '/onboarding';
+        }
+      }, 500);
     } catch (error) {
       toast({
         title: 'An error occurred',
