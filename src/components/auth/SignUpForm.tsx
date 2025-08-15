@@ -59,6 +59,8 @@ const PasswordStrengthIndicator = ({ password }: { password: string }) => {
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
 
   const {
     register,
@@ -101,13 +103,10 @@ export default function SignUpForm() {
         return;
       }
 
-      toast({
-        title: 'Account created successfully!',
-        description: 'Please check your email to verify your account.',
-      });
+      // Show success state instead of redirecting
+      setUserEmail(data.email);
+      setEmailSent(true);
       
-      // Redirect to sign in page
-      window.location.href = '/auth/signin';
     } catch (error) {
       toast({
         title: 'An error occurred',
@@ -118,6 +117,30 @@ export default function SignUpForm() {
       setLoading(false);
     }
   };
+
+  // Show email confirmation screen after successful signup
+  if (emailSent) {
+    return (
+      <div className="text-center space-y-4">
+        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+          <Check className="w-8 h-8 text-green-600" />
+        </div>
+        <h2 className="text-xl font-semibold text-foreground">Check your email</h2>
+        <p className="text-muted-foreground">
+          We've sent a confirmation link to:
+        </p>
+        <p className="font-medium text-foreground">{userEmail}</p>
+        <p className="text-sm text-muted-foreground">
+          Click the link in the email to verify your account, then you can sign in.
+        </p>
+        <div className="pt-4">
+          <Button variant="outline" asChild className="w-full">
+            <Link to="/auth/signin">Go to Sign In</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

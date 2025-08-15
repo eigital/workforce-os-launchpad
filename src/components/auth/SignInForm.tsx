@@ -39,11 +39,25 @@ export default function SignInForm() {
       });
 
       if (error) {
-        toast({
-          title: 'Sign in failed',
-          description: error.message,
-          variant: 'destructive',
-        });
+        if (error.message.includes('Email not confirmed')) {
+          toast({
+            title: 'Email not confirmed',
+            description: 'Please check your email and click the confirmation link before signing in.',
+            variant: 'destructive',
+          });
+        } else if (error.message.includes('Invalid login credentials')) {
+          toast({
+            title: 'Sign in failed',
+            description: 'Invalid email or password. Please check your credentials and try again.',
+            variant: 'destructive',
+          });
+        } else {
+          toast({
+            title: 'Sign in failed',
+            description: error.message,
+            variant: 'destructive',
+          });
+        }
         return;
       }
 
