@@ -181,26 +181,26 @@ export default function SignUpForm() {
         console.log('Form onSubmit triggered');
         handleSubmit(onSubmit)(e);
       }} 
-      className="space-y-4"
+      className="space-y-3"
     >
-      <div className="space-y-2">
-        <Label className="text-sm">I am a</Label>
-        <div className="grid grid-cols-2 gap-2">
+      <div className="space-y-1">
+        <Label className="text-xs font-medium">I am a</Label>
+        <div className="grid grid-cols-2 gap-1.5">
           <button
             type="button"
             onClick={() => {
               setSelectedRole('business_owner');
               setValue('role', 'business_owner');
             }}
-            className={`p-3 rounded-lg border-2 transition-all hover:border-primary/50 ${
+            className={`p-2 rounded-md border transition-all hover:border-primary/50 ${
               selectedRole === 'business_owner'
                 ? 'border-primary bg-primary/5 text-primary'
                 : 'border-border hover:border-border/80'
             }`}
           >
-            <div className="flex flex-col items-center gap-1">
-              <Building2 className="h-5 w-5" />
-              <span className="text-xs font-medium">Business Owner</span>
+            <div className="flex flex-col items-center gap-0.5">
+              <Building2 className="h-4 w-4" />
+              <span className="text-xs font-medium">Business</span>
             </div>
           </button>
           
@@ -210,14 +210,14 @@ export default function SignUpForm() {
               setSelectedRole('employee');
               setValue('role', 'employee');
             }}
-            className={`p-3 rounded-lg border-2 transition-all hover:border-primary/50 ${
+            className={`p-2 rounded-md border transition-all hover:border-primary/50 ${
               selectedRole === 'employee'
                 ? 'border-primary bg-primary/5 text-primary'
                 : 'border-border hover:border-border/80'
             }`}
           >
-            <div className="flex flex-col items-center gap-1">
-              <User className="h-5 w-5" />
+            <div className="flex flex-col items-center gap-0.5">
+              <User className="h-4 w-4" />
               <span className="text-xs font-medium">Employee</span>
             </div>
           </button>
@@ -227,9 +227,9 @@ export default function SignUpForm() {
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-2">
-          <Label htmlFor="firstName">First Name</Label>
+      <div className="grid grid-cols-2 gap-2">
+        <div className="space-y-1">
+          <Label htmlFor="firstName" className="text-xs font-medium">First Name</Label>
           <Input
             id="firstName"
             placeholder="John"
@@ -241,8 +241,8 @@ export default function SignUpForm() {
           )}
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="lastName">Last Name</Label>
+        <div className="space-y-1">
+          <Label htmlFor="lastName" className="text-xs font-medium">Last Name</Label>
           <Input
             id="lastName"
             placeholder="Doe"
@@ -255,8 +255,8 @@ export default function SignUpForm() {
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+      <div className="space-y-1">
+        <Label htmlFor="email" className="text-xs font-medium">Email</Label>
         <Input
           id="email"
           type="email"
@@ -269,8 +269,8 @@ export default function SignUpForm() {
         )}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="phoneNumber">Phone Number</Label>
+      <div className="space-y-1">
+        <Label htmlFor="phoneNumber" className="text-xs font-medium">Phone Number</Label>
         <Controller
           name="phoneNumber"
           control={control}
@@ -288,8 +288,8 @@ export default function SignUpForm() {
         )}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
+      <div className="space-y-1">
+        <Label htmlFor="password" className="text-xs font-medium">Password</Label>
         <div className="relative">
           <Input
             id="password"
@@ -314,7 +314,7 @@ export default function SignUpForm() {
 
       <Button 
         type="submit" 
-        className="w-full" 
+        className="w-full h-9 text-sm" 
         disabled={loading}
         onClick={(e) => {
           console.log('Create Account button clicked');
