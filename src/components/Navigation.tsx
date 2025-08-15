@@ -76,7 +76,7 @@ const Navigation = () => {
                     return (
                       <DropdownMenuItem 
                         key={index} 
-                        className="flex items-start gap-3 p-3 rounded-lg hover:bg-primary/5 cursor-pointer"
+                        className="flex items-start gap-3 p-3 rounded-lg hover:bg-secondary cursor-pointer data-[highlighted]:bg-secondary data-[highlighted]:text-foreground"
                       >
                         <div className="w-10 h-10 bg-gradient-hero rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
                           <IconComponent className="h-5 w-5 text-white" />
