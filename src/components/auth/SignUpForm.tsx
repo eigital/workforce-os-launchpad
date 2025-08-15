@@ -6,9 +6,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
-import { Eye, EyeOff, Loader2, Check, X } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Check, X, Building2, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const signUpSchema = z.object({
@@ -61,12 +60,12 @@ export default function SignUpForm() {
   const [loading, setLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [selectedRole, setSelectedRole] = useState<'business_owner' | 'employee' | ''>('');
 
   const {
     register,
     handleSubmit,
     watch,
-    setValue,
     formState: { errors },
   } = useForm<SignUpForm>({
     resolver: zodResolver(signUpSchema),
@@ -75,6 +74,15 @@ export default function SignUpForm() {
   const watchedPassword = watch('password', '');
 
   const onSubmit = async (data: SignUpForm) => {
+    if (!selectedRole) {
+      toast({
+        title: 'Role required',
+        description: 'Please select your role to continue.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setLoading(true);
     
     try {
@@ -89,7 +97,7 @@ export default function SignUpForm() {
             first_name: data.firstName,
             last_name: data.lastName,
             phone_number: data.phoneNumber,
-            role: data.role,
+            role: selectedRole,
           },
         },
       });
@@ -144,20 +152,39 @@ export default function SignUpForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="role">I am a</Label>
-        <Select onValueChange={(value) => setValue('role', value as 'business_owner' | 'employee')}>
-          <SelectTrigger className={errors.role ? 'border-destructive' : ''}>
-            <SelectValue placeholder="Select your role" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="business_owner">Business Owner</SelectItem>
-            <SelectItem value="employee">Employee</SelectItem>
-          </SelectContent>
-        </Select>
-        {errors.role && (
-          <p className="text-sm text-destructive">{errors.role.message}</p>
-        )}
+      <div className="space-y-3">
+        <Label>I am a</Label>
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={() => setSelectedRole('business_owner')}
+            className={`p-4 rounded-lg border-2 transition-all hover:border-primary/50 ${
+              selectedRole === 'business_owner'
+                ? 'border-primary bg-primary/5 text-primary'
+                : 'border-border hover:border-border/80'
+            }`}
+          >
+            <div className="flex flex-col items-center gap-2">
+              <Building2 className="h-6 w-6" />
+              <span className="text-sm font-medium">Business Owner</span>
+            </div>
+          </button>
+          
+          <button
+            type="button"
+            onClick={() => setSelectedRole('employee')}
+            className={`p-4 rounded-lg border-2 transition-all hover:border-primary/50 ${
+              selectedRole === 'employee'
+                ? 'border-primary bg-primary/5 text-primary'
+                : 'border-border hover:border-border/80'
+            }`}
+          >
+            <div className="flex flex-col items-center gap-2">
+              <User className="h-6 w-6" />
+              <span className="text-sm font-medium">Employee</span>
+            </div>
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">

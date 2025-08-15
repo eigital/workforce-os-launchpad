@@ -10,7 +10,7 @@ interface SignUpModalProps {
 export default function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[420px] bg-background/95 backdrop-blur-md border border-border/50 shadow-elegant animate-scale-in">
+      <DialogContent className="sm:max-w-[420px] bg-background/80 backdrop-blur-lg border border-border/30 shadow-elegant animate-scale-in">
         <DialogHeader className="space-y-3">
           <DialogTitle className="text-2xl font-bold text-center">Get started today</DialogTitle>
           <DialogDescription className="text-center text-muted-foreground">
