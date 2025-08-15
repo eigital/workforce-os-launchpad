@@ -108,11 +108,11 @@ const Navigation = () => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" className="text-foreground hover:text-primary">
-              Sign In
+            <Button variant="ghost" className="text-foreground hover:text-primary" asChild>
+              <a href="/auth/signin">Sign In</a>
             </Button>
-            <Button variant="hero" size="sm">
-              Start Free Trial
+            <Button variant="hero" size="sm" asChild>
+              <a href="/auth/signup">Start Free Trial</a>
             </Button>
           </div>
 
@@ -180,11 +180,11 @@ const Navigation = () => {
                 Integrations
               </a>
               <div className="flex flex-col space-y-2 pt-4">
-                <Button variant="ghost" className="w-full">
-                  Sign In
+                <Button variant="ghost" className="w-full" asChild>
+                  <a href="/auth/signin">Sign In</a>
                 </Button>
-                <Button variant="hero" className="w-full">
-                  Start Free Trial
+                <Button variant="hero" className="w-full" asChild>
+                  <a href="/auth/signup">Start Free Trial</a>
                 </Button>
               </div>
             </div>
