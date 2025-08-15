@@ -15,15 +15,13 @@ const signUpSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
   lastName: z.string().min(2, 'Last name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email address'),
-  phoneNumber: z.string().min(10, 'Please enter a valid phone number'),
+  phoneNumber: z.string().min(1, 'Please enter a phone number'),
   password: z.string()
     .min(8, 'Password must be at least 8 characters')
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number'),
-  role: z.enum(['business_owner', 'employee']).refine((val) => val, {
-    message: 'Please select your role',
-  }),
+  role: z.enum(['business_owner', 'employee']).optional(),
 });
 
 type SignUpForm = z.infer<typeof signUpSchema>;
@@ -68,9 +66,13 @@ export default function SignUpForm() {
     handleSubmit,
     watch,
     control,
+    setValue,
     formState: { errors },
   } = useForm<SignUpForm>({
     resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      role: selectedRole || undefined,
+    },
   });
 
   const watchedPassword = watch('password', '');
@@ -174,13 +176,22 @@ export default function SignUpForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form 
+      onSubmit={(e) => {
+        console.log('Form onSubmit triggered');
+        handleSubmit(onSubmit)(e);
+      }} 
+      className="space-y-6"
+    >
       <div className="space-y-3">
         <Label>I am a</Label>
         <div className="grid grid-cols-2 gap-3">
           <button
             type="button"
-            onClick={() => setSelectedRole('business_owner')}
+            onClick={() => {
+              setSelectedRole('business_owner');
+              setValue('role', 'business_owner');
+            }}
             className={`p-4 rounded-lg border-2 transition-all hover:border-primary/50 ${
               selectedRole === 'business_owner'
                 ? 'border-primary bg-primary/5 text-primary'
@@ -195,7 +206,10 @@ export default function SignUpForm() {
           
           <button
             type="button"
-            onClick={() => setSelectedRole('employee')}
+            onClick={() => {
+              setSelectedRole('employee');
+              setValue('role', 'employee');
+            }}
             className={`p-4 rounded-lg border-2 transition-all hover:border-primary/50 ${
               selectedRole === 'employee'
                 ? 'border-primary bg-primary/5 text-primary'
@@ -208,6 +222,9 @@ export default function SignUpForm() {
             </div>
           </button>
         </div>
+        {errors.role && (
+          <p className="text-sm text-destructive">{errors.role.message}</p>
+        )}
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -295,7 +312,17 @@ export default function SignUpForm() {
         )}
       </div>
 
-      <Button type="submit" className="w-full" disabled={loading}>
+      <Button 
+        type="submit" 
+        className="w-full" 
+        disabled={loading}
+        onClick={(e) => {
+          console.log('Create Account button clicked');
+          console.log('Form errors:', errors);
+          console.log('Selected role:', selectedRole);
+          console.log('Loading state:', loading);
+        }}
+      >
         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         Create Account
       </Button>
