@@ -35,8 +35,44 @@ export default function OnboardingLayout({
 
   return (
     <>
-      {/* Backdrop overlay */}
-      <div className="fixed inset-0 bg-black/30 backdrop-blur-md z-40" />
+      {/* Dashboard background - show behind modal */}
+      <div className="fixed inset-0 bg-gradient-to-br from-background via-background to-muted/20">
+        {/* Dashboard content placeholder/blur */}
+        <div className="min-h-screen">
+          {/* Header */}
+          <header className="border-b border-border bg-card/50 backdrop-blur-sm">
+            <div className="container mx-auto px-4 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <h1 className="text-xl font-bold text-primary">WorkFlow</h1>
+                </div>
+                <div className="text-sm text-muted-foreground">Setting up your workspace...</div>
+              </div>
+            </div>
+          </header>
+          
+          {/* Main content area - blurred */}
+          <main className="container mx-auto px-4 py-8 filter blur-sm opacity-30">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-card rounded-lg p-6 shadow-sm">
+                <div className="h-4 bg-muted rounded animate-pulse mb-2"></div>
+                <div className="h-2 bg-muted rounded animate-pulse"></div>
+              </div>
+              <div className="bg-card rounded-lg p-6 shadow-sm">
+                <div className="h-4 bg-muted rounded animate-pulse mb-2"></div>
+                <div className="h-2 bg-muted rounded animate-pulse"></div>
+              </div>
+              <div className="bg-card rounded-lg p-6 shadow-sm">
+                <div className="h-4 bg-muted rounded animate-pulse mb-2"></div>
+                <div className="h-2 bg-muted rounded animate-pulse"></div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+      
+      {/* Glass effect overlay */}
+      <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40" />
       
       {/* Modal container */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -54,8 +90,8 @@ export default function OnboardingLayout({
             <Progress value={progressValue} className="h-1.5" />
           </div>
 
-          {/* Modal content */}
-          <div className="bg-background/95 backdrop-blur-lg border border-border/30 rounded-lg shadow-elegant animate-scale-in relative">
+          {/* Modal content - Glass effect */}
+          <div className="bg-background/70 backdrop-blur-xl border border-white/20 rounded-lg shadow-2xl shadow-black/25 animate-scale-in relative ring-1 ring-white/10">
             {/* Close button */}
             <button
               onClick={() => setShowExitDialog(true)}
@@ -82,7 +118,7 @@ export default function OnboardingLayout({
 
       {/* Exit confirmation dialog */}
       <AlertDialog open={showExitDialog} onOpenChange={setShowExitDialog}>
-        <AlertDialogContent className="sm:max-w-[320px]">
+        <AlertDialogContent className="sm:max-w-[320px] bg-background/95 backdrop-blur-xl border border-white/20">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-lg">Exit onboarding?</AlertDialogTitle>
             <AlertDialogDescription className="text-sm">

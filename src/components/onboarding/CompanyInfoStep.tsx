@@ -13,7 +13,6 @@ const companySchema = z.object({
   name: z.string().min(1, 'Company name is required'),
   industry: z.string().min(1, 'Industry is required'),
   size_range: z.string().min(1, 'Company size is required'),
-  timezone: z.string().min(1, 'Timezone is required'),
 });
 
 type CompanyForm = z.infer<typeof companySchema>;
@@ -33,19 +32,25 @@ export default function CompanyInfoStep({ onNext }: CompanyInfoStepProps) {
   const onSubmit = async (data: CompanyForm) => {
     setIsLoading(true);
     try {
-      // Create company
+      // Get user and auto-detect timezone
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('User not authenticated');
+
+      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+      // Create company with auto-detected timezone
       const { data: company, error: companyError } = await supabase
         .from('companies')
-        .insert([data])
+        .insert([{
+          ...data,
+          timezone: userTimezone
+        }])
         .select()
         .single();
 
       if (companyError) throw companyError;
 
       // Link user to company as owner
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('User not authenticated');
-
       const { error: linkError } = await supabase
         .from('user_companies')
         .insert([{
@@ -60,6 +65,7 @@ export default function CompanyInfoStep({ onNext }: CompanyInfoStepProps) {
       await supabase
         .from('onboarding_progress')
         .insert([{
+          user_id: user.id,
           step_name: 'company_info',
           completed: true,
           data: data
@@ -131,24 +137,6 @@ export default function CompanyInfoStep({ onNext }: CompanyInfoStepProps) {
           )}
         </div>
 
-        <div>
-          <Label htmlFor="timezone">Timezone</Label>
-          <Select onValueChange={(value) => setValue('timezone', value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select your timezone" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="America/New_York">Eastern Time (ET)</SelectItem>
-              <SelectItem value="America/Chicago">Central Time (CT)</SelectItem>
-              <SelectItem value="America/Denver">Mountain Time (MT)</SelectItem>
-              <SelectItem value="America/Los_Angeles">Pacific Time (PT)</SelectItem>
-              <SelectItem value="UTC">UTC</SelectItem>
-            </SelectContent>
-          </Select>
-          {errors.timezone && (
-            <p className="text-sm text-destructive mt-1">{errors.timezone.message}</p>
-          )}
-        </div>
       </div>
 
       <Button type="submit" className="w-full" disabled={isLoading}>

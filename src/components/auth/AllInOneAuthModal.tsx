@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -33,10 +33,10 @@ const authSchema = z.object({
   phone: z.string().min(10, 'Phone number is required').optional(),
   role: z.enum(['business_owner', 'employee']),
   
-  // Step 3 - Company Info (if business owner)
-  companyName: z.string().optional(),
-  industry: z.string().optional(),
-  companySize: z.string().optional(),
+  // Step 3 - Company Info (required for business owners)
+  companyName: z.string().min(1, 'Company name is required'),
+  industry: z.string().min(1, 'Industry is required'),
+  companySize: z.string().min(1, 'Company size is required'),
   
   // Step 4 - Password (if email signup)
   password: z.string().min(8, 'Password must be at least 8 characters').optional(),
@@ -45,7 +45,7 @@ const authSchema = z.object({
   if (data.authMethod === 'email' && !data.email) return false;
   if (data.authMethod === 'sms' && !data.phone) return false;
   if (data.authMethod === 'email' && data.password !== data.confirmPassword) return false;
-  if (!data.companyName) return false;
+  if (data.role === 'business_owner' && (!data.companyName || !data.industry || !data.companySize)) return false;
   return true;
 }, {
   message: "Please complete all required fields"
@@ -71,7 +71,7 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
   const watchedRole = watch('role');
   const watchedAuthMethod = watch('authMethod');
 
-  const totalSteps = mode === 'signup' ? 3 : 1;
+  const totalSteps = mode === 'signup' ? (watchedRole === 'business_owner' ? 3 : 2) : 1;
 
   const handleAuthMethodSelect = async (method: AuthProvider) => {
     setSelectedAuthMethod(method);
@@ -212,15 +212,19 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
         userData = authData.user;
       }
 
-      // Create/update profile with company info
-      if (userData && data.companyName) {
-        // Create company
+      // Auto-detect timezone
+      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+      // Create/update profile with company info and timezone
+      if (userData && data.role === 'business_owner' && data.companyName) {
+        // Create company with timezone
         const { data: company, error: companyError } = await supabase
           .from('companies')
           .insert({
             name: data.companyName,
             industry: data.industry,
             size_range: data.companySize,
+            timezone: userTimezone,
           })
           .select()
           .single();
@@ -244,8 +248,9 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
         const { error: profileError } = await supabase
           .from('profiles')
           .update({
-            onboarding_completed: true,
+            onboarding_completed: data.role === 'employee', // Skip onboarding for employees, require it for business owners
             session_expires_at: new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString(), // 6 hours
+            timezone: userTimezone,
           })
           .eq('id', userData.id);
 
@@ -684,6 +689,15 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-xs bg-background border border-border shadow-lg p-4">
+        <DialogHeader className="sr-only">
+          <DialogTitle>
+            {mode === 'signin' ? 'Sign In' : 'Create Account'}
+          </DialogTitle>
+          <DialogDescription>
+            {mode === 'signin' ? 'Sign in to your existing account' : 'Create a new account to get started'}
+          </DialogDescription>
+        </DialogHeader>
+        
         {mode === 'signup' && currentStep > 1 && (
           <div className="mb-3">
             <div className="flex justify-between items-center mb-1">

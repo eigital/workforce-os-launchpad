@@ -108,6 +108,7 @@ export type Database = {
           phone_verified_at: string | null
           role: string
           session_expires_at: string | null
+          timezone: string | null
           trial_ends_at: string | null
           updated_at: string | null
           verification_required: boolean | null
@@ -125,6 +126,7 @@ export type Database = {
           phone_verified_at?: string | null
           role?: string
           session_expires_at?: string | null
+          timezone?: string | null
           trial_ends_at?: string | null
           updated_at?: string | null
           verification_required?: boolean | null
@@ -142,6 +144,7 @@ export type Database = {
           phone_verified_at?: string | null
           role?: string
           session_expires_at?: string | null
+          timezone?: string | null
           trial_ends_at?: string | null
           updated_at?: string | null
           verification_required?: boolean | null

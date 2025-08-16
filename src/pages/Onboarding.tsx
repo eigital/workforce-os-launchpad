@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import OnboardingLayout from '@/components/onboarding/OnboardingLayout';
 import CompanyInfoStep from '@/components/onboarding/CompanyInfoStep';
 import ProfileStep from '@/components/onboarding/ProfileStep';
@@ -16,17 +17,73 @@ const STEPS = [
 
 export default function Onboarding() {
   const [currentStep, setCurrentStep] = useState(1);
-  const { user, loading } = useAuth();
+  const [hasCompany, setHasCompany] = useState(false);
+  const [availableSteps, setAvailableSteps] = useState(STEPS);
+  const [loading, setLoading] = useState(true);
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!authLoading && !user) {
       navigate('/auth/signin');
+      return;
     }
-  }, [user, loading, navigate]);
+
+    if (user) {
+      checkOnboardingStatus();
+    }
+  }, [user, authLoading, navigate]);
+
+  const checkOnboardingStatus = async () => {
+    try {
+      // Check if user has a company
+      const { data: userCompanies } = await supabase
+        .from('user_companies')
+        .select('company_id')
+        .eq('user_id', user!.id);
+
+      const hasExistingCompany = userCompanies && userCompanies.length > 0;
+      setHasCompany(hasExistingCompany);
+
+      // Check onboarding progress
+      const { data: progress } = await supabase
+        .from('onboarding_progress')
+        .select('step_name, completed')
+        .eq('user_id', user!.id);
+
+      const completedSteps = progress?.filter(p => p.completed).map(p => p.step_name) || [];
+
+      // Determine which steps to show
+      let steps = [...STEPS];
+      
+      // If user already has a company, skip company info step
+      if (hasExistingCompany) {
+        steps = steps.filter(s => s.id !== 1);
+        // Re-number the steps
+        steps = steps.map((step, index) => ({ ...step, id: index + 1 }));
+      }
+
+      // If profile is completed, skip it
+      if (completedSteps.includes('profile_info')) {
+        steps = steps.filter(s => s.title !== "Your Profile");
+        steps = steps.map((step, index) => ({ ...step, id: index + 1 }));
+      }
+
+      setAvailableSteps(steps);
+      setLoading(false);
+
+      // If all necessary steps are completed, go to dashboard
+      if (steps.length === 1 && steps[0].title === "All Set!") {
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      console.error('Error checking onboarding status:', error);
+      setLoading(false);
+    }
+  };
 
   const handleNext = () => {
-    if (currentStep < STEPS.length) {
+    if (currentStep < availableSteps.length) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -35,7 +92,7 @@ export default function Onboarding() {
     navigate('/dashboard');
   };
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
@@ -43,17 +100,24 @@ export default function Onboarding() {
     );
   }
 
-  const currentStepData = STEPS[currentStep - 1];
+  if (availableSteps.length === 0) {
+    navigate('/dashboard');
+    return null;
+  }
+
+  const currentStepData = availableSteps[currentStep - 1];
 
   const renderStepContent = () => {
-    switch (currentStep) {
-      case 1:
+    const stepTitle = currentStepData.title;
+    
+    switch (stepTitle) {
+      case "Company Information":
         return <CompanyInfoStep onNext={handleNext} />;
-      case 2:
+      case "Your Profile":
         return <ProfileStep onNext={handleNext} />;
-      case 3:
+      case "Team Setup":
         return <TeamSetupStep onNext={handleNext} />;
-      case 4:
+      case "All Set!":
         return <CompleteStep onComplete={handleComplete} />;
       default:
         return null;
@@ -63,7 +127,7 @@ export default function Onboarding() {
   return (
     <OnboardingLayout
       currentStep={currentStep}
-      totalSteps={STEPS.length}
+      totalSteps={availableSteps.length}
       title={currentStepData.title}
       subtitle={currentStepData.subtitle}
     >
