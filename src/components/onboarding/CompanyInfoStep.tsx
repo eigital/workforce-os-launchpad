@@ -43,9 +43,13 @@ export default function CompanyInfoStep({ onNext }: CompanyInfoStepProps) {
       if (companyError) throw companyError;
 
       // Link user to company as owner
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('User not authenticated');
+
       const { error: linkError } = await supabase
         .from('user_companies')
         .insert([{
+          user_id: user.id,
           company_id: company.id,
           role: 'owner'
         }]);
