@@ -9,6 +9,18 @@ import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Onboarding from "./pages/Onboarding";
+import Schedule from "./pages/Schedule";
+import TimeOff from "./pages/TimeOff";
+import Availability from "./pages/Availability";
+import ShiftPool from "./pages/ShiftPool";
+import Team from "./pages/Team";
+import Hiring from "./pages/Hiring";
+import Tasks from "./pages/Tasks";
+import LogBook from "./pages/LogBook";
+import TimeClocking from "./pages/TimeClocking";
+import TipManagement from "./pages/TipManagement";
+import Reports from "./pages/Reports";
+import Help from "./pages/Help";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +36,18 @@ const App = () => (
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/schedule" element={<Schedule />} />
+            <Route path="/schedule/time-off" element={<TimeOff />} />
+            <Route path="/schedule/availability" element={<Availability />} />
+            <Route path="/schedule/shift-pool" element={<ShiftPool />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/hiring" element={<Hiring />} />
+            <Route path="/tasks" element={<Tasks />} />
+            <Route path="/log-book" element={<LogBook />} />
+            <Route path="/time-clocking" element={<TimeClocking />} />
+            <Route path="/tip-management" element={<TipManagement />} />
+            <Route path="/reports" element={<Reports />} />
+            <Route path="/help" element={<Help />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
