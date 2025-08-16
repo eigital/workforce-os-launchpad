@@ -66,10 +66,13 @@ export default function SignInForm({ onSuccess }: SignInFormProps = {}) {
       }
 
       // Check if onboarding is completed
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      if (!currentUser) throw new Error('Authentication failed');
+
       const { data: profile } = await supabase
         .from('profiles')
         .select('onboarding_completed')
-        .eq('id', (await supabase.auth.getUser()).data.user?.id)
+        .eq('id', currentUser.id)
         .single();
 
       toast({
@@ -87,7 +90,7 @@ export default function SignInForm({ onSuccess }: SignInFormProps = {}) {
         } else {
           window.location.href = '/onboarding';
         }
-      }, 500);
+      }, 100);
     } catch (error) {
       toast({
         title: 'An error occurred',
