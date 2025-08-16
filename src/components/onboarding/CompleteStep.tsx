@@ -46,62 +46,56 @@ export default function CompleteStep({ onComplete }: CompleteStepProps) {
   };
 
   return (
-    <div className="space-y-6 text-center">
-      <div className="mb-8">
-        <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-          <CheckCircle className="h-8 w-8 text-green-600" />
+    <div className="space-y-4 text-center max-w-sm mx-auto">
+      <div className="mb-6">
+        <div className="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
+          <CheckCircle className="h-6 w-6 text-green-600" />
         </div>
-        <h2 className="text-2xl font-bold mb-2">Setup Complete!</h2>
-        <p className="text-muted-foreground">
+        <h2 className="text-xl font-bold mb-1">Setup Complete!</h2>
+        <p className="text-sm text-muted-foreground">
           Your account is ready. Here's what you can do next:
         </p>
       </div>
 
-      <div className="grid gap-4">
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Calendar className="h-5 w-5 text-primary" />
-              Schedule Management
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-sm text-muted-foreground">
-              Create schedules, manage shifts, and track time for your team.
-            </p>
+      <div className="grid gap-3">
+        <Card className="py-3">
+          <CardContent className="py-2">
+            <div className="flex items-center gap-3">
+              <Calendar className="h-4 w-4 text-primary flex-shrink-0" />
+              <div className="text-left">
+                <p className="font-medium text-sm">Schedule Management</p>
+                <p className="text-xs text-muted-foreground">Create schedules, manage shifts, and track time.</p>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Users className="h-5 w-5 text-primary" />
-              Team Management
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-sm text-muted-foreground">
-              Add employees, assign roles, and manage permissions.
-            </p>
+        <Card className="py-3">
+          <CardContent className="py-2">
+            <div className="flex items-center gap-3">
+              <Users className="h-4 w-4 text-primary flex-shrink-0" />
+              <div className="text-left">
+                <p className="font-medium text-sm">Team Management</p>
+                <p className="text-xs text-muted-foreground">Add employees, assign roles, and manage permissions.</p>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Settings className="h-5 w-5 text-primary" />
-              Business Settings
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-sm text-muted-foreground">
-              Configure your business rules, notifications, and preferences.
-            </p>
+        <Card className="py-3">
+          <CardContent className="py-2">
+            <div className="flex items-center gap-3">
+              <Settings className="h-4 w-4 text-primary flex-shrink-0" />
+              <div className="text-left">
+                <p className="font-medium text-sm">Business Settings</p>
+                <p className="text-xs text-muted-foreground">Configure business rules, notifications, and preferences.</p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
 
-      <Button onClick={handleComplete} disabled={isLoading} className="w-full" size="lg">
+      <Button onClick={handleComplete} disabled={isLoading} className="w-full mt-4">
         {isLoading ? "Setting up..." : "Go to Dashboard"}
       </Button>
     </div>
