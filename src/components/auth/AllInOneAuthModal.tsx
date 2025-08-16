@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Eye, EyeOff, Mail, MessageSquare, Apple } from 'lucide-react';
+import { Eye, EyeOff, Mail, MessageSquare, Apple, Crown, Users } from 'lucide-react';
 
 interface AllInOneAuthModalProps {
   isOpen: boolean;
@@ -20,7 +20,7 @@ interface AllInOneAuthModalProps {
 }
 
 type AuthProvider = 'email' | 'google' | 'microsoft' | 'apple' | 'sms';
-type UserRole = 'business_owner' | 'manager' | 'employee';
+type UserRole = 'business_owner' | 'employee';
 
 const authSchema = z.object({
   // Step 1 - Auth Method
@@ -31,7 +31,7 @@ const authSchema = z.object({
   lastName: z.string().min(1, 'Last name is required'),
   email: z.string().email('Invalid email').optional(),
   phone: z.string().min(10, 'Phone number is required').optional(),
-  role: z.enum(['business_owner', 'manager', 'employee']),
+  role: z.enum(['business_owner', 'employee']),
   
   // Step 3 - Company Info (if business owner)
   companyName: z.string().optional(),
@@ -546,18 +546,29 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
               </div>
             )}
             
-            <div className="space-y-2">
-              <Label htmlFor="role">What best describes your role?</Label>
-              <Select onValueChange={(value) => setValue('role', value as UserRole)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select your role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="business_owner">Business Owner</SelectItem>
-                  <SelectItem value="manager">Manager</SelectItem>
-                  <SelectItem value="employee">Employee</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="space-y-3">
+              <Label>What best describes your role?</Label>
+              <div className="grid grid-cols-2 gap-3">
+                <Button
+                  type="button"
+                  variant={watchedRole === 'business_owner' ? 'default' : 'outline'}
+                  className="h-20 flex-col gap-2"
+                  onClick={() => setValue('role', 'business_owner')}
+                >
+                  <Crown className="w-6 h-6" />
+                  <span className="text-sm font-medium">Business Owner</span>
+                </Button>
+                
+                <Button
+                  type="button"
+                  variant={watchedRole === 'employee' ? 'default' : 'outline'}
+                  className="h-20 flex-col gap-2"
+                  onClick={() => setValue('role', 'employee')}
+                >
+                  <Users className="w-6 h-6" />
+                  <span className="text-sm font-medium">Employee</span>
+                </Button>
+              </div>
             </div>
             
             <div className="flex gap-3 pt-4">
