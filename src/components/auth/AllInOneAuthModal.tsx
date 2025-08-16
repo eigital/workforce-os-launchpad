@@ -192,81 +192,62 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
   const handleFinalSubmit = async (data: AuthFormData) => {
     setLoading(true);
     try {
-      let userData = null;
-
       if (data.authMethod === 'email') {
+        // Auto-detect timezone for later use
+        const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        
         const signUpData = {
           email: data.email!,
           password: data.password!,
           options: {
+            emailRedirectTo: `${window.location.origin}/`,
             data: {
               first_name: data.firstName,
               last_name: data.lastName,
               role: data.role,
+              timezone: userTimezone,
+              // Store company info for later processing
+              ...(data.role === 'business_owner' && data.companyName ? {
+                company_name: data.companyName,
+                company_industry: data.industry,
+                company_size: data.companySize,
+              } : {})
             },
           },
         };
 
         const { data: authData, error } = await supabase.auth.signUp(signUpData);
         if (error) throw error;
-        userData = authData.user;
-      }
 
-      // Auto-detect timezone
-      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-      // Create/update profile with company info and timezone
-      if (userData && data.role === 'business_owner' && data.companyName) {
-        // Create company with timezone
-        const { data: company, error: companyError } = await supabase
-          .from('companies')
-          .insert({
-            name: data.companyName,
-            industry: data.industry,
-            size_range: data.companySize,
-            timezone: userTimezone,
-          })
-          .select()
-          .single();
-
-        if (companyError) throw companyError;
-
-        // Link user to company
-        const { error: linkError } = await supabase
-          .from('user_companies')
-          .insert({
-            user_id: userData.id,
-            company_id: company.id,
-            role: 'owner',
+        // Check if user needs email verification
+        if (authData.user && !authData.session) {
+          toast({
+            title: 'Check your email',
+            description: 'We sent you a confirmation link. Please check your email and click the link to complete your registration.',
           });
+          onClose();
+          return;
+        }
 
-        if (linkError) throw linkError;
+        // If session is established immediately, the user is logged in
+        if (authData.session) {
+          toast({
+            title: 'Account Created!',
+            description: 'Welcome to your new workspace.',
+          });
+          
+          onClose();
+          
+          // Redirect to onboarding where company creation will be handled
+          setTimeout(() => {
+            if (data.role === 'business_owner') {
+              window.location.href = '/onboarding';
+            } else {
+              window.location.href = '/dashboard';
+            }
+          }, 500);
+        }
       }
-
-      // Mark onboarding as completed
-      if (userData) {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .update({
-            onboarding_completed: data.role === 'employee', // Skip onboarding for employees, require it for business owners
-            session_expires_at: new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString(), // 6 hours
-            timezone: userTimezone,
-          })
-          .eq('id', userData.id);
-
-        if (profileError) throw profileError;
-      }
-
-      toast({
-        title: 'Account Created!',
-        description: 'Welcome to your new workspace.',
-      });
-      
-      onClose();
-      setTimeout(() => {
-        window.location.href = '/dashboard';
-      }, 500);
-
     } catch (error: any) {
       toast({
         title: 'Error',

@@ -38,13 +38,28 @@ export default function CompanyInfoStep({ onNext }: CompanyInfoStepProps) {
 
       const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+      // Check if company info was already provided during signup
+      let companyData = {
+        name: data.name,
+        industry: data.industry,
+        size_range: data.size_range,
+        timezone: userTimezone,
+      };
+
+      // If user came from signup with company info, use that instead
+      if (user.user_metadata?.company_name) {
+        companyData = {
+          name: user.user_metadata.company_name,
+          industry: user.user_metadata.company_industry,
+          size_range: user.user_metadata.company_size,
+          timezone: userTimezone,
+        };
+      }
+
       // Create company with auto-detected timezone
       const { data: company, error: companyError } = await supabase
         .from('companies')
-        .insert([{
-          ...data,
-          timezone: userTimezone
-        }])
+        .insert([companyData])
         .select()
         .single();
 
@@ -68,7 +83,7 @@ export default function CompanyInfoStep({ onNext }: CompanyInfoStepProps) {
           user_id: user.id,
           step_name: 'company_info',
           completed: true,
-          data: data
+          data: companyData
         }]);
 
       onNext();
