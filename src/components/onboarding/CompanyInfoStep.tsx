@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -29,16 +29,55 @@ export default function CompanyInfoStep({ onNext }: CompanyInfoStepProps) {
     resolver: zodResolver(companySchema),
   });
 
+  // Pre-populate form with signup metadata if available
+  useEffect(() => {
+    const loadUserMetadata = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user?.user_metadata?.company_name) {
+        setValue('name', user.user_metadata.company_name);
+        setValue('industry', user.user_metadata.company_industry);
+        setValue('size_range', user.user_metadata.company_size);
+        console.log('Pre-populated form with metadata:', user.user_metadata);
+      }
+    };
+    loadUserMetadata();
+  }, [setValue]);
+
   const onSubmit = async (data: CompanyForm) => {
     setIsLoading(true);
     try {
+      console.log('Starting company creation process');
+      
       // Get user and auto-detect timezone
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('User not authenticated');
 
+      console.log('User authenticated:', user.id);
+
+      // Check if user already has a company
+      const { data: existingCompanies } = await supabase
+        .from('user_companies')
+        .select('company_id, companies(name)')
+        .eq('user_id', user.id);
+
+      if (existingCompanies && existingCompanies.length > 0) {
+        console.log('User already has a company, skipping creation');
+        // Update onboarding progress and continue
+        await supabase
+          .from('onboarding_progress')
+          .upsert([{
+            user_id: user.id,
+            step_name: 'company_info',
+            completed: true,
+            data: { skipped: true, reason: 'already_exists' }
+          }]);
+        onNext();
+        return;
+      }
+
       const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-      // Check if company info was already provided during signup
+      // Use metadata from signup if available, otherwise use form data
       let companyData = {
         name: data.name,
         industry: data.industry,
@@ -54,7 +93,24 @@ export default function CompanyInfoStep({ onNext }: CompanyInfoStepProps) {
           size_range: user.user_metadata.company_size,
           timezone: userTimezone,
         };
+        console.log('Using company data from signup metadata:', companyData);
+      } else {
+        console.log('Using company data from form:', companyData);
       }
+
+      // Check if company with this name already exists for this user (extra safety)
+      const { data: duplicateCheck } = await supabase
+        .from('companies')
+        .select('id')
+        .eq('name', companyData.name)
+        .limit(1);
+
+      if (duplicateCheck && duplicateCheck.length > 0) {
+        console.log('Company with this name already exists');
+        throw new Error('A company with this name already exists');
+      }
+
+      console.log('Creating company with data:', companyData);
 
       // Create company with auto-detected timezone
       const { data: company, error: companyError } = await supabase
@@ -63,7 +119,12 @@ export default function CompanyInfoStep({ onNext }: CompanyInfoStepProps) {
         .select()
         .single();
 
-      if (companyError) throw companyError;
+      if (companyError) {
+        console.error('Company creation error:', companyError);
+        throw companyError;
+      }
+
+      console.log('Company created successfully:', company.id);
 
       // Link user to company as owner
       const { error: linkError } = await supabase
@@ -74,23 +135,36 @@ export default function CompanyInfoStep({ onNext }: CompanyInfoStepProps) {
           role: 'owner'
         }]);
 
-      if (linkError) throw linkError;
+      if (linkError) {
+        console.error('User-company link error:', linkError);
+        throw linkError;
+      }
+
+      console.log('User linked to company successfully');
 
       // Update onboarding progress
       await supabase
         .from('onboarding_progress')
-        .insert([{
+        .upsert([{
           user_id: user.id,
           step_name: 'company_info',
           completed: true,
           data: companyData
         }]);
 
+      console.log('Onboarding progress updated');
+
+      toast({
+        title: "Success",
+        description: "Company created successfully!",
+      });
+
       onNext();
     } catch (error: any) {
+      console.error('Company creation failed:', error);
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Failed to create company. Please try again.",
         variant: "destructive",
       });
     } finally {
