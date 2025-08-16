@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -24,9 +24,35 @@ export default function ProfileStep({ onNext }: ProfileStepProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const { register, handleSubmit, formState: { errors } } = useForm<ProfileForm>({
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<ProfileForm>({
     resolver: zodResolver(profileSchema),
   });
+
+  // Load existing profile data and pre-populate form
+  useEffect(() => {
+    const loadProfileData = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('first_name, last_name, phone_number')
+          .eq('id', user.id)
+          .single();
+
+        if (profile) {
+          if (profile.first_name) setValue('first_name', profile.first_name);
+          if (profile.last_name) setValue('last_name', profile.last_name);
+          if (profile.phone_number) setValue('phone_number', profile.phone_number);
+        }
+      } catch (error) {
+        console.error('Error loading profile data:', error);
+      }
+    };
+
+    loadProfileData();
+  }, [setValue]);
 
   const onSubmit = async (data: ProfileForm) => {
     setIsLoading(true);

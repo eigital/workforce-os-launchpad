@@ -63,6 +63,19 @@ export default function Onboarding() {
         setHasCompany(true);
       }
 
+      // Check current profile data to see if it's complete
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('first_name, last_name, phone_number')
+        .eq('id', user!.id)
+        .single();
+
+      if (profileError) {
+        console.error('Error checking profile:', profileError);
+      }
+
+      const hasCompleteProfile = profile?.first_name && profile?.last_name;
+
       // Check onboarding progress
       const { data: progress, error: progressError } = await supabase
         .from('onboarding_progress')
@@ -75,6 +88,20 @@ export default function Onboarding() {
 
       const completedSteps = progress?.filter(p => p.completed).map(p => p.step_name) || [];
 
+      // Auto-mark profile step as completed if profile data is complete but step not marked
+      if (hasCompleteProfile && !completedSteps.includes('profile_info')) {
+        await supabase
+          .from('onboarding_progress')
+          .upsert([{
+            user_id: user!.id,
+            step_name: 'profile_info',
+            completed: true,
+            data: { first_name: profile.first_name, last_name: profile.last_name, phone_number: profile.phone_number }
+          }]);
+        completedSteps.push('profile_info');
+        console.log('Auto-marked profile step as completed - data already exists');
+      }
+
       // Determine which steps to show
       let steps = [...STEPS];
       
@@ -86,11 +113,11 @@ export default function Onboarding() {
         console.log('Skipping company info step - already have company data');
       }
 
-      // If profile is completed, skip it
-      if (completedSteps.includes('profile_info')) {
+      // If profile is completed OR has complete data, skip it
+      if (completedSteps.includes('profile_info') || hasCompleteProfile) {
         steps = steps.filter(s => s.title !== "Your Profile");
         steps = steps.map((step, index) => ({ ...step, id: index + 1 }));
-        console.log('Skipping profile step');
+        console.log('Skipping profile step - already have profile data');
       }
 
       setAvailableSteps(steps);
