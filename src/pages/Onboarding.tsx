@@ -51,12 +51,17 @@ export default function Onboarding() {
 
       const hasExistingCompany = userCompanies && userCompanies.length > 0;
       setHasCompany(hasExistingCompany);
-      console.log('User has existing company:', hasExistingCompany);
 
       // Check if user has company info in metadata (from signup)
       const { data: { user: currentUser } } = await supabase.auth.getUser();
       const hasCompanyMetadata = currentUser?.user_metadata?.company_name;
-      console.log('User has company metadata:', hasCompanyMetadata);
+
+      // Auto-create company from metadata if user doesn't have one but has metadata
+      if (!hasExistingCompany && hasCompanyMetadata) {
+        console.log('Auto-creating company from signup metadata');
+        await autoCreateCompanyFromMetadata(currentUser);
+        setHasCompany(true);
+      }
 
       // Check onboarding progress
       const { data: progress, error: progressError } = await supabase
@@ -69,17 +74,16 @@ export default function Onboarding() {
       }
 
       const completedSteps = progress?.filter(p => p.completed).map(p => p.step_name) || [];
-      console.log('Completed steps:', completedSteps);
 
       // Determine which steps to show
       let steps = [...STEPS];
       
-      // If user already has a company OR has company metadata AND company creation step is complete, skip company info step
-      if (hasExistingCompany || (hasCompanyMetadata && completedSteps.includes('company_info'))) {
+      // If user already has a company OR we just created one from metadata, skip company info step
+      if (hasExistingCompany || hasCompanyMetadata) {
         steps = steps.filter(s => s.id !== 1);
         // Re-number the steps
         steps = steps.map((step, index) => ({ ...step, id: index + 1 }));
-        console.log('Skipping company info step');
+        console.log('Skipping company info step - already have company data');
       }
 
       // If profile is completed, skip it
@@ -107,6 +111,59 @@ export default function Onboarding() {
   const handleNext = () => {
     if (currentStep < availableSteps.length) {
       setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const autoCreateCompanyFromMetadata = async (user: any) => {
+    try {
+      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      
+      const companyData = {
+        name: user.user_metadata.company_name,
+        industry: user.user_metadata.company_industry,
+        size_range: user.user_metadata.company_size,
+        timezone: userTimezone,
+      };
+
+      // Create company
+      const { data: company, error: companyError } = await supabase
+        .from('companies')
+        .insert([companyData])
+        .select()
+        .single();
+
+      if (companyError) {
+        console.error('Auto company creation error:', companyError);
+        return;
+      }
+
+      // Link user to company as owner
+      const { error: linkError } = await supabase
+        .from('user_companies')
+        .insert([{
+          user_id: user.id,
+          company_id: company.id,
+          role: 'owner'
+        }]);
+
+      if (linkError) {
+        console.error('Auto user-company link error:', linkError);
+        return;
+      }
+
+      // Mark step as completed
+      await supabase
+        .from('onboarding_progress')
+        .upsert([{
+          user_id: user.id,
+          step_name: 'company_info',
+          completed: true,
+          data: { ...companyData, auto_created: true }
+        }]);
+
+      console.log('Company auto-created successfully from metadata');
+    } catch (error) {
+      console.error('Failed to auto-create company from metadata:', error);
     }
   };
 
