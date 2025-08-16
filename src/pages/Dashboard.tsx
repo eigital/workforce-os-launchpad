@@ -3,7 +3,30 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, Calendar, Clock, Settings, LogOut } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
+import { 
+  Users, 
+  Calendar, 
+  Clock, 
+  Settings, 
+  LogOut, 
+  Bell, 
+  TrendingUp, 
+  DollarSign, 
+  MapPin, 
+  Plus,
+  ChevronRight,
+  X,
+  Check,
+  Eye,
+  Download,
+  Smartphone,
+  BarChart3,
+  CreditCard,
+  Briefcase
+} from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import EmailVerificationBanner from '@/components/dashboard/EmailVerificationBanner';
@@ -17,6 +40,7 @@ export default function Dashboard() {
   const { toast } = useToast();
   const [profile, setProfile] = useState<any>(null);
   const [company, setCompany] = useState<any>(null);
+  const [showQuickStart, setShowQuickStart] = useState(true);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -113,113 +137,351 @@ export default function Dashboard() {
           </header>
 
           {/* Content */}
-          <div className="p-6 space-y-6">
+          <div className="p-6">
             <EmailVerificationBanner />
             
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {/* Quick Stats */}
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Team Members</CardTitle>
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">0</div>
-                  <p className="text-xs text-muted-foreground">
-                    No team members yet
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Schedules</CardTitle>
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">0</div>
-                  <p className="text-xs text-muted-foreground">
-                    No schedules created
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Hours This Week</CardTitle>
-                  <Clock className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">0</div>
-                  <p className="text-xs text-muted-foreground">
-                    No time tracked yet
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Trial Days Left</CardTitle>
-                  <Settings className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">14</div>
-                  <p className="text-xs text-muted-foreground">
-                    Free trial active
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Quick Actions */}
-            <div>
-              <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                <Card className="hover:shadow-md transition-shadow cursor-pointer">
+            <div className="flex gap-6">
+              {/* Main Content */}
+              <div className="flex-1 space-y-6">
+                {/* Here's what's happening */}
+                <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Users className="h-5 w-5 text-primary" />
-                      Add Team Members
-                    </CardTitle>
+                    <CardTitle className="text-xl">Here's what's happening</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground text-sm mb-3">
-                      Invite employees and managers to your team.
-                    </p>
-                    <Button size="sm">Get Started</Button>
+                    <Tabs defaultValue="sales-labor" className="w-full">
+                      <TabsList className="grid w-full grid-cols-4">
+                        <TabsTrigger value="sales-labor">Sales vs Labor</TabsTrigger>
+                        <TabsTrigger value="whos-working">Who's working?</TabsTrigger>
+                        <TabsTrigger value="location-overview">Location Overview</TabsTrigger>
+                        <TabsTrigger value="org-overview">Org Overview</TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="sales-labor" className="mt-4">
+                        <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
+                          <Bell className="h-5 w-5 text-blue-600" />
+                          <div className="flex-1">
+                            <p className="font-medium">See 7shifts in action!</p>
+                            <p className="text-sm text-muted-foreground">
+                              Get a feel for 7shifts from login to your last pay period so you can see exactly how it works, all your terms.
+                            </p>
+                          </div>
+                          <Button variant="outline" size="sm">
+                            Watch an overview
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            Book a Zoom consultation
+                          </Button>
+                          <Button variant="ghost" size="sm">
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <div className="mt-4 text-sm text-muted-foreground">
+                          Have quick questions? Call Cara today at 1 888 979 3977
+                        </div>
+                      </TabsContent>
+                      <TabsContent value="whos-working" className="mt-4">
+                        <div className="text-center py-8">
+                          <p className="text-muted-foreground">No employees are currently working</p>
+                        </div>
+                      </TabsContent>
+                      <TabsContent value="location-overview" className="mt-4">
+                        <div className="text-center py-8">
+                          <p className="text-muted-foreground">Location overview data will appear here</p>
+                        </div>
+                      </TabsContent>
+                      <TabsContent value="org-overview" className="mt-4">
+                        <div className="text-center py-8">
+                          <p className="text-muted-foreground">Organization overview data will appear here</p>
+                        </div>
+                      </TabsContent>
+                    </Tabs>
                   </CardContent>
                 </Card>
 
-                <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Calendar className="h-5 w-5 text-primary" />
-                      Create Schedule
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground text-sm mb-3">
-                      Build your first schedule and assign shifts.
-                    </p>
-                    <Button size="sm">Create Now</Button>
+                {/* Setup Tasks */}
+                <div className="space-y-4">
+                  <Card>
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-6 h-6 bg-orange-500 rounded text-white text-xs flex items-center justify-center">1</div>
+                          <span className="font-medium">Add more of your locations to 7shifts</span>
+                        </div>
+                        <Button variant="outline" size="sm">
+                          Add locations to 7shifts
+                        </Button>
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-2 ml-9">
+                        Centralize all of your restaurant locations in 7shifts to ensure streamlined operations
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-6 h-6 border-2 border-muted rounded" />
+                        <span className="font-medium">Connect your POS</span>
+                        <ChevronRight className="h-4 w-4 ml-auto" />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-6 h-6 border-2 border-muted rounded" />
+                          <span className="font-medium">Set up your payroll</span>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm">
+                            Connect third-party payroll
+                          </Button>
+                          <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                            Explore 7shifts Payroll
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Payroll Promotion */}
+                <Card className="bg-gradient-to-r from-blue-50 to-indigo-50">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-4">
+                          <BarChart3 className="h-8 w-8 text-blue-600" />
+                          <div>
+                            <h3 className="font-semibold">Reduce time loss, no-shows, and compliance risks</h3>
+                            <p className="text-sm text-muted-foreground">
+                              Increase productivity insights from your sales, budget, actual labor and costs get better payroll and HR from us and simplify your.
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button className="bg-blue-600 hover:bg-blue-700">
+                            Set up 7shifts
+                          </Button>
+                          <Button variant="outline">
+                            More information
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
 
-                <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Settings className="h-5 w-5 text-primary" />
-                      Business Settings
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground text-sm mb-3">
-                      Configure your business rules and preferences.
-                    </p>
-                    <Button size="sm">Configure</Button>
+                {/* Switching to 7shifts Payroll */}
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="flex gap-6">
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold mb-2">
+                          Switching to 7shifts Payroll is easier than you think—we set it up for you
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-4">
+                          Our payroll experts handle your transition to 7shifts while you focus on your restaurant. Compliant onboarding, timesheets, and payroll that give you back time to grow your business while saving money on payroll and taxes each payroll.
+                        </p>
+                        <div className="flex gap-2">
+                          <Button className="bg-blue-600 hover:bg-blue-700">
+                            Check out 7shifts Payroll
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            Talk to a payroll expert
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="w-48 h-32 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg flex items-center justify-center">
+                        <CreditCard className="h-12 w-12 text-blue-600" />
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
+
+                {/* Explore 7shifts */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Explore 7shifts</CardTitle>
+                    <p className="text-sm text-muted-foreground">
+                      Get the most out of your plan with these popular features
+                    </p>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="text-center p-4">
+                        <div className="flex justify-center mb-3">
+                          <Users className="h-8 w-8 text-blue-600" />
+                        </div>
+                        <h4 className="font-medium mb-2">Onboard your entire team</h4>
+                        <p className="text-xs text-muted-foreground mb-3">
+                          Invite your managers and employees from your 7shifts account between your team.
+                        </p>
+                      </div>
+                      <div className="text-center p-4">
+                        <div className="flex justify-center mb-3">
+                          <Clock className="h-8 w-8 text-green-600" />
+                        </div>
+                        <h4 className="font-medium mb-2">Time Clocking</h4>
+                        <p className="text-xs text-muted-foreground mb-3">
+                          Approve and edit timecards for faster payroll. Manage compliance and reporting.
+                        </p>
+                      </div>
+                      <div className="text-center p-4">
+                        <div className="flex justify-center mb-3">
+                          <Settings className="h-8 w-8 text-purple-600" />
+                        </div>
+                        <h4 className="font-medium mb-2">Set up your PTO policies</h4>
+                        <p className="text-xs text-muted-foreground mb-3">
+                          You can manage time off and track hours against your PTO policies.
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Bottom Stats */}
+                <div className="grid grid-cols-2 gap-6">
+                  <Card>
+                    <CardHeader className="text-center">
+                      <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                        <Clock className="h-8 w-8 text-gray-600" />
+                      </div>
+                      <CardTitle>Pending Requests</CardTitle>
+                      <p className="text-sm text-muted-foreground">No pending requests</p>
+                    </CardHeader>
+                    <CardContent className="text-center">
+                      <p className="text-xs text-muted-foreground mb-4">
+                        When your employees submit time off requests, changes to their availability, or want to pick up shifts you can manage them here.
+                      </p>
+                      <div className="flex gap-2 justify-center">
+                        <Button variant="outline" size="sm">View time off</Button>
+                        <Button variant="outline" size="sm">View availability</Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="text-center">
+                      <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                        <BarChart3 className="h-8 w-8 text-gray-600" />
+                      </div>
+                      <CardTitle>Activity Log</CardTitle>
+                      <p className="text-sm text-muted-foreground">No recent activity</p>
+                    </CardHeader>
+                    <CardContent className="text-center">
+                      <p className="text-xs text-muted-foreground mb-4">
+                        Add employees to your account where they have done something on their tablet like clock in and out.
+                      </p>
+                      <Button variant="outline" size="sm">View activity log</Button>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
+
+              {/* Quick Start Sidebar */}
+              {showQuickStart && (
+                <div className="w-80 space-y-4">
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-green-500 rounded-full" />
+                        <CardTitle className="text-sm">Quick start guide</CardTitle>
+                      </div>
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={() => setShowQuickStart(false)}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                            <Check className="h-3 w-3 text-white" />
+                          </div>
+                          <span className="text-sm font-medium">Create your account</span>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-3">
+                            <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs">2</div>
+                            <div className="flex-1 flex items-center justify-between">
+                              <span className="text-sm font-medium">Explore Scheduling</span>
+                              <Button variant="ghost" size="sm" className="h-auto p-1 text-xs">
+                                <Eye className="w-3 h-3 mr-1" />
+                                See it in action
+                              </Button>
+                            </div>
+                          </div>
+                          
+                          <Card className="ml-8 p-3 bg-blue-50">
+                            <div className="flex items-start gap-3">
+                              <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-xs">1</div>
+                              <div className="flex-1">
+                                <h4 className="text-sm font-medium mb-1">Add key team members to try 7shifts</h4>
+                                <p className="text-xs text-muted-foreground mb-3">
+                                  You know those employees who will tell it like it is? They're the best for honest feedback. Invite them to try 7shifts so you can learn the manager and employee experience.
+                                </p>
+                                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                                  <Plus className="w-3 h-3 mr-1" />
+                                  Add team members
+                                </Button>
+                              </div>
+                            </div>
+                          </Card>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <div className="w-5 h-5 border-2 border-muted rounded-full flex items-center justify-center text-xs">3</div>
+                          <span className="text-sm">Create your first schedule</span>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <div className="w-5 h-5 border-2 border-muted rounded-full flex items-center justify-center text-xs">4</div>
+                          <span className="text-sm">Share your schedule with your employees</span>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <div className="w-5 h-5 border-2 border-muted rounded-full flex items-center justify-center text-xs">3</div>
+                          <div className="flex-1 flex items-center justify-between">
+                            <span className="text-sm">Explore Time Clocking</span>
+                            <Button variant="ghost" size="sm" className="h-auto p-1 text-xs">
+                              <Eye className="w-3 h-3 mr-1" />
+                              See it in action
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <div className="w-5 h-5 border-2 border-muted rounded-full flex items-center justify-center text-xs">4</div>
+                          <span className="text-sm">Explore Team Communication</span>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <div className="w-5 h-5 border-2 border-muted rounded-full flex items-center justify-center text-xs">5</div>
+                          <span className="text-sm">Explore the Mobile App</span>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <div className="w-5 h-5 border-2 border-muted rounded-full flex items-center justify-center text-xs">6</div>
+                          <div className="flex-1 flex items-center justify-between">
+                            <span className="text-sm">Explore 7shifts Payroll</span>
+                            <Button variant="ghost" size="sm" className="h-auto p-1 text-xs">
+                              <Eye className="w-3 h-3 mr-1" />
+                              See it in action
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
             </div>
           </div>
         </main>
