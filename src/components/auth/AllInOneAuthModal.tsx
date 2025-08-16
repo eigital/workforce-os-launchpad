@@ -324,7 +324,9 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                   disabled={loading}
                   title="Continue with Apple"
                 >
-                  <Apple className="w-4 h-4" />
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                  </svg>
                 </Button>
                 
                 <Button
@@ -451,7 +453,9 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                   disabled={loading}
                   title="Continue with Apple"
                 >
-                  <Apple className="w-4 h-4" />
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                  </svg>
                 </Button>
                 
                 <Button
@@ -485,119 +489,100 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
 
       case 2:
         return (
-          <div className="space-y-4">
-            <div className="text-center space-y-2">
-              <h2 className="text-xl font-semibold">Tell us about yourself</h2>
-              <p className="text-sm text-muted-foreground">We'll use this to personalize your experience</p>
+          <div className="space-y-3">
+            <div className="text-center space-y-1">
+              <h2 className="text-lg font-semibold">Tell us about yourself</h2>
+              <p className="text-xs text-muted-foreground">Personal details</p>
             </div>
             
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
-                <Input
-                  id="firstName"
-                  {...form.register('firstName')}
-                  placeholder="Enter your first name"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
-                <Input
-                  id="lastName"
-                  {...form.register('lastName')}
-                  placeholder="Enter your last name"
-                />
-              </div>
+            <div className="grid grid-cols-2 gap-2">
+              <Input
+                {...form.register('firstName')}
+                placeholder="First name"
+                className="h-8 text-sm"
+              />
+              <Input
+                {...form.register('lastName')}
+                placeholder="Last name"
+                className="h-8 text-sm"
+              />
             </div>
 
             {selectedAuthMethod === 'email' && (
               <>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                <Input
+                  type="email"
+                  {...form.register('email')}
+                  placeholder="Email"
+                  className="h-8 text-sm"
+                />
+                
+                <div className="relative">
                   <Input
-                    id="email"
-                    type="email"
-                    {...form.register('email')}
-                    placeholder="Enter your email"
+                    type={showPassword ? 'text' : 'password'}
+                    {...form.register('password')}
+                    placeholder="Password"
+                    className="h-8 text-sm pr-8"
                   />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="absolute right-0 top-0 h-8 w-8 p-0 hover:bg-transparent"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                  </Button>
                 </div>
                 
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <div className="relative">
-                    <Input
-                      id="password"
-                      type={showPassword ? 'text' : 'password'}
-                      {...form.register('password')}
-                      placeholder="Choose a password"
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </Button>
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    {...form.register('confirmPassword')}
-                    placeholder="Confirm your password"
-                  />
-                </div>
+                <Input
+                  type="password"
+                  {...form.register('confirmPassword')}
+                  placeholder="Confirm password"
+                  className="h-8 text-sm"
+                />
               </>
             )}
 
             {selectedAuthMethod === 'sms' && (
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  {...form.register('phone')}
-                  placeholder="Enter your phone number"
-                />
-              </div>
+              <Input
+                type="tel"
+                {...form.register('phone')}
+                placeholder="Phone number"
+                className="h-8 text-sm"
+              />
             )}
             
-            <div className="space-y-3">
-              <Label>What best describes your role?</Label>
-              <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2">
+              <p className="text-xs text-muted-foreground text-center">Role</p>
+              <div className="grid grid-cols-2 gap-2">
                 <Button
                   type="button"
                   variant={watchedRole === 'business_owner' ? 'default' : 'outline'}
-                  className="h-20 flex-col gap-2"
+                  className="h-12 flex-col gap-1 text-xs"
                   onClick={() => setValue('role', 'business_owner')}
                 >
-                  <Crown className="w-6 h-6" />
-                  <span className="text-sm font-medium">Business Owner</span>
+                  <Crown className="w-4 h-4" />
+                  <span>Business Owner</span>
                 </Button>
                 
                 <Button
                   type="button"
                   variant={watchedRole === 'employee' ? 'default' : 'outline'}
-                  className="h-20 flex-col gap-2"
+                  className="h-12 flex-col gap-1 text-xs"
                   onClick={() => setValue('role', 'employee')}
                 >
-                  <Users className="w-6 h-6" />
-                  <span className="text-sm font-medium">Employee</span>
+                  <Users className="w-4 h-4" />
+                  <span>Employee</span>
                 </Button>
               </div>
             </div>
             
-            <div className="flex gap-3 pt-4">
-              <Button variant="outline" onClick={handlePreviousStep} className="flex-1">
+            <div className="flex gap-2 pt-2">
+              <Button variant="outline" onClick={handlePreviousStep} className="flex-1 h-8 text-sm">
                 Back
               </Button>
-              <Button onClick={handleNextStep} className="flex-1">
+              <Button onClick={handleNextStep} className="flex-1 h-8 text-sm">
                 Continue
               </Button>
             </div>
@@ -606,66 +591,57 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
 
       case 3:
         return (
-          <div className="space-y-4">
-            <div className="text-center space-y-2">
-              <h2 className="text-xl font-semibold">Company Information</h2>
-              <p className="text-sm text-muted-foreground">Tell us about your {watchedRole === 'business_owner' ? 'business' : 'company'}</p>
+          <div className="space-y-3">
+            <div className="text-center space-y-1">
+              <h2 className="text-lg font-semibold">Company Information</h2>
+              <p className="text-xs text-muted-foreground">Tell us about your {watchedRole === 'business_owner' ? 'business' : 'company'}</p>
             </div>
             
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="companyName">Company Name</Label>
-                <Input
-                  id="companyName"
-                  {...form.register('companyName')}
-                  placeholder="Enter your company name"
-                />
-              </div>
+            <div className="space-y-2">
+              <Input
+                {...form.register('companyName')}
+                placeholder="Company name"
+                className="h-8 text-sm"
+              />
               
-              <div className="space-y-2">
-                <Label htmlFor="industry">Industry</Label>
-                <Select onValueChange={(value) => setValue('industry', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select your industry" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="technology">Technology</SelectItem>
-                    <SelectItem value="healthcare">Healthcare</SelectItem>
-                    <SelectItem value="finance">Finance</SelectItem>
-                    <SelectItem value="retail">Retail</SelectItem>
-                    <SelectItem value="manufacturing">Manufacturing</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <Select onValueChange={(value) => setValue('industry', value)}>
+                <SelectTrigger className="h-8 text-sm">
+                  <SelectValue placeholder="Industry" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="technology">Technology</SelectItem>
+                  <SelectItem value="healthcare">Healthcare</SelectItem>
+                  <SelectItem value="finance">Finance</SelectItem>
+                  <SelectItem value="retail">Retail</SelectItem>
+                  <SelectItem value="manufacturing">Manufacturing</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
               
-              <div className="space-y-2">
-                <Label htmlFor="companySize">Company Size</Label>
-                <Select onValueChange={(value) => setValue('companySize', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select company size" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1-10">1-10 employees</SelectItem>
-                    <SelectItem value="11-50">11-50 employees</SelectItem>
-                    <SelectItem value="51-200">51-200 employees</SelectItem>
-                    <SelectItem value="201-500">201-500 employees</SelectItem>
-                    <SelectItem value="500+">500+ employees</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <Select onValueChange={(value) => setValue('companySize', value)}>
+                <SelectTrigger className="h-8 text-sm">
+                  <SelectValue placeholder="Company size" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1-10">1-10 employees</SelectItem>
+                  <SelectItem value="11-50">11-50 employees</SelectItem>
+                  <SelectItem value="51-200">51-200 employees</SelectItem>
+                  <SelectItem value="201-500">201-500 employees</SelectItem>
+                  <SelectItem value="500+">500+ employees</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             
-            <div className="flex gap-3 pt-4">
-              <Button variant="outline" onClick={handlePreviousStep} className="flex-1">
+            <div className="flex gap-2 pt-2">
+              <Button variant="outline" onClick={handlePreviousStep} className="flex-1 h-8 text-sm">
                 Back
               </Button>
               <Button 
                 onClick={form.handleSubmit(handleFinalSubmit)} 
-                className="flex-1"
+                className="flex-1 h-8 text-sm"
                 disabled={loading}
               >
-                {loading ? 'Creating account...' : 'Create Account'}
+                {loading ? 'Creating...' : 'Create Account'}
               </Button>
             </div>
           </div>
