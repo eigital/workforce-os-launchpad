@@ -96,40 +96,55 @@ export type Database = {
       }
       profiles: {
         Row: {
+          auth_providers: string[] | null
           created_at: string | null
           email: string
+          email_verified_at: string | null
           first_name: string | null
           id: string
           last_name: string | null
           onboarding_completed: boolean | null
           phone_number: string | null
+          phone_verified_at: string | null
           role: string
+          session_expires_at: string | null
           trial_ends_at: string | null
           updated_at: string | null
+          verification_required: boolean | null
         }
         Insert: {
+          auth_providers?: string[] | null
           created_at?: string | null
           email: string
+          email_verified_at?: string | null
           first_name?: string | null
           id: string
           last_name?: string | null
           onboarding_completed?: boolean | null
           phone_number?: string | null
+          phone_verified_at?: string | null
           role?: string
+          session_expires_at?: string | null
           trial_ends_at?: string | null
           updated_at?: string | null
+          verification_required?: boolean | null
         }
         Update: {
+          auth_providers?: string[] | null
           created_at?: string | null
           email?: string
+          email_verified_at?: string | null
           first_name?: string | null
           id?: string
           last_name?: string | null
           onboarding_completed?: boolean | null
           phone_number?: string | null
+          phone_verified_at?: string | null
           role?: string
+          session_expires_at?: string | null
           trial_ends_at?: string | null
           updated_at?: string | null
+          verification_required?: boolean | null
         }
         Relationships: []
       }

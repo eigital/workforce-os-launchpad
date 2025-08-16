@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, Calendar, Clock, Settings, LogOut } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import EmailVerificationBanner from '@/components/dashboard/EmailVerificationBanner';
+import SessionManager from '@/components/SessionManager';
 
 export default function Dashboard() {
   const { user, loading } = useAuth();
@@ -79,6 +81,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+      <SessionManager />
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4">
@@ -107,6 +110,7 @@ export default function Dashboard() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
+        <EmailVerificationBanner />
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {/* Quick Stats */}
           <Card>
