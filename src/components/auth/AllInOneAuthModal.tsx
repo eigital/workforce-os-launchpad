@@ -45,7 +45,7 @@ const authSchema = z.object({
   if (data.authMethod === 'email' && !data.email) return false;
   if (data.authMethod === 'sms' && !data.phone) return false;
   if (data.authMethod === 'email' && data.password !== data.confirmPassword) return false;
-  if (data.role === 'business_owner' && !data.companyName) return false;
+  if (!data.companyName) return false;
   return true;
 }, {
   message: "Please complete all required fields"
@@ -71,8 +71,7 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
   const watchedRole = watch('role');
   const watchedAuthMethod = watch('authMethod');
 
-  const totalSteps = mode === 'signup' ? 
-    (watchedAuthMethod === 'email' ? (watchedRole === 'business_owner' ? 4 : 3) : 2) : 1;
+  const totalSteps = mode === 'signup' ? 3 : 1;
 
   const handleAuthMethodSelect = async (method: AuthProvider) => {
     setSelectedAuthMethod(method);
@@ -214,8 +213,8 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
         userData = authData.user;
       }
 
-      // Create/update profile with company info if business owner
-      if (userData && data.role === 'business_owner' && data.companyName) {
+      // Create/update profile with company info
+      if (userData && data.companyName) {
         // Create company
         const { data: company, error: companyError } = await supabase
           .from('companies')
@@ -491,15 +490,48 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
             </div>
 
             {selectedAuthMethod === 'email' && (
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  {...form.register('email')}
-                  placeholder="Enter your email"
-                />
-              </div>
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    {...form.register('email')}
+                    placeholder="Enter your email"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="password">Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      {...form.register('password')}
+                      placeholder="Choose a password"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    {...form.register('confirmPassword')}
+                    placeholder="Confirm your password"
+                  />
+                </div>
+              </>
             )}
 
             {selectedAuthMethod === 'sms' && (
@@ -540,155 +572,76 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
         );
 
       case 3:
-        if (watchedRole === 'business_owner') {
-          return (
+        return (
+          <div className="space-y-4">
+            <div className="text-center space-y-2">
+              <h2 className="text-xl font-semibold">Company Information</h2>
+              <p className="text-sm text-muted-foreground">Tell us about your {watchedRole === 'business_owner' ? 'business' : 'company'}</p>
+            </div>
+            
             <div className="space-y-4">
-              <div className="text-center space-y-2">
-                <h2 className="text-xl font-semibold">Company Information</h2>
-                <p className="text-sm text-muted-foreground">Tell us about your business</p>
+              <div className="space-y-2">
+                <Label htmlFor="companyName">Company Name</Label>
+                <Input
+                  id="companyName"
+                  {...form.register('companyName')}
+                  placeholder="Enter your company name"
+                />
               </div>
               
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="companyName">Company Name</Label>
-                  <Input
-                    id="companyName"
-                    {...form.register('companyName')}
-                    placeholder="Enter your company name"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="industry">Industry</Label>
-                  <Select onValueChange={(value) => setValue('industry', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select your industry" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="technology">Technology</SelectItem>
-                      <SelectItem value="healthcare">Healthcare</SelectItem>
-                      <SelectItem value="finance">Finance</SelectItem>
-                      <SelectItem value="retail">Retail</SelectItem>
-                      <SelectItem value="manufacturing">Manufacturing</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="companySize">Company Size</Label>
-                  <Select onValueChange={(value) => setValue('companySize', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select company size" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1-10">1-10 employees</SelectItem>
-                      <SelectItem value="11-50">11-50 employees</SelectItem>
-                      <SelectItem value="51-200">51-200 employees</SelectItem>
-                      <SelectItem value="201-500">201-500 employees</SelectItem>
-                      <SelectItem value="500+">500+ employees</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="industry">Industry</Label>
+                <Select onValueChange={(value) => setValue('industry', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select your industry" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="technology">Technology</SelectItem>
+                    <SelectItem value="healthcare">Healthcare</SelectItem>
+                    <SelectItem value="finance">Finance</SelectItem>
+                    <SelectItem value="retail">Retail</SelectItem>
+                    <SelectItem value="manufacturing">Manufacturing</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               
-              <div className="flex gap-3 pt-4">
-                <Button variant="outline" onClick={handlePreviousStep} className="flex-1">
-                  Back
-                </Button>
-                <Button onClick={handleNextStep} className="flex-1">
-                  Continue
-                </Button>
+              <div className="space-y-2">
+                <Label htmlFor="companySize">Company Size</Label>
+                <Select onValueChange={(value) => setValue('companySize', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select company size" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1-10">1-10 employees</SelectItem>
+                    <SelectItem value="11-50">11-50 employees</SelectItem>
+                    <SelectItem value="51-200">51-200 employees</SelectItem>
+                    <SelectItem value="201-500">201-500 employees</SelectItem>
+                    <SelectItem value="500+">500+ employees</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
-          );
-        } else {
-          // For non-business owners, go directly to password step
-          if (selectedAuthMethod === 'email') {
-            return renderPasswordStep();
-          } else {
-            // For SMS, complete the process
-            return (
-              <div className="space-y-4">
-                <div className="text-center space-y-2">
-                  <h2 className="text-xl font-semibold">Almost done!</h2>
-                  <p className="text-sm text-muted-foreground">We'll send you a verification code</p>
-                </div>
-                
-                <Button 
-                  onClick={() => form.handleSubmit(handleFinalSubmit)()} 
-                  className="w-full"
-                  disabled={loading}
-                >
-                  {loading ? 'Creating account...' : 'Create Account'}
-                </Button>
-              </div>
-            );
-          }
-        }
-
-      case 4:
-        return renderPasswordStep();
+            
+            <div className="flex gap-3 pt-4">
+              <Button variant="outline" onClick={handlePreviousStep} className="flex-1">
+                Back
+              </Button>
+              <Button 
+                onClick={form.handleSubmit(handleFinalSubmit)} 
+                className="flex-1"
+                disabled={loading}
+              >
+                {loading ? 'Creating account...' : 'Create Account'}
+              </Button>
+            </div>
+          </div>
+        );
 
       default:
         return null;
     }
   };
-
-  const renderPasswordStep = () => (
-    <div className="space-y-4">
-      <div className="text-center space-y-2">
-        <h2 className="text-xl font-semibold">Create your password</h2>
-        <p className="text-sm text-muted-foreground">Choose a secure password for your account</p>
-      </div>
-      
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
-          <div className="relative">
-            <Input
-              id="password"
-              type={showPassword ? 'text' : 'password'}
-              {...form.register('password')}
-              placeholder="Choose a password"
-            />
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-            </Button>
-          </div>
-        </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="confirmPassword">Confirm Password</Label>
-          <Input
-            id="confirmPassword"
-            type="password"
-            {...form.register('confirmPassword')}
-            placeholder="Confirm your password"
-          />
-        </div>
-      </div>
-      
-      <div className="flex gap-3 pt-4">
-        <Button variant="outline" onClick={handlePreviousStep} className="flex-1">
-          Back
-        </Button>
-        <Button 
-          onClick={form.handleSubmit(handleFinalSubmit)} 
-          className="flex-1"
-          disabled={loading}
-        >
-          {loading ? 'Creating account...' : 'Create Account'}
-        </Button>
-      </div>
-    </div>
-  );
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
