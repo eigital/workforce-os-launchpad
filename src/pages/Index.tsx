@@ -6,7 +6,7 @@ import HowItWorks from "@/components/HowItWorks";
 import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
 import AllInOneAuthModal from "@/components/auth/AllInOneAuthModal";
-import SessionManager from "@/components/SessionManager";
+
 
 const Index = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -28,7 +28,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <SessionManager />
       <Navigation 
         onOpenSignUp={handleOpenSignUp}
         onOpenSignIn={handleOpenSignIn}

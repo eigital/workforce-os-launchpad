@@ -40,9 +40,11 @@ export default function ProfileStep({ onNext }: ProfileStepProps) {
       if (error) throw error;
 
       // Update onboarding progress
+      const { data: userData } = await supabase.auth.getUser();
       await supabase
         .from('onboarding_progress')
         .insert([{
+          user_id: userData.user?.id,
           step_name: 'profile_info',
           completed: true,
           data: data

@@ -64,7 +64,7 @@ export type Database = {
           data: Json | null
           id: string
           step_name: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           completed?: boolean | null
@@ -73,7 +73,7 @@ export type Database = {
           data?: Json | null
           id?: string
           step_name: string
-          user_id?: string | null
+          user_id?: string
         }
         Update: {
           completed?: boolean | null
@@ -82,7 +82,7 @@ export type Database = {
           data?: Json | null
           id?: string
           step_name?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {

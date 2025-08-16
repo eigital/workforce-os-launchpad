@@ -24,7 +24,9 @@ export default function TeamSetupStep({ onNext }: TeamSetupStepProps) {
   const { toast } = useToast();
 
   const addTeamMember = () => {
-    if (newEmail && !teamMembers.find(m => m.email === newEmail)) {
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (newEmail && emailRegex.test(newEmail) && !teamMembers.find(m => m.email === newEmail)) {
       setTeamMembers([...teamMembers, { email: newEmail, role: newRole }]);
       setNewEmail('');
     }
@@ -38,9 +40,11 @@ export default function TeamSetupStep({ onNext }: TeamSetupStepProps) {
     setIsLoading(true);
     try {
       // Save team setup progress
+      const { data: userData } = await supabase.auth.getUser();
       await supabase
         .from('onboarding_progress')
         .insert({
+          user_id: userData.user?.id,
           step_name: 'team_setup',
           completed: true,
           data: { team_members: teamMembers } as any
