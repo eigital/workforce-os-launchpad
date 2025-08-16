@@ -55,7 +55,9 @@ const navigationItems = [
   { title: "Log Book", url: "/log-book", icon: BookOpen },
   { title: "Time Clocking", url: "/time-clocking", icon: Clock },
   { title: "Tip Management", url: "/tip-management", icon: DollarSign },
+  { title: "Payroll", url: "/payroll", icon: DollarSign },
   { title: "Reports", url: "/reports", icon: BarChart3 },
+  { title: "Quick Start", url: "/quick-start", icon: HelpCircle, badge: "GUIDE" },
   { title: "Help", url: "/help", icon: HelpCircle },
 ]
 
@@ -141,7 +143,16 @@ export function AppSidebar() {
                     <SidebarMenuButton asChild>
                       <NavLink to={item.url} className={getNavCls}>
                         <item.icon className="h-4 w-4" />
-                        {!collapsed && <span>{item.title}</span>}
+                        {!collapsed && (
+                          <div className="flex items-center gap-2">
+                            <span>{item.title}</span>
+                            {item.badge && (
+                              <span className="text-xs bg-orange-500 text-white px-1.5 py-0.5 rounded">
+                                {item.badge}
+                              </span>
+                            )}
+                          </div>
+                        )}
                       </NavLink>
                     </SidebarMenuButton>
                   )}

@@ -19,7 +19,9 @@ import Tasks from "./pages/Tasks";
 import LogBook from "./pages/LogBook";
 import TimeClocking from "./pages/TimeClocking";
 import TipManagement from "./pages/TipManagement";
+import Payroll from "./pages/Payroll";
 import Reports from "./pages/Reports";
+import QuickStart from "./pages/QuickStart";
 import Help from "./pages/Help";
 
 const queryClient = new QueryClient();
@@ -48,6 +50,8 @@ const App = () => (
             <Route path="/tip-management" element={<TipManagement />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/help" element={<Help />} />
+            <Route path="/payroll" element={<Payroll />} />
+            <Route path="/quick-start" element={<QuickStart />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
