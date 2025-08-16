@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_logs: {
+        Row: {
+          activity_type: string
+          company_id: string
+          created_at: string
+          description: string
+          id: string
+          metadata: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          activity_type: string
+          company_id: string
+          created_at?: string
+          description: string
+          id?: string
+          metadata?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          activity_type?: string
+          company_id?: string
+          created_at?: string
+          description?: string
+          id?: string
+          metadata?: Json | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       companies: {
         Row: {
           address: Json | null
@@ -56,6 +86,45 @@ export type Database = {
         }
         Relationships: []
       }
+      locations: {
+        Row: {
+          address: Json | null
+          company_id: string
+          created_at: string
+          id: string
+          is_active: boolean | null
+          name: string
+          phone_number: string | null
+          settings: Json | null
+          timezone: string | null
+          updated_at: string
+        }
+        Insert: {
+          address?: Json | null
+          company_id: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          name: string
+          phone_number?: string | null
+          settings?: Json | null
+          timezone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address?: Json | null
+          company_id?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          phone_number?: string | null
+          settings?: Json | null
+          timezone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       onboarding_progress: {
         Row: {
           completed: boolean | null
@@ -93,6 +162,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      pending_requests: {
+        Row: {
+          company_id: string
+          created_at: string
+          description: string | null
+          id: string
+          metadata: Json | null
+          request_type: string
+          requested_at: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          request_type: string
+          requested_at?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          request_type?: string
+          requested_at?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -148,6 +265,42 @@ export type Database = {
           trial_ends_at?: string | null
           updated_at?: string | null
           verification_required?: boolean | null
+        }
+        Relationships: []
+      }
+      setup_progress: {
+        Row: {
+          company_id: string
+          completed: boolean | null
+          completed_at: string | null
+          created_at: string
+          data: Json | null
+          id: string
+          step_key: string
+          step_name: string
+          updated_at: string
+        }
+        Insert: {
+          company_id: string
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          data?: Json | null
+          id?: string
+          step_key: string
+          step_name: string
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          data?: Json | null
+          id?: string
+          step_key?: string
+          step_name?: string
+          updated_at?: string
         }
         Relationships: []
       }

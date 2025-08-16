@@ -41,6 +41,10 @@ export default function Dashboard() {
   const [profile, setProfile] = useState<any>(null);
   const [company, setCompany] = useState<any>(null);
   const [showQuickStart, setShowQuickStart] = useState(true);
+  const [setupProgress, setSetupProgress] = useState<any[]>([]);
+  const [locations, setLocations] = useState<any[]>([]);
+  const [pendingRequests, setPendingRequests] = useState<any[]>([]);
+  const [activityLogs, setActivityLogs] = useState<any[]>([]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -78,9 +82,56 @@ export default function Dashboard() {
 
       if (userCompany?.companies) {
         setCompany(userCompany.companies);
+        // Load additional company data after setting company
+        loadCompanyData(userCompany.companies.id);
       }
     } catch (error: any) {
       console.error('Error loading user data:', error);
+    }
+  };
+
+  const loadCompanyData = async (companyId: string) => {
+    try {
+      // Load setup progress
+      const { data: setupData } = await supabase
+        .from('setup_progress')
+        .select('*')
+        .eq('company_id', companyId)
+        .order('created_at');
+
+      setSetupProgress(setupData || []);
+
+      // Load locations
+      const { data: locationsData } = await supabase
+        .from('locations')
+        .select('*')
+        .eq('company_id', companyId)
+        .eq('is_active', true);
+
+      setLocations(locationsData || []);
+
+      // Load pending requests
+      const { data: requestsData } = await supabase
+        .from('pending_requests')
+        .select('*')
+        .eq('company_id', companyId)
+        .eq('status', 'pending')
+        .order('requested_at', { ascending: false })
+        .limit(5);
+
+      setPendingRequests(requestsData || []);
+
+      // Load recent activity
+      const { data: activityData } = await supabase
+        .from('activity_logs')
+        .select('*')
+        .eq('company_id', companyId)
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      setActivityLogs(activityData || []);
+    } catch (error: any) {
+      console.error('Error loading company data:', error);
     }
   };
 
@@ -160,9 +211,9 @@ export default function Dashboard() {
                         <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
                           <Bell className="h-5 w-5 text-blue-600" />
                           <div className="flex-1">
-                            <p className="font-medium">See 7shifts in action!</p>
+                            <p className="font-medium">See WorkforceOS in action!</p>
                             <p className="text-sm text-muted-foreground">
-                              Get a feel for 7shifts from login to your last pay period so you can see exactly how it works, all your terms.
+                              Get a feel for WorkforceOS from login to your last pay period so you can see exactly how it works, all your terms.
                             </p>
                           </div>
                           <Button variant="outline" size="sm">
@@ -176,7 +227,7 @@ export default function Dashboard() {
                           </Button>
                         </div>
                         <div className="mt-4 text-sm text-muted-foreground">
-                          Have quick questions? Call Cara today at 1 888 979 3977
+                          Have quick questions? Call our support team today at 1 888 979 3977
                         </div>
                       </TabsContent>
                       <TabsContent value="whos-working" className="mt-4">
@@ -205,14 +256,14 @@ export default function Dashboard() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <div className="w-6 h-6 bg-orange-500 rounded text-white text-xs flex items-center justify-center">1</div>
-                          <span className="font-medium">Add more of your locations to 7shifts</span>
+                          <span className="font-medium">Add more of your locations to WorkforceOS</span>
                         </div>
                         <Button variant="outline" size="sm">
-                          Add locations to 7shifts
+                          Add locations to WorkforceOS
                         </Button>
                       </div>
                       <p className="text-sm text-muted-foreground mt-2 ml-9">
-                        Centralize all of your restaurant locations in 7shifts to ensure streamlined operations
+                        Centralize all of your restaurant locations in WorkforceOS to ensure streamlined operations
                       </p>
                     </CardContent>
                   </Card>
@@ -239,7 +290,7 @@ export default function Dashboard() {
                             Connect third-party payroll
                           </Button>
                           <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                            Explore 7shifts Payroll
+                            Explore WorkforceOS Payroll
                           </Button>
                         </div>
                       </div>
@@ -263,7 +314,7 @@ export default function Dashboard() {
                         </div>
                         <div className="flex gap-2">
                           <Button className="bg-blue-600 hover:bg-blue-700">
-                            Set up 7shifts
+                            Set up WorkforceOS
                           </Button>
                           <Button variant="outline">
                             More information
@@ -280,14 +331,14 @@ export default function Dashboard() {
                     <div className="flex gap-6">
                       <div className="flex-1">
                         <h3 className="text-lg font-semibold mb-2">
-                          Switching to 7shifts Payroll is easier than you think—we set it up for you
+                          Switching to WorkforceOS Payroll is easier than you think—we set it up for you
                         </h3>
                         <p className="text-sm text-muted-foreground mb-4">
-                          Our payroll experts handle your transition to 7shifts while you focus on your restaurant. Compliant onboarding, timesheets, and payroll that give you back time to grow your business while saving money on payroll and taxes each payroll.
+                          Our payroll experts handle your transition to WorkforceOS while you focus on your restaurant. Compliant onboarding, timesheets, and payroll that give you back time to grow your business while saving money on payroll and taxes each payroll.
                         </p>
                         <div className="flex gap-2">
                           <Button className="bg-blue-600 hover:bg-blue-700">
-                            Check out 7shifts Payroll
+                            Check out WorkforceOS Payroll
                           </Button>
                           <Button variant="outline" size="sm">
                             Talk to a payroll expert
@@ -304,7 +355,7 @@ export default function Dashboard() {
                 {/* Explore 7shifts */}
                 <Card>
                   <CardHeader>
-                    <CardTitle>Explore 7shifts</CardTitle>
+                    <CardTitle>Explore WorkforceOS</CardTitle>
                     <p className="text-sm text-muted-foreground">
                       Get the most out of your plan with these popular features
                     </p>
@@ -317,7 +368,7 @@ export default function Dashboard() {
                         </div>
                         <h4 className="font-medium mb-2">Onboard your entire team</h4>
                         <p className="text-xs text-muted-foreground mb-3">
-                          Invite your managers and employees from your 7shifts account between your team.
+                          Invite your managers and employees to your WorkforceOS account to manage your team.
                         </p>
                       </div>
                       <div className="text-center p-4">
@@ -356,6 +407,20 @@ export default function Dashboard() {
                       <p className="text-xs text-muted-foreground mb-4">
                         When your employees submit time off requests, changes to their availability, or want to pick up shifts you can manage them here.
                       </p>
+                      {pendingRequests.length > 0 ? (
+                        <div className="space-y-2 mb-4">
+                          {pendingRequests.slice(0, 3).map((request) => (
+                            <div key={request.id} className="text-sm border-l-2 border-primary pl-2">
+                              <p className="font-medium">{request.title}</p>
+                              <p className="text-xs text-muted-foreground">{request.request_type}</p>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-xs text-muted-foreground mb-4">
+                          When your employees submit time off requests, changes to their availability, or want to pick up shifts you can manage them here.
+                        </p>
+                      )}
                       <div className="flex gap-2 justify-center">
                         <Button variant="outline" size="sm">View time off</Button>
                         <Button variant="outline" size="sm">View availability</Button>
@@ -372,9 +437,20 @@ export default function Dashboard() {
                       <p className="text-sm text-muted-foreground">No recent activity</p>
                     </CardHeader>
                     <CardContent className="text-center">
-                      <p className="text-xs text-muted-foreground mb-4">
-                        Add employees to your account where they have done something on their tablet like clock in and out.
-                      </p>
+                      {activityLogs.length > 0 ? (
+                        <div className="space-y-2 mb-4">
+                          {activityLogs.slice(0, 3).map((log) => (
+                            <div key={log.id} className="text-sm border-l-2 border-green-500 pl-2">
+                              <p className="font-medium">{log.description}</p>
+                              <p className="text-xs text-muted-foreground">{log.activity_type}</p>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-xs text-muted-foreground mb-4">
+                          Add employees to your account where they have done something on their tablet like clock in and out.
+                        </p>
+                      )}
                       <Button variant="outline" size="sm">View activity log</Button>
                     </CardContent>
                   </Card>
@@ -423,9 +499,9 @@ export default function Dashboard() {
                             <div className="flex items-start gap-3">
                               <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-xs">1</div>
                               <div className="flex-1">
-                                <h4 className="text-sm font-medium mb-1">Add key team members to try 7shifts</h4>
+                                <h4 className="text-sm font-medium mb-1">Add key team members to try WorkforceOS</h4>
                                 <p className="text-xs text-muted-foreground mb-3">
-                                  You know those employees who will tell it like it is? They're the best for honest feedback. Invite them to try 7shifts so you can learn the manager and employee experience.
+                                  You know those employees who will tell it like it is? They're the best for honest feedback. Invite them to try WorkforceOS so you can learn the manager and employee experience.
                                 </p>
                                 <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
                                   <Plus className="w-3 h-3 mr-1" />
@@ -470,7 +546,7 @@ export default function Dashboard() {
                         <div className="flex items-center gap-3">
                           <div className="w-5 h-5 border-2 border-muted rounded-full flex items-center justify-center text-xs">6</div>
                           <div className="flex-1 flex items-center justify-between">
-                            <span className="text-sm">Explore 7shifts Payroll</span>
+                            <span className="text-sm">Explore WorkforceOS Payroll</span>
                             <Button variant="ghost" size="sm" className="h-auto p-1 text-xs">
                               <Eye className="w-3 h-3 mr-1" />
                               See it in action

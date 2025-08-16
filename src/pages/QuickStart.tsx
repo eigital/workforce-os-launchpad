@@ -22,8 +22,8 @@ const quickStartSteps = [
     subSteps: [
       {
         id: "2.1",
-        title: "Add key team members to try 7shifts",
-        description: "You know those employees who have no problem telling you like it is? They're the best for honest feedback. Invite them to try 7shifts so you can learn how to optimize the manager and employee experience.",
+        title: "Add key team members to try WorkforceOS",
+        description: "You know those employees who have no problem telling you like it is? They're the best for honest feedback. Invite them to try WorkforceOS so you can learn how to optimize the manager and employee experience.",
         action: "Add team members",
         icon: "👥",
         completed: false
@@ -66,7 +66,7 @@ const quickStartSteps = [
   },
   {
     id: 6,
-    title: "Explore 7shifts Payroll",
+    title: "Explore WorkforceOS Payroll",
     completed: false,
     description: "",
     actionLink: "See it in action",
