@@ -165,10 +165,9 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
         if (profile?.onboarding_completed) {
           window.location.href = '/dashboard';
         } else {
-          // User will continue in the modal flow
-          setCurrentStep(2);
+          window.location.href = '/onboarding';
         }
-      }, 500);
+      }, 100);
     } catch (error: any) {
       toast({
         title: 'Sign in failed',
