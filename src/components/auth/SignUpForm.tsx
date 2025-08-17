@@ -8,7 +8,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PhoneInput } from '@/components/ui/phone-input';
 import { toast } from '@/hooks/use-toast';
-import { Eye, EyeOff, Loader2, Check, X, Building2, User } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Check, X, Building2, User, ChevronDown } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Link } from 'react-router-dom';
 
 const signUpSchema = z.object({
@@ -22,6 +24,15 @@ const signUpSchema = z.object({
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number'),
   role: z.enum(['business_owner', 'employee']).optional(),
+  // Business information for business owners
+  companyName: z.string().optional(),
+  industry: z.string().optional(),
+  companySize: z.string().optional(),
+  businessGoals: z.array(z.string()).optional(),
+  currentTools: z.array(z.string()).optional(),
+  posSystem: z.string().optional(),
+  payrollMethod: z.string().optional(),
+  ein: z.string().optional(),
 });
 
 type SignUpForm = z.infer<typeof signUpSchema>;
@@ -60,6 +71,9 @@ export default function SignUpForm() {
   const [emailSent, setEmailSent] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [selectedRole, setSelectedRole] = useState<'business_owner' | 'employee' | ''>('');
+  const [showBusinessForm, setShowBusinessForm] = useState(false);
+  const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+  const [selectedTools, setSelectedTools] = useState<string[]>([]);
 
   const {
     register,
@@ -117,6 +131,16 @@ export default function SignUpForm() {
             last_name: data.lastName,
             phone_number: data.phoneNumber,
             role: selectedRole,
+            ...(selectedRole === 'business_owner' && {
+              company_name: data.companyName,
+              industry: data.industry,
+              company_size: data.companySize,
+              business_goals: selectedGoals,
+              current_tools: selectedTools,
+              pos_system: data.posSystem,
+              payroll_method: data.payrollMethod,
+              ein: data.ein,
+            }),
           },
         },
       });
@@ -191,6 +215,7 @@ export default function SignUpForm() {
             onClick={() => {
               setSelectedRole('business_owner');
               setValue('role', 'business_owner');
+              setShowBusinessForm(true);
             }}
             className={`p-2 rounded-md border transition-all hover:border-primary/50 ${
               selectedRole === 'business_owner'
@@ -209,6 +234,7 @@ export default function SignUpForm() {
             onClick={() => {
               setSelectedRole('employee');
               setValue('role', 'employee');
+              setShowBusinessForm(false);
             }}
             className={`p-2 rounded-md border transition-all hover:border-primary/50 ${
               selectedRole === 'employee'
@@ -311,6 +337,189 @@ export default function SignUpForm() {
           <p className="text-sm text-destructive">{errors.password.message}</p>
         )}
       </div>
+
+      {/* Business Information Form - Only for Business Owners */}
+      {showBusinessForm && selectedRole === 'business_owner' && (
+        <div className="space-y-3 pt-2 border-t border-border/50">
+          <h3 className="text-sm font-medium text-foreground">Business Information</h3>
+          
+          {/* Company Name */}
+          <div className="space-y-1">
+            <Label htmlFor="companyName" className="text-xs font-medium">Business Name</Label>
+            <Input
+              id="companyName"
+              placeholder="Your Business Name"
+              {...register('companyName')}
+            />
+          </div>
+
+          {/* What brings you to WorkforceOS? */}
+          <div className="space-y-2">
+            <Label className="text-xs font-medium">What brings you to WorkforceOS? (Select all that apply)</Label>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                'Scheduling',
+                'Budgeting', 
+                'Tip Management',
+                'Communication',
+                'Time Clocking',
+                'Payroll'
+              ].map((goal) => (
+                <div key={goal} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={goal}
+                    checked={selectedGoals.includes(goal)}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setSelectedGoals([...selectedGoals, goal]);
+                      } else {
+                        setSelectedGoals(selectedGoals.filter(g => g !== goal));
+                      }
+                    }}
+                  />
+                  <Label htmlFor={goal} className="text-xs">{goal}</Label>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Industry */}
+          <div className="space-y-1">
+            <Label className="text-xs font-medium">Industry</Label>
+            <Controller
+              name="industry"
+              control={control}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select industry" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="restaurant">Restaurant</SelectItem>
+                    <SelectItem value="retail">Retail</SelectItem>
+                    <SelectItem value="healthcare">Healthcare</SelectItem>
+                    <SelectItem value="hospitality">Hospitality</SelectItem>
+                    <SelectItem value="manufacturing">Manufacturing</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
+
+          {/* Company Size */}
+          <div className="space-y-1">
+            <Label className="text-xs font-medium">Number of Employees</Label>
+            <Controller
+              name="companySize"
+              control={control}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select company size" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1-5">1-5 employees</SelectItem>
+                    <SelectItem value="6-15">6-15 employees</SelectItem>
+                    <SelectItem value="16-50">16-50 employees</SelectItem>
+                    <SelectItem value="51-100">51-100 employees</SelectItem>
+                    <SelectItem value="100+">100+ employees</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
+
+          {/* Current Tools */}
+          <div className="space-y-2">
+            <Label className="text-xs font-medium">What tools do you currently use? (Select all that apply)</Label>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                'Excel/Google Sheets',
+                'Deputy',
+                'When I Work',
+                'Homebase',
+                'Humanity',
+                'Paper schedules'
+              ].map((tool) => (
+                <div key={tool} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={tool}
+                    checked={selectedTools.includes(tool)}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setSelectedTools([...selectedTools, tool]);
+                      } else {
+                        setSelectedTools(selectedTools.filter(t => t !== tool));
+                      }
+                    }}
+                  />
+                  <Label htmlFor={tool} className="text-xs">{tool}</Label>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* POS System */}
+          <div className="space-y-1">
+            <Label className="text-xs font-medium">POS System (Optional)</Label>
+            <Controller
+              name="posSystem"
+              control={control}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select POS system" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="square">Square</SelectItem>
+                    <SelectItem value="toast">Toast</SelectItem>
+                    <SelectItem value="clover">Clover</SelectItem>
+                    <SelectItem value="shopify">Shopify POS</SelectItem>
+                    <SelectItem value="revel">Revel</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                    <SelectItem value="none">None</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
+
+          {/* Payroll Method */}
+          <div className="space-y-1">
+            <Label className="text-xs font-medium">How do you currently handle payroll?</Label>
+            <Controller
+              name="payrollMethod"
+              control={control}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select payroll method" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="manual">Manual calculation</SelectItem>
+                    <SelectItem value="quickbooks">QuickBooks</SelectItem>
+                    <SelectItem value="adp">ADP</SelectItem>
+                    <SelectItem value="gusto">Gusto</SelectItem>
+                    <SelectItem value="paychex">Paychex</SelectItem>
+                    <SelectItem value="other">Other service</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </div>
+
+          {/* EIN */}
+          <div className="space-y-1">
+            <Label htmlFor="ein" className="text-xs font-medium">EIN (Optional)</Label>
+            <Input
+              id="ein"
+              placeholder="12-3456789"
+              {...register('ein')}
+            />
+          </div>
+        </div>
+      )}
 
       <Button 
         type="submit" 

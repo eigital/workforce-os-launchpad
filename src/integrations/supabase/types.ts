@@ -116,6 +116,54 @@ export type Database = {
         }
         Relationships: []
       }
+      business_setup: {
+        Row: {
+          business_goals: string[] | null
+          business_type: string | null
+          company_id: string
+          created_at: string
+          current_tools: string[] | null
+          ein: string | null
+          id: string
+          job_role: string | null
+          payroll_method: string | null
+          pos_system: string | null
+          scheduling_preferences: Json | null
+          setup_completed: boolean | null
+          updated_at: string
+        }
+        Insert: {
+          business_goals?: string[] | null
+          business_type?: string | null
+          company_id: string
+          created_at?: string
+          current_tools?: string[] | null
+          ein?: string | null
+          id?: string
+          job_role?: string | null
+          payroll_method?: string | null
+          pos_system?: string | null
+          scheduling_preferences?: Json | null
+          setup_completed?: boolean | null
+          updated_at?: string
+        }
+        Update: {
+          business_goals?: string[] | null
+          business_type?: string | null
+          company_id?: string
+          created_at?: string
+          current_tools?: string[] | null
+          ein?: string | null
+          id?: string
+          job_role?: string | null
+          payroll_method?: string | null
+          pos_system?: string | null
+          scheduling_preferences?: Json | null
+          setup_completed?: boolean | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       channel_members: {
         Row: {
           channel_id: string

@@ -3,16 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import OnboardingLayout from '@/components/onboarding/OnboardingLayout';
+import WelcomeStep from '@/components/onboarding/WelcomeStep';
+import BusinessProfileStep from '@/components/onboarding/BusinessProfileStep';
 import CompanyInfoStep from '@/components/onboarding/CompanyInfoStep';
 import ProfileStep from '@/components/onboarding/ProfileStep';
 import TeamSetupStep from '@/components/onboarding/TeamSetupStep';
 import CompleteStep from '@/components/onboarding/CompleteStep';
 
 const STEPS = [
-  { id: 1, title: "Company Information", subtitle: "Tell us about your business" },
-  { id: 2, title: "Your Profile", subtitle: "Complete your personal information" },
-  { id: 3, title: "Team Setup", subtitle: "Invite your team members" },
-  { id: 4, title: "All Set!", subtitle: "Your account is ready to use" },
+  { id: 1, title: "Welcome", subtitle: "What brings you to WorkforceOS?" },
+  { id: 2, title: "Business Profile", subtitle: "Tell us about your business" },
+  { id: 3, title: "Your Profile", subtitle: "Complete your personal information" },
+  { id: 4, title: "Team Setup", subtitle: "Invite your team members" },
+  { id: 5, title: "All Set!", subtitle: "Your account is ready to use" },
 ];
 
 export default function Onboarding() {
@@ -217,6 +220,10 @@ export default function Onboarding() {
     const stepTitle = currentStepData.title;
     
     switch (stepTitle) {
+      case "Welcome":
+        return <WelcomeStep onNext={handleNext} />;
+      case "Business Profile":
+        return <BusinessProfileStep onNext={handleNext} />;
       case "Company Information":
         return <CompanyInfoStep onNext={handleNext} />;
       case "Your Profile":

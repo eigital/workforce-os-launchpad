@@ -32,6 +32,7 @@ import { useToast } from '@/hooks/use-toast';
 import EmailVerificationBanner from '@/components/dashboard/EmailVerificationBanner';
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
+import CommunicationHeader from '@/components/communication/CommunicationHeader';
 
 
 export default function Dashboard() {
@@ -175,6 +176,7 @@ export default function Dashboard() {
                 )}
               </div>
               <div className="flex items-center gap-2">
+                <CommunicationHeader />
                 <Button variant="outline" size="sm">
                   <Settings className="h-4 w-4 mr-2" />
                   Settings
