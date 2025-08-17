@@ -21,6 +21,7 @@ import Tasks from "./pages/Tasks";
 import LogBook from "./pages/LogBook";
 import TimeClocking from "./pages/TimeClocking";
 import TipManagement from "./pages/TipManagement";
+import TipManagementSettings from "./pages/TipManagementSettings";
 import Payroll from "./pages/Payroll";
 import Reports from "./pages/Reports";
 import QuickStart from "./pages/QuickStart";
@@ -51,6 +52,7 @@ const App = () => (
             <Route path="/log-book" element={<LogBook />} />
             <Route path="/time-clocking" element={<TimeClocking />} />
             <Route path="/tip-management" element={<TipManagement />} />
+            <Route path="/tip-management/settings" element={<TipManagementSettings />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/help" element={<Help />} />
             <Route path="/payroll" element={<Payroll />} />

@@ -655,6 +655,189 @@ export type Database = {
         }
         Relationships: []
       }
+      tip_distributions: {
+        Row: {
+          calculated_at: string | null
+          company_id: string
+          created_at: string
+          distributed_at: string | null
+          distributed_by: string | null
+          id: string
+          metadata: Json | null
+          notes: string | null
+          period_end: string
+          period_start: string
+          status: string | null
+          tip_pool_id: string
+          total_distributed: number
+          total_tips: number
+          updated_at: string
+        }
+        Insert: {
+          calculated_at?: string | null
+          company_id: string
+          created_at?: string
+          distributed_at?: string | null
+          distributed_by?: string | null
+          id?: string
+          metadata?: Json | null
+          notes?: string | null
+          period_end: string
+          period_start: string
+          status?: string | null
+          tip_pool_id: string
+          total_distributed?: number
+          total_tips?: number
+          updated_at?: string
+        }
+        Update: {
+          calculated_at?: string | null
+          company_id?: string
+          created_at?: string
+          distributed_at?: string | null
+          distributed_by?: string | null
+          id?: string
+          metadata?: Json | null
+          notes?: string | null
+          period_end?: string
+          period_start?: string
+          status?: string | null
+          tip_pool_id?: string
+          total_distributed?: number
+          total_tips?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tip_payouts: {
+        Row: {
+          amount: number
+          calculation_method: string | null
+          created_at: string
+          employee_id: string
+          hours_worked: number | null
+          id: string
+          notes: string | null
+          paid_at: string | null
+          percentage_share: number | null
+          points_earned: number | null
+          status: string | null
+          tip_distribution_id: string
+          updated_at: string
+        }
+        Insert: {
+          amount?: number
+          calculation_method?: string | null
+          created_at?: string
+          employee_id: string
+          hours_worked?: number | null
+          id?: string
+          notes?: string | null
+          paid_at?: string | null
+          percentage_share?: number | null
+          points_earned?: number | null
+          status?: string | null
+          tip_distribution_id: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          calculation_method?: string | null
+          created_at?: string
+          employee_id?: string
+          hours_worked?: number | null
+          id?: string
+          notes?: string | null
+          paid_at?: string | null
+          percentage_share?: number | null
+          points_earned?: number | null
+          status?: string | null
+          tip_distribution_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tip_pool_participants: {
+        Row: {
+          allocation_percentage: number | null
+          created_at: string
+          employee_id: string
+          id: string
+          is_active: boolean | null
+          participation_type: string
+          points_value: number | null
+          tip_pool_id: string
+          updated_at: string
+        }
+        Insert: {
+          allocation_percentage?: number | null
+          created_at?: string
+          employee_id: string
+          id?: string
+          is_active?: boolean | null
+          participation_type: string
+          points_value?: number | null
+          tip_pool_id: string
+          updated_at?: string
+        }
+        Update: {
+          allocation_percentage?: number | null
+          created_at?: string
+          employee_id?: string
+          id?: string
+          is_active?: boolean | null
+          participation_type?: string
+          points_value?: number | null
+          tip_pool_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tip_pools: {
+        Row: {
+          auto_sync_pos: boolean | null
+          company_id: string
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          location_id: string | null
+          name: string
+          period_type: string
+          pool_type: string
+          settings: Json | null
+          updated_at: string
+        }
+        Insert: {
+          auto_sync_pos?: boolean | null
+          company_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          location_id?: string | null
+          name: string
+          period_type?: string
+          pool_type: string
+          settings?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          auto_sync_pos?: boolean | null
+          company_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          location_id?: string | null
+          name?: string
+          period_type?: string
+          pool_type?: string
+          settings?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_companies: {
         Row: {
           company_id: string | null
