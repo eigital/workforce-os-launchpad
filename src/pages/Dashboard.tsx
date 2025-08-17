@@ -197,52 +197,64 @@ export default function Dashboard() {
                 {/* Here's what's happening */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-xl">Here's what's happening</CardTitle>
+                    <CardTitle className="text-2xl font-bold">Here's what's happening</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <Tabs defaultValue="sales-labor" className="w-full">
                       <TabsList className="grid w-full grid-cols-4">
-                        <TabsTrigger value="sales-labor">Sales vs Labor</TabsTrigger>
+                        <TabsTrigger value="sales-labor">Sales vs. Labor</TabsTrigger>
                         <TabsTrigger value="whos-working">Who's working?</TabsTrigger>
                         <TabsTrigger value="location-overview">Location Overview</TabsTrigger>
-                        <TabsTrigger value="org-overview">Org Overview</TabsTrigger>
+                        <TabsTrigger value="engage">Engage</TabsTrigger>
                       </TabsList>
-                      <TabsContent value="sales-labor" className="mt-4">
-                        <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
-                          <Bell className="h-5 w-5 text-blue-600" />
-                          <div className="flex-1">
-                            <p className="font-medium">See WorkforceOS in action!</p>
-                            <p className="text-sm text-muted-foreground">
-                              Get a feel for WorkforceOS from login to your last pay period so you can see exactly how it works, all your terms.
-                            </p>
+                      <TabsContent value="sales-labor" className="mt-6 space-y-6">
+                        <div className="flex items-start gap-4 p-6 bg-blue-50 rounded-lg border border-blue-200">
+                          <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0 mt-1">
+                            <Bell className="h-4 w-4 text-white" />
                           </div>
-                          <Button variant="outline" size="sm">
-                            Watch an overview
-                          </Button>
-                          <Button variant="outline" size="sm">
-                            Book a Zoom consultation
-                          </Button>
-                          <Button variant="ghost" size="sm">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-gray-900 mb-2">See WorkforceOS in action!</h3>
+                            <p className="text-sm text-gray-600 mb-4">
+                              Not sure if WorkforceOS is the right fit for you? We've got options so you can see exactly how it works, all your terms.
+                            </p>
+                            <div className="flex flex-wrap gap-3">
+                              <Button variant="outline" size="sm" className="bg-white hover:bg-gray-50">
+                                <Eye className="h-4 w-4 mr-2" />
+                                Watch an overview
+                              </Button>
+                              <Button variant="outline" size="sm" className="bg-white hover:bg-gray-50">
+                                <Calendar className="h-4 w-4 mr-2" />
+                                Book a 1-on-1 consultation
+                              </Button>
+                            </div>
+                          </div>
+                          <Button variant="ghost" size="sm" className="flex-shrink-0">
                             <X className="h-4 w-4" />
                           </Button>
                         </div>
-                        <div className="mt-4 text-sm text-muted-foreground">
-                          Have quick questions? Call our support team today at 1 888 979 3977
+                        <div className="text-sm text-muted-foreground">
+                          Have other questions? Give us a call at <span className="font-medium text-blue-600">1-888-979-5877</span>
                         </div>
                       </TabsContent>
-                      <TabsContent value="whos-working" className="mt-4">
-                        <div className="text-center py-8">
-                          <p className="text-muted-foreground">No employees are currently working</p>
+                      <TabsContent value="whos-working" className="mt-6">
+                        <div className="text-center py-12">
+                          <Users className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
+                          <p className="text-muted-foreground font-medium">No employees are currently working</p>
+                          <p className="text-sm text-muted-foreground mt-2">Employee activity will appear here when shifts are active</p>
                         </div>
                       </TabsContent>
-                      <TabsContent value="location-overview" className="mt-4">
-                        <div className="text-center py-8">
-                          <p className="text-muted-foreground">Location overview data will appear here</p>
+                      <TabsContent value="location-overview" className="mt-6">
+                        <div className="text-center py-12">
+                          <MapPin className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
+                          <p className="text-muted-foreground font-medium">Location overview</p>
+                          <p className="text-sm text-muted-foreground mt-2">Performance metrics across all locations will appear here</p>
                         </div>
                       </TabsContent>
-                      <TabsContent value="org-overview" className="mt-4">
-                        <div className="text-center py-8">
-                          <p className="text-muted-foreground">Organization overview data will appear here</p>
+                      <TabsContent value="engage" className="mt-6">
+                        <div className="text-center py-12">
+                          <TrendingUp className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
+                          <p className="text-muted-foreground font-medium">Employee engagement insights</p>
+                          <p className="text-sm text-muted-foreground mt-2">Team performance and engagement data will appear here</p>
                         </div>
                       </TabsContent>
                     </Tabs>
@@ -251,47 +263,52 @@ export default function Dashboard() {
 
                 {/* Setup Tasks */}
                 <div className="space-y-4">
-                  <Card>
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="w-6 h-6 bg-orange-500 rounded text-white text-xs flex items-center justify-center">1</div>
-                          <span className="font-medium">Add more of your locations to WorkforceOS</span>
+                  <Card className="border-orange-200 bg-orange-50/50">
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="w-8 h-8 bg-orange-500 rounded-full text-white text-sm font-semibold flex items-center justify-center flex-shrink-0">
+                          <MapPin className="h-4 w-4" />
                         </div>
-                        <Button variant="outline" size="sm">
-                          Add locations to WorkforceOS
-                        </Button>
-                      </div>
-                      <p className="text-sm text-muted-foreground mt-2 ml-9">
-                        Centralize all of your restaurant locations in WorkforceOS to ensure streamlined operations
-                      </p>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-6 h-6 border-2 border-muted rounded" />
-                        <span className="font-medium">Connect your POS</span>
-                        <ChevronRight className="h-4 w-4 ml-auto" />
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 mb-2">Add more of your locations to WorkforceOS</h3>
+                          <p className="text-sm text-gray-600">
+                            Centralize all your restaurant locations in WorkforceOS to ensure streamlined operations across your business.
+                          </p>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
 
-                  <Card>
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="w-6 h-6 border-2 border-muted rounded" />
-                          <span className="font-medium">Set up your payroll</span>
+                  <Card className="hover:bg-gray-50 transition-colors cursor-pointer">
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-4">
+                        <div className="w-8 h-8 rounded-full border-2 border-blue-600 flex items-center justify-center">
+                          <Smartphone className="h-4 w-4 text-blue-600" />
                         </div>
-                        <div className="flex gap-2">
-                          <Button variant="outline" size="sm">
-                            Connect third-party payroll
-                          </Button>
-                          <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                            Explore WorkforceOS Payroll
-                          </Button>
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-gray-900">Connect your POS</h3>
+                        </div>
+                        <ChevronRight className="h-5 w-5 text-gray-400" />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="border-blue-200 bg-blue-50/50">
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="w-8 h-8 rounded-full border-2 border-blue-600 flex items-center justify-center">
+                          <DollarSign className="h-4 w-4 text-blue-600" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 mb-4">Set up your payroll</h3>
+                          <div className="flex flex-wrap gap-3">
+                            <Button variant="outline" size="sm">
+                              Connect third-party payroll
+                            </Button>
+                            <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                              Explore WorkforceOS Payroll
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </CardContent>
