@@ -114,6 +114,18 @@ const navigationItems = [
     ]
   },
   {
+    title: "Settings", 
+    icon: Shield,
+    items: [
+      { title: "My Account", url: "/settings/account", icon: UserCheck },
+      { title: "Company Settings", url: "/settings/company", icon: Shield },
+      { title: "Plans", url: "/settings/plans", icon: Award },
+      { title: "Add-ons", url: "/settings/add-ons", icon: GitBranch },
+      { title: "Locations & Roles", url: "/settings/locations-roles", icon: Users },
+      { title: "Developer Tools", url: "/settings/developer", icon: Search },
+    ]
+  },
+  {
     title: "Apps & Integrations", 
     icon: GitBranch,
     items: [
@@ -130,7 +142,7 @@ export function AppSidebar() {
   const { state } = useSidebar()
   const location = useLocation()
   const currentPath = location.pathname
-  const [openGroups, setOpenGroups] = useState<string[]>(["Schedule", "Team", "Hiring", "Tasks", "Tip Management", "Reports", "Apps & Integrations"])
+  const [openGroups, setOpenGroups] = useState<string[]>(["Schedule", "Team", "Hiring", "Tasks", "Tip Management", "Reports", "Settings", "Apps & Integrations"])
   const collapsed = state === "collapsed"
 
   const isActive = (path: string) => currentPath === path
