@@ -44,6 +44,153 @@ export type Database = {
         }
         Relationships: []
       }
+      announcement_recipients: {
+        Row: {
+          announcement_id: string
+          created_at: string
+          id: string
+          read_at: string | null
+          user_id: string
+        }
+        Insert: {
+          announcement_id: string
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          user_id: string
+        }
+        Update: {
+          announcement_id?: string
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      announcements: {
+        Row: {
+          company_id: string
+          content: string
+          created_at: string
+          created_by: string
+          expires_at: string | null
+          id: string
+          metadata: Json | null
+          priority: string | null
+          target_audience: string | null
+          target_department_id: string | null
+          target_location_id: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          company_id: string
+          content: string
+          created_at?: string
+          created_by: string
+          expires_at?: string | null
+          id?: string
+          metadata?: Json | null
+          priority?: string | null
+          target_audience?: string | null
+          target_department_id?: string | null
+          target_location_id?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string
+          content?: string
+          created_at?: string
+          created_by?: string
+          expires_at?: string | null
+          id?: string
+          metadata?: Json | null
+          priority?: string | null
+          target_audience?: string | null
+          target_department_id?: string | null
+          target_location_id?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      channel_members: {
+        Row: {
+          channel_id: string
+          id: string
+          is_active: boolean | null
+          joined_at: string
+          last_read_at: string | null
+          role: string | null
+          user_id: string
+        }
+        Insert: {
+          channel_id: string
+          id?: string
+          is_active?: boolean | null
+          joined_at?: string
+          last_read_at?: string | null
+          role?: string | null
+          user_id: string
+        }
+        Update: {
+          channel_id?: string
+          id?: string
+          is_active?: boolean | null
+          joined_at?: string
+          last_read_at?: string | null
+          role?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      channels: {
+        Row: {
+          channel_type: string
+          company_id: string
+          created_at: string
+          created_by: string
+          department_id: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          location_id: string | null
+          metadata: Json | null
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          channel_type?: string
+          company_id: string
+          created_at?: string
+          created_by: string
+          department_id?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          location_id?: string | null
+          metadata?: Json | null
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          channel_type?: string
+          company_id?: string
+          created_at?: string
+          created_by?: string
+          department_id?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          location_id?: string | null
+          metadata?: Json | null
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       companies: {
         Row: {
           address: Json | null
@@ -115,6 +262,30 @@ export type Database = {
           is_active?: boolean | null
           name?: string
           sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      direct_conversations: {
+        Row: {
+          created_at: string
+          id: string
+          participant_1: string
+          participant_2: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          participant_1: string
+          participant_2: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          participant_1?: string
+          participant_2?: string
           updated_at?: string
         }
         Relationships: []
@@ -209,6 +380,129 @@ export type Database = {
           settings?: Json | null
           timezone?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          channel_id: string | null
+          content: string
+          conversation_id: string | null
+          created_at: string
+          edited_at: string | null
+          file_name: string | null
+          file_url: string | null
+          id: string
+          message_type: string | null
+          metadata: Json | null
+          sender_id: string
+          updated_at: string
+        }
+        Insert: {
+          channel_id?: string | null
+          content: string
+          conversation_id?: string | null
+          created_at?: string
+          edited_at?: string | null
+          file_name?: string | null
+          file_url?: string | null
+          id?: string
+          message_type?: string | null
+          metadata?: Json | null
+          sender_id: string
+          updated_at?: string
+        }
+        Update: {
+          channel_id?: string | null
+          content?: string
+          conversation_id?: string | null
+          created_at?: string
+          edited_at?: string | null
+          file_name?: string | null
+          file_url?: string | null
+          id?: string
+          message_type?: string | null
+          metadata?: Json | null
+          sender_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      notification_settings: {
+        Row: {
+          announcement_notifications: boolean | null
+          created_at: string
+          email_notifications: boolean | null
+          id: string
+          message_notifications: boolean | null
+          push_notifications: boolean | null
+          schedule_notifications: boolean | null
+          settings: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          announcement_notifications?: boolean | null
+          created_at?: string
+          email_notifications?: boolean | null
+          id?: string
+          message_notifications?: boolean | null
+          push_notifications?: boolean | null
+          schedule_notifications?: boolean | null
+          settings?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          announcement_notifications?: boolean | null
+          created_at?: string
+          email_notifications?: boolean | null
+          id?: string
+          message_notifications?: boolean | null
+          push_notifications?: boolean | null
+          schedule_notifications?: boolean | null
+          settings?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          action_url: string | null
+          company_id: string
+          created_at: string
+          id: string
+          message: string
+          metadata: Json | null
+          notification_type: string
+          read_at: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          action_url?: string | null
+          company_id: string
+          created_at?: string
+          id?: string
+          message: string
+          metadata?: Json | null
+          notification_type: string
+          read_at?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          action_url?: string | null
+          company_id?: string
+          created_at?: string
+          id?: string
+          message?: string
+          metadata?: Json | null
+          notification_type?: string
+          read_at?: string | null
+          title?: string
+          user_id?: string
         }
         Relationships: []
       }
