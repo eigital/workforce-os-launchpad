@@ -250,6 +250,186 @@ export type Database = {
           },
         ]
       }
+      payroll_entries: {
+        Row: {
+          bonuses: number | null
+          company_id: string
+          created_at: string
+          double_time_hours: number | null
+          double_time_rate: number | null
+          employee_id: string
+          federal_tax: number | null
+          gross_pay: number | null
+          id: string
+          medicare: number | null
+          metadata: Json | null
+          net_pay: number | null
+          other_deductions: number | null
+          overtime_hours: number | null
+          overtime_rate: number | null
+          payroll_period_id: string
+          regular_hours: number | null
+          regular_rate: number | null
+          social_security: number | null
+          state_tax: number | null
+          status: string
+          tips: number | null
+          updated_at: string
+        }
+        Insert: {
+          bonuses?: number | null
+          company_id: string
+          created_at?: string
+          double_time_hours?: number | null
+          double_time_rate?: number | null
+          employee_id: string
+          federal_tax?: number | null
+          gross_pay?: number | null
+          id?: string
+          medicare?: number | null
+          metadata?: Json | null
+          net_pay?: number | null
+          other_deductions?: number | null
+          overtime_hours?: number | null
+          overtime_rate?: number | null
+          payroll_period_id: string
+          regular_hours?: number | null
+          regular_rate?: number | null
+          social_security?: number | null
+          state_tax?: number | null
+          status?: string
+          tips?: number | null
+          updated_at?: string
+        }
+        Update: {
+          bonuses?: number | null
+          company_id?: string
+          created_at?: string
+          double_time_hours?: number | null
+          double_time_rate?: number | null
+          employee_id?: string
+          federal_tax?: number | null
+          gross_pay?: number | null
+          id?: string
+          medicare?: number | null
+          metadata?: Json | null
+          net_pay?: number | null
+          other_deductions?: number | null
+          overtime_hours?: number | null
+          overtime_rate?: number | null
+          payroll_period_id?: string
+          regular_hours?: number | null
+          regular_rate?: number | null
+          social_security?: number | null
+          state_tax?: number | null
+          status?: string
+          tips?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payroll_periods: {
+        Row: {
+          company_id: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          pay_date: string
+          period_end: string
+          period_start: string
+          processed_at: string | null
+          processed_by: string | null
+          status: string
+          total_deductions: number | null
+          total_gross_pay: number | null
+          total_net_pay: number | null
+          total_taxes: number | null
+          updated_at: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          pay_date: string
+          period_end: string
+          period_start: string
+          processed_at?: string | null
+          processed_by?: string | null
+          status?: string
+          total_deductions?: number | null
+          total_gross_pay?: number | null
+          total_net_pay?: number | null
+          total_taxes?: number | null
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          pay_date?: string
+          period_end?: string
+          period_start?: string
+          processed_at?: string | null
+          processed_by?: string | null
+          status?: string
+          total_deductions?: number | null
+          total_gross_pay?: number | null
+          total_net_pay?: number | null
+          total_taxes?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payroll_tax_settings: {
+        Row: {
+          company_id: string
+          created_at: string
+          federal_tax_rate: number | null
+          id: string
+          is_active: boolean | null
+          medicare_rate: number | null
+          settings: Json | null
+          social_security_rate: number | null
+          state: string
+          state_tax_rate: number | null
+          unemployment_rate: number | null
+          updated_at: string
+          workers_comp_rate: number | null
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          federal_tax_rate?: number | null
+          id?: string
+          is_active?: boolean | null
+          medicare_rate?: number | null
+          settings?: Json | null
+          social_security_rate?: number | null
+          state: string
+          state_tax_rate?: number | null
+          unemployment_rate?: number | null
+          updated_at?: string
+          workers_comp_rate?: number | null
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          federal_tax_rate?: number | null
+          id?: string
+          is_active?: boolean | null
+          medicare_rate?: number | null
+          settings?: Json | null
+          social_security_rate?: number | null
+          state?: string
+          state_tax_rate?: number | null
+          unemployment_rate?: number | null
+          updated_at?: string
+          workers_comp_rate?: number | null
+        }
+        Relationships: []
+      }
       pending_requests: {
         Row: {
           company_id: string
