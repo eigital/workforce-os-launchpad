@@ -13,7 +13,9 @@ import {
   CalendarDays,
   CalendarX,
   Shield,
-  GitBranch
+  GitBranch,
+  UserCheck,
+  Target
 } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
 
@@ -49,7 +51,14 @@ const navigationItems = [
       { title: "Shift Pool", url: "/schedule/shift-pool", icon: GitBranch },
     ]
   },
-  { title: "Team", url: "/team", icon: Users },
+  {
+    title: "Team",
+    icon: Users,
+    items: [
+      { title: "Employees", url: "/team", icon: Users },
+      { title: "Engage", url: "/team/engage", icon: Target },
+    ]
+  },
   { title: "Hiring", url: "/hiring", icon: UserPlus },
   { title: "Tasks", url: "/tasks", icon: CheckSquare },
   { title: "Log Book", url: "/log-book", icon: BookOpen },
@@ -65,7 +74,7 @@ export function AppSidebar() {
   const { state } = useSidebar()
   const location = useLocation()
   const currentPath = location.pathname
-  const [openGroups, setOpenGroups] = useState<string[]>(["Schedule"])
+  const [openGroups, setOpenGroups] = useState<string[]>(["Schedule", "Team"])
   const collapsed = state === "collapsed"
 
   const isActive = (path: string) => currentPath === path
