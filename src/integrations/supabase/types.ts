@@ -523,6 +523,138 @@ export type Database = {
         }
         Relationships: []
       }
+      time_punches: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          company_id: string
+          created_at: string
+          device_info: Json | null
+          edited_at: string | null
+          edited_by: string | null
+          employee_id: string
+          gps_coordinates: Json | null
+          id: string
+          ip_address: unknown | null
+          location_id: string | null
+          metadata: Json | null
+          notes: string | null
+          photo_url: string | null
+          punch_method: string | null
+          punch_time: string
+          punch_type: string
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          company_id: string
+          created_at?: string
+          device_info?: Json | null
+          edited_at?: string | null
+          edited_by?: string | null
+          employee_id: string
+          gps_coordinates?: Json | null
+          id?: string
+          ip_address?: unknown | null
+          location_id?: string | null
+          metadata?: Json | null
+          notes?: string | null
+          photo_url?: string | null
+          punch_method?: string | null
+          punch_time?: string
+          punch_type: string
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          company_id?: string
+          created_at?: string
+          device_info?: Json | null
+          edited_at?: string | null
+          edited_by?: string | null
+          employee_id?: string
+          gps_coordinates?: Json | null
+          id?: string
+          ip_address?: unknown | null
+          location_id?: string | null
+          metadata?: Json | null
+          notes?: string | null
+          photo_url?: string | null
+          punch_method?: string | null
+          punch_time?: string
+          punch_type?: string
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      timesheets: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          break_hours: number | null
+          company_id: string
+          created_at: string
+          employee_id: string
+          id: string
+          location_id: string | null
+          metadata: Json | null
+          overtime_hours: number | null
+          period_end: string
+          period_start: string
+          regular_hours: number | null
+          rejection_reason: string | null
+          status: string | null
+          submitted_at: string | null
+          total_hours: number | null
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          break_hours?: number | null
+          company_id: string
+          created_at?: string
+          employee_id: string
+          id?: string
+          location_id?: string | null
+          metadata?: Json | null
+          overtime_hours?: number | null
+          period_end: string
+          period_start: string
+          regular_hours?: number | null
+          rejection_reason?: string | null
+          status?: string | null
+          submitted_at?: string | null
+          total_hours?: number | null
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          break_hours?: number | null
+          company_id?: string
+          created_at?: string
+          employee_id?: string
+          id?: string
+          location_id?: string | null
+          metadata?: Json | null
+          overtime_hours?: number | null
+          period_end?: string
+          period_start?: string
+          regular_hours?: number | null
+          rejection_reason?: string | null
+          status?: string | null
+          submitted_at?: string | null
+          total_hours?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_companies: {
         Row: {
           company_id: string | null
