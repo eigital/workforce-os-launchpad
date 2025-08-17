@@ -59,7 +59,13 @@ const navigationItems = [
       { title: "Engage", url: "/team/engage", icon: Target },
     ]
   },
-  { title: "Hiring", url: "/hiring", icon: UserPlus },
+  {
+    title: "Hiring",
+    icon: UserPlus,
+    items: [
+      { title: "Job Postings", url: "/hiring", icon: UserPlus },
+    ]
+  },
   { title: "Tasks", url: "/tasks", icon: CheckSquare },
   { title: "Log Book", url: "/log-book", icon: BookOpen },
   { title: "Time Clocking", url: "/time-clocking", icon: Clock },
@@ -74,7 +80,7 @@ export function AppSidebar() {
   const { state } = useSidebar()
   const location = useLocation()
   const currentPath = location.pathname
-  const [openGroups, setOpenGroups] = useState<string[]>(["Schedule", "Team"])
+  const [openGroups, setOpenGroups] = useState<string[]>(["Schedule", "Team", "Hiring"])
   const collapsed = state === "collapsed"
 
   const isActive = (path: string) => currentPath === path
