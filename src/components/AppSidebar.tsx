@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { 
+  import { 
   Calendar, 
   Users, 
   UserPlus, 
@@ -15,7 +15,14 @@ import {
   Shield,
   GitBranch,
   UserCheck,
-  Target
+  Target,
+  TrendingUp,
+  Activity,
+  Timer,
+  Award,
+  MessageSquare,
+  Search,
+  Coins
 } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
 
@@ -86,7 +93,26 @@ const navigationItems = [
     ]
   },
   { title: "Payroll", url: "/payroll", icon: DollarSign },
-  { title: "Reports", url: "/reports", icon: BarChart3 },
+  {
+    title: "Reports",
+    icon: BarChart3,
+    items: [
+      { title: "Overview", url: "/reports", icon: TrendingUp },
+      { title: "Performance", url: "/reports/performance", icon: Activity },
+      { title: "Employee Insights", url: "/reports/employee-insights", icon: Users },
+      { title: "Hours & Wages", url: "/reports/hours-wages", icon: Clock },
+      { title: "Scheduling", url: "/reports/scheduling", icon: Calendar },
+      { title: "Time Tracking", url: "/reports/time-tracking", icon: Timer },
+      { title: "Time Off", url: "/reports/time-off", icon: CalendarX },
+      { title: "Attendance", url: "/reports/attendance", icon: UserCheck },
+      { title: "Certifications", url: "/reports/certifications", icon: Award },
+      { title: "Feedback", url: "/reports/feedback", icon: MessageSquare },
+      { title: "Tip Analytics", url: "/reports/tip-analytics", icon: Coins },
+      { title: "Labor Compliance", url: "/reports/labor-compliance", icon: Shield },
+      { title: "Audit Trail", url: "/reports/audit-trail", icon: Search },
+      { title: "Task Reports", url: "/reports/tasks", icon: CheckSquare },
+    ]
+  },
   { title: "Quick Start", url: "/quick-start", icon: HelpCircle, badge: "GUIDE" },
   { title: "Help", url: "/help", icon: HelpCircle },
 ]
@@ -95,7 +121,7 @@ export function AppSidebar() {
   const { state } = useSidebar()
   const location = useLocation()
   const currentPath = location.pathname
-  const [openGroups, setOpenGroups] = useState<string[]>(["Schedule", "Team", "Hiring", "Tasks", "Tip Management"])
+  const [openGroups, setOpenGroups] = useState<string[]>(["Schedule", "Team", "Hiring", "Tasks", "Tip Management", "Reports"])
   const collapsed = state === "collapsed"
 
   const isActive = (path: string) => currentPath === path
