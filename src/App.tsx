@@ -26,6 +26,9 @@ import Payroll from "./pages/Payroll";
 import Reports from "./pages/Reports";
 import QuickStart from "./pages/QuickStart";
 import Help from "./pages/Help";
+import Messages from "./pages/communication/Messages";
+import Announcements from "./pages/communication/Announcements";
+import Notifications from "./pages/communication/Notifications";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +60,9 @@ const App = () => (
             <Route path="/help" element={<Help />} />
             <Route path="/payroll" element={<Payroll />} />
             <Route path="/quick-start" element={<QuickStart />} />
+            <Route path="/communication/messages" element={<Messages />} />
+            <Route path="/communication/announcements" element={<Announcements />} />
+            <Route path="/communication/notifications" element={<Notifications />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
