@@ -15,6 +15,7 @@ import TimeOff from "./pages/TimeOff";
 import Availability from "./pages/Availability";
 import ShiftPool from "./pages/ShiftPool";
 import Team from "./pages/Team";
+import Engage from "./pages/Engage";
 import Hiring from "./pages/Hiring";
 import Tasks from "./pages/Tasks";
 import LogBook from "./pages/LogBook";
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/schedule/availability" element={<Availability />} />
             <Route path="/schedule/shift-pool" element={<ShiftPool />} />
             <Route path="/team" element={<Team />} />
+            <Route path="/team/engage" element={<Engage />} />
             <Route path="/hiring" element={<Hiring />} />
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/log-book" element={<LogBook />} />
