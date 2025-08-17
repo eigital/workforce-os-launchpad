@@ -8,10 +8,13 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
 import { supabase } from "@/integrations/supabase/client"
 import { useAuth } from "@/hooks/useAuth"
 import { useToast } from "@/hooks/use-toast"
 import { format, addDays, startOfWeek, endOfWeek } from "date-fns"
+import { AppSidebar } from "@/components/AppSidebar"
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 
 interface Department {
   id: string
@@ -270,234 +273,263 @@ export default function Schedule() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background p-6">
-        <div className="animate-pulse space-y-6">
-          <div className="h-16 bg-muted rounded"></div>
-          <div className="h-96 bg-muted rounded"></div>
-        </div>
-      </div>
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <div className="flex items-center gap-2 text-sm">
+              <span className="font-medium">WorkforceOS</span>
+              <span className="text-muted-foreground">/</span>
+              <span>Schedule</span>
+            </div>
+          </header>
+          <div className="flex flex-1 flex-col gap-4 p-4">
+            <div className="animate-pulse space-y-6">
+              <div className="h-16 bg-muted rounded"></div>
+              <div className="h-96 bg-muted rounded"></div>
+            </div>
+          </div>
+        </SidebarInset>
+      </SidebarProvider>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="border-b bg-background p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            {/* Date Navigation */}
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm" onClick={() => navigateWeek('prev')}>
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <div className="flex items-center gap-2 text-sm">
-                <Calendar className="h-4 w-4" />
-                <span>{format(weekStart, 'MMM d, yyyy')}</span>
-                <span className="text-muted-foreground">→</span>
-                <span>{format(endOfWeek(currentWeek, { weekStartsOn: 1 }), 'MMM d, yyyy')}</span>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <div className="flex items-center gap-2 text-sm">
+            <span className="font-medium">WorkforceOS</span>
+            <span className="text-muted-foreground">/</span>
+            <span>Schedule</span>
+          </div>
+        </header>
+
+        <div className="flex flex-1 flex-col gap-4 p-4">
+          {/* Header */}
+          <div className="border-b bg-background pb-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                {/* Date Navigation */}
+                <div className="flex items-center gap-2">
+                  <Button variant="ghost" size="sm" onClick={() => navigateWeek('prev')}>
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <div className="flex items-center gap-2 text-sm">
+                    <Calendar className="h-4 w-4" />
+                    <span>{format(weekStart, 'MMM d, yyyy')}</span>
+                    <span className="text-muted-foreground">→</span>
+                    <span>{format(endOfWeek(currentWeek, { weekStartsOn: 1 }), 'MMM d, yyyy')}</span>
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={() => navigateWeek('next')}>
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={goToToday}>
+                    Today
+                  </Button>
+                </div>
+
+                {/* Location and Department Filters */}
+                <div className="flex items-center gap-2">
+                  <Select value={selectedLocation} onValueChange={setSelectedLocation}>
+                    <SelectTrigger className="w-[140px]">
+                      <SelectValue placeholder="Select location" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border shadow-lg z-50">
+                      {locations.map((location) => (
+                        <SelectItem key={location.id} value={location.id}>
+                          {location.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
+                    <SelectTrigger className="w-[160px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border shadow-lg z-50">
+                      <SelectItem value="All departments">All departments</SelectItem>
+                      {departments.map((dept) => (
+                        <SelectItem key={dept.id} value={dept.id}>
+                          {dept.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-              <Button variant="ghost" size="sm" onClick={() => navigateWeek('next')}>
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" size="sm" onClick={goToToday}>
-                Today
-              </Button>
-            </div>
 
-            {/* Location and Department Filters */}
-            <div className="flex items-center gap-2">
-              <Select value={selectedLocation} onValueChange={setSelectedLocation}>
-                <SelectTrigger className="w-[140px]">
-                  <SelectValue placeholder="Select location" />
-                </SelectTrigger>
-                <SelectContent className="bg-background border shadow-lg z-50">
-                  {locations.map((location) => (
-                    <SelectItem key={location.id} value={location.id}>
-                      {location.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
-                <SelectTrigger className="w-[160px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-background border shadow-lg z-50">
-                  <SelectItem value="All departments">All departments</SelectItem>
-                  {departments.map((dept) => (
-                    <SelectItem key={dept.id} value={dept.id}>
-                      {dept.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {/* Action Buttons */}
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm">
+                  <Upload className="h-4 w-4 mr-2" />
+                  Import schedule
+                </Button>
+                <Button variant="outline" size="sm">
+                  <Send className="h-4 w-4 mr-2" />
+                  Publish schedule
+                </Button>
+                
+                {/* View Mode Toggle */}
+                <div className="flex bg-muted rounded-lg p-1">
+                  <Button
+                    variant={viewMode === "Day" ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => setViewMode("Day")}
+                    className="text-xs"
+                  >
+                    Day
+                  </Button>
+                  <Button
+                    variant={viewMode === "Week" ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => setViewMode("Week")}
+                    className="text-xs"
+                  >
+                    Week
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm">
-              <Upload className="h-4 w-4 mr-2" />
-              Import schedule
-            </Button>
-            <Button variant="outline" size="sm">
-              <Send className="h-4 w-4 mr-2" />
-              Publish schedule
-            </Button>
-            
-            {/* View Mode Toggle */}
-            <div className="flex bg-muted rounded-lg p-1">
-              <Button
-                variant={viewMode === "Day" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setViewMode("Day")}
-                className="text-xs"
-              >
-                Day
-              </Button>
-              <Button
-                variant={viewMode === "Week" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setViewMode("Week")}
-                className="text-xs"
-              >
-                Week
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Schedule Grid */}
-      <div className="p-4">
-        <div className="overflow-x-auto">
-          <div className="min-w-[1000px]">
-            {/* Header Row */}
-            <div className="grid grid-cols-8 gap-px bg-muted mb-px">
-              <div className="bg-background p-3">
-                <Dialog open={addEmployeeModal} onOpenChange={setAddEmployeeModal}>
-                  <DialogTrigger asChild>
-                    <Button variant="ghost" size="sm" className="w-full justify-start">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add employees
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-background">
-                    <DialogHeader>
-                      <DialogTitle>Add New Employee</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4 py-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <Label htmlFor="first_name">First Name</Label>
-                          <Input
-                            id="first_name"
-                            value={newEmployee.first_name}
-                            onChange={(e) => setNewEmployee({...newEmployee, first_name: e.target.value})}
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="last_name">Last Name</Label>
-                          <Input
-                            id="last_name"
-                            value={newEmployee.last_name}
-                            onChange={(e) => setNewEmployee({...newEmployee, last_name: e.target.value})}
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          value={newEmployee.email}
-                          onChange={(e) => setNewEmployee({...newEmployee, email: e.target.value})}
-                        />
-                      </div>
-                      <div className="flex gap-2">
-                        <Button onClick={addEmployee}>Add Employee</Button>
-                        <Button variant="outline" onClick={() => setAddEmployeeModal(false)}>
-                          Cancel
+          {/* Schedule Grid */}
+          <div>
+            <div className="overflow-x-auto">
+              <div className="min-w-[1000px]">
+                {/* Header Row */}
+                <div className="grid grid-cols-8 gap-px bg-muted mb-px">
+                  <div className="bg-background p-3">
+                    <Dialog open={addEmployeeModal} onOpenChange={setAddEmployeeModal}>
+                      <DialogTrigger asChild>
+                        <Button variant="ghost" size="sm" className="w-full justify-start">
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add employees
                         </Button>
-                      </div>
+                      </DialogTrigger>
+                      <DialogContent className="bg-background">
+                        <DialogHeader>
+                          <DialogTitle>Add New Employee</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-4 py-4">
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <Label htmlFor="first_name">First Name</Label>
+                              <Input
+                                id="first_name"
+                                value={newEmployee.first_name}
+                                onChange={(e) => setNewEmployee({...newEmployee, first_name: e.target.value})}
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="last_name">Last Name</Label>
+                              <Input
+                                id="last_name"
+                                value={newEmployee.last_name}
+                                onChange={(e) => setNewEmployee({...newEmployee, last_name: e.target.value})}
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <Label htmlFor="email">Email</Label>
+                            <Input
+                              id="email"
+                              type="email"
+                              value={newEmployee.email}
+                              onChange={(e) => setNewEmployee({...newEmployee, email: e.target.value})}
+                            />
+                          </div>
+                          <div className="flex gap-2">
+                            <Button onClick={addEmployee}>Add Employee</Button>
+                            <Button variant="outline" onClick={() => setAddEmployeeModal(false)}>
+                              Cancel
+                            </Button>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+                  {daysOfWeek.map((day) => (
+                    <div key={day.toISOString()} className="bg-background p-3 text-center">
+                      <div className="font-medium">{format(day, 'E')}</div>
+                      <div className="text-sm text-muted-foreground">{format(day, 'MMM d')}</div>
                     </div>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              {daysOfWeek.map((day) => (
-                <div key={day.toISOString()} className="bg-background p-3 text-center">
-                  <div className="font-medium">{format(day, 'E')}</div>
-                  <div className="text-sm text-muted-foreground">{format(day, 'MMM d')}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* Events Row */}
-            <div className="grid grid-cols-8 gap-px bg-muted mb-2">
-              <div className="bg-background p-3">
-                <span className="text-sm font-medium">Events</span>
-              </div>
-              {daysOfWeek.map((day) => (
-                <div key={day.toISOString()} className="bg-background p-3 min-h-[40px]">
-                  {/* Events would go here */}
-                </div>
-              ))}
-            </div>
-
-            {/* Department Sections */}
-            {departments
-              .filter(dept => selectedDepartment === "All departments" || dept.id === selectedDepartment)
-              .map((department) => (
-              <div key={department.id} className="mb-6">
-                {/* Department Header */}
-                <div className="bg-gray-800 text-white p-2 mb-px">
-                  <h3 className="font-medium">{department.name}</h3>
+                  ))}
                 </div>
 
-                {/* Position Rows */}
-                {department.positions.map((position) => (
-                  <div key={position.id} className="grid grid-cols-8 gap-px bg-muted mb-px">
-                    <div 
-                      className="p-3 flex items-center justify-between"
-                      style={{ backgroundColor: position.color }}
-                    >
-                      <span className="font-medium">{position.name}</span>
+                {/* Events Row */}
+                <div className="grid grid-cols-8 gap-px bg-muted mb-2">
+                  <div className="bg-background p-3">
+                    <span className="text-sm font-medium">Events</span>
+                  </div>
+                  {daysOfWeek.map((day) => (
+                    <div key={day.toISOString()} className="bg-background p-3 min-h-[40px]">
+                      {/* Events would go here */}
                     </div>
-                    {daysOfWeek.map((day) => (
-                      <div key={day.toISOString()} className="bg-background p-3 min-h-[60px] flex items-center">
-                        {position.name !== "Open Shifts" && (
-                          <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground">
-                            <Avatar className="w-6 h-6 mr-2">
-                              <AvatarFallback className="text-xs bg-muted">
-                                <Plus className="h-3 w-3" />
-                              </AvatarFallback>
-                            </Avatar>
-                            Add employee
-                          </Button>
-                        )}
+                  ))}
+                </div>
+
+                {/* Department Sections */}
+                {departments
+                  .filter(dept => selectedDepartment === "All departments" || dept.id === selectedDepartment)
+                  .map((department) => (
+                  <div key={department.id} className="mb-6">
+                    {/* Department Header */}
+                    <div className="bg-gray-800 text-white p-2 mb-px">
+                      <h3 className="font-medium">{department.name}</h3>
+                    </div>
+
+                    {/* Position Rows */}
+                    {department.positions.map((position) => (
+                      <div key={position.id} className="grid grid-cols-8 gap-px bg-muted mb-px">
+                        <div 
+                          className="p-3 flex items-center justify-between"
+                          style={{ backgroundColor: position.color }}
+                        >
+                          <span className="font-medium">{position.name}</span>
+                        </div>
+                        {daysOfWeek.map((day) => (
+                          <div key={day.toISOString()} className="bg-background p-3 min-h-[60px] flex items-center">
+                            {position.name !== "Open Shifts" && (
+                              <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground">
+                                <Avatar className="w-6 h-6 mr-2">
+                                  <AvatarFallback className="text-xs bg-muted">
+                                    <Plus className="h-3 w-3" />
+                                  </AvatarFallback>
+                                </Avatar>
+                                Add employee
+                              </Button>
+                            )}
+                          </div>
+                        ))}
                       </div>
                     ))}
                   </div>
                 ))}
-              </div>
-            ))}
 
-            {departments.length === 0 && (
-              <div className="text-center py-12">
-                <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-medium mb-2">No departments found</h3>
-                <p className="text-muted-foreground mb-4">
-                  Create departments and positions to start building your schedule.
-                </p>
-                <Button onClick={() => createDefaultDepartments(companyId)}>
-                  Create Default Departments
-                </Button>
+                {departments.length === 0 && (
+                  <div className="text-center py-12">
+                    <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-medium mb-2">No departments found</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Create departments and positions to start building your schedule.
+                    </p>
+                    <Button onClick={() => createDefaultDepartments(companyId)}>
+                      Create Default Departments
+                    </Button>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }
