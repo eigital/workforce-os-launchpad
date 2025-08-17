@@ -86,6 +86,93 @@ export type Database = {
         }
         Relationships: []
       }
+      departments: {
+        Row: {
+          color: string | null
+          company_id: string
+          created_at: string
+          id: string
+          is_active: boolean | null
+          name: string
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          color?: string | null
+          company_id: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          name: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          color?: string | null
+          company_id?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      employees: {
+        Row: {
+          company_id: string
+          created_at: string
+          email: string | null
+          employee_id: string | null
+          first_name: string
+          hire_date: string | null
+          hourly_rate: number | null
+          id: string
+          last_name: string
+          metadata: Json | null
+          phone_number: string | null
+          positions: string[] | null
+          status: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          email?: string | null
+          employee_id?: string | null
+          first_name: string
+          hire_date?: string | null
+          hourly_rate?: number | null
+          id?: string
+          last_name: string
+          metadata?: Json | null
+          phone_number?: string | null
+          positions?: string[] | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          email?: string | null
+          employee_id?: string | null
+          first_name?: string
+          hire_date?: string | null
+          hourly_rate?: number | null
+          id?: string
+          last_name?: string
+          metadata?: Json | null
+          phone_number?: string | null
+          positions?: string[] | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       locations: {
         Row: {
           address: Json | null
@@ -211,6 +298,45 @@ export type Database = {
         }
         Relationships: []
       }
+      positions: {
+        Row: {
+          color: string | null
+          company_id: string
+          created_at: string
+          department_id: string
+          hourly_rate: number | null
+          id: string
+          is_active: boolean | null
+          name: string
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          color?: string | null
+          company_id: string
+          created_at?: string
+          department_id: string
+          hourly_rate?: number | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          color?: string | null
+          company_id?: string
+          created_at?: string
+          department_id?: string
+          hourly_rate?: number | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           auth_providers: string[] | null
@@ -268,6 +394,51 @@ export type Database = {
         }
         Relationships: []
       }
+      schedules: {
+        Row: {
+          company_id: string
+          created_at: string
+          end_date: string
+          id: string
+          location_id: string | null
+          metadata: Json | null
+          name: string
+          published_at: string | null
+          published_by: string | null
+          start_date: string
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          end_date: string
+          id?: string
+          location_id?: string | null
+          metadata?: Json | null
+          name: string
+          published_at?: string | null
+          published_by?: string | null
+          start_date: string
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          end_date?: string
+          id?: string
+          location_id?: string | null
+          metadata?: Json | null
+          name?: string
+          published_at?: string | null
+          published_by?: string | null
+          start_date?: string
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       setup_progress: {
         Row: {
           company_id: string
@@ -300,6 +471,54 @@ export type Database = {
           id?: string
           step_key?: string
           step_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      shifts: {
+        Row: {
+          break_minutes: number | null
+          created_at: string
+          employee_id: string | null
+          end_time: string
+          id: string
+          location_id: string | null
+          notes: string | null
+          position_id: string
+          schedule_id: string
+          shift_date: string
+          start_time: string
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          break_minutes?: number | null
+          created_at?: string
+          employee_id?: string | null
+          end_time: string
+          id?: string
+          location_id?: string | null
+          notes?: string | null
+          position_id: string
+          schedule_id: string
+          shift_date: string
+          start_time: string
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          break_minutes?: number | null
+          created_at?: string
+          employee_id?: string | null
+          end_time?: string
+          id?: string
+          location_id?: string | null
+          notes?: string | null
+          position_id?: string
+          schedule_id?: string
+          shift_date?: string
+          start_time?: string
+          status?: string | null
           updated_at?: string
         }
         Relationships: []
