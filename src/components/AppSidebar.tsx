@@ -22,7 +22,9 @@ import { useState } from "react"
   Award,
   MessageSquare,
   Search,
-  Coins
+  Coins,
+  Bell,
+  Megaphone
 } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
 
@@ -48,6 +50,15 @@ import {
 
 const navigationItems = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
+  {
+    title: "Communication",
+    icon: MessageSquare,
+    items: [
+      { title: "Messages", url: "/communication/messages", icon: MessageSquare },
+      { title: "Announcements", url: "/communication/announcements", icon: Megaphone },
+      { title: "Notifications", url: "/communication/notifications", icon: Bell },
+    ]
+  },
   {
     title: "Schedule",
     icon: Calendar,

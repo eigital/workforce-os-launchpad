@@ -5,17 +5,24 @@ import { supabase } from '@/integrations/supabase/client';
 import OnboardingLayout from '@/components/onboarding/OnboardingLayout';
 import WelcomeStep from '@/components/onboarding/WelcomeStep';
 import BusinessProfileStep from '@/components/onboarding/BusinessProfileStep';
-import CompanyInfoStep from '@/components/onboarding/CompanyInfoStep';
-import ProfileStep from '@/components/onboarding/ProfileStep';
-import TeamSetupStep from '@/components/onboarding/TeamSetupStep';
+import SchedulingSetupStep from '@/components/onboarding/SchedulingSetupStep';
+import DepartmentRoleStep from '@/components/onboarding/DepartmentRoleStep';
+import LocationSetupStep from '@/components/onboarding/LocationSetupStep';
+import EnhancedTeamSetupStep from '@/components/onboarding/EnhancedTeamSetupStep';
+import MobileAppStep from '@/components/onboarding/MobileAppStep';
+import TrialFeaturesStep from '@/components/onboarding/TrialFeaturesStep';
 import CompleteStep from '@/components/onboarding/CompleteStep';
 
 const STEPS = [
   { id: 1, title: "Welcome", subtitle: "What brings you to WorkforceOS?" },
   { id: 2, title: "Business Profile", subtitle: "Tell us about your business" },
-  { id: 3, title: "Your Profile", subtitle: "Complete your personal information" },
-  { id: 4, title: "Team Setup", subtitle: "Invite your team members" },
-  { id: 5, title: "All Set!", subtitle: "Your account is ready to use" },
+  { id: 3, title: "Scheduling Setup", subtitle: "Configure your scheduling preferences" },
+  { id: 4, title: "Departments & Roles", subtitle: "Set up your organization structure" },
+  { id: 5, title: "Location Setup", subtitle: "Add your business location" },
+  { id: 6, title: "Team Setup", subtitle: "Add your team members" },
+  { id: 7, title: "Mobile App", subtitle: "Get the mobile app for your team" },
+  { id: 8, title: "Trial Features", subtitle: "Explore your premium trial" },
+  { id: 9, title: "All Set!", subtitle: "Your account is ready to use" },
 ];
 
 export default function Onboarding() {
@@ -224,12 +231,18 @@ export default function Onboarding() {
         return <WelcomeStep onNext={handleNext} />;
       case "Business Profile":
         return <BusinessProfileStep onNext={handleNext} />;
-      case "Company Information":
-        return <CompanyInfoStep onNext={handleNext} />;
-      case "Your Profile":
-        return <ProfileStep onNext={handleNext} />;
+      case "Scheduling Setup":
+        return <SchedulingSetupStep onNext={handleNext} />;
+      case "Departments & Roles":
+        return <DepartmentRoleStep onNext={handleNext} />;
+      case "Location Setup":
+        return <LocationSetupStep onNext={handleNext} />;
       case "Team Setup":
-        return <TeamSetupStep onNext={handleNext} />;
+        return <EnhancedTeamSetupStep onNext={handleNext} />;
+      case "Mobile App":
+        return <MobileAppStep onNext={handleNext} />;
+      case "Trial Features":
+        return <TrialFeaturesStep onNext={handleNext} />;
       case "All Set!":
         return <CompleteStep onComplete={handleComplete} />;
       default:
