@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import { 
   Calendar, 
   Users, 
@@ -166,11 +166,47 @@ export function AppSidebar() {
   const { state } = useSidebar()
   const location = useLocation()
   const currentPath = location.pathname
-  const [openGroups, setOpenGroups] = useState<string[]>(["Schedule", "Team", "Hiring", "Tasks", "Tip Management", "Reports", "Settings", "Apps & Integrations"])
   const collapsed = state === "collapsed"
 
+  // Determine which group should be open based on current path
+  const getActiveGroup = (path: string) => {
+    for (const item of navigationItems) {
+      if (item.items) {
+        const hasActiveSubItem = item.items.some(subItem => {
+          if (subItem.items) {
+            return subItem.items.some(nestedItem => path === nestedItem.url)
+          }
+          return path === subItem.url
+        })
+        if (hasActiveSubItem) {
+          return item.title
+        }
+      } else if (path === item.url) {
+        return null // Top level items don't need groups to be open
+      }
+    }
+    return null
+  }
+
+  const activeGroup = getActiveGroup(currentPath)
+  const [openGroups, setOpenGroups] = useState<string[]>(activeGroup ? [activeGroup] : [])
+
+  // Update open groups when route changes
+  React.useEffect(() => {
+    const newActiveGroup = getActiveGroup(currentPath)
+    setOpenGroups(newActiveGroup ? [newActiveGroup] : [])
+  }, [currentPath])
+
   const isActive = (path: string) => currentPath === path
-  const isGroupActive = (items: any[]) => items?.some(item => isActive(item.url))
+  
+  const isGroupActive = (items: any[]) => {
+    return items?.some(item => {
+      if (item.items) {
+        return item.items.some((nestedItem: any) => isActive(nestedItem.url))
+      }
+      return isActive(item.url)
+    })
+  }
   
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
     isActive ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium" : "hover:bg-sidebar-accent/50"
@@ -181,6 +217,55 @@ export function AppSidebar() {
         ? prev.filter(group => group !== title)
         : [...prev, title]
     )
+  }
+
+  const renderSubItems = (items: any[]) => {
+    return items.map((subItem) => {
+      if (subItem.items) {
+        // Handle nested sub-items (like Time Off)
+        return (
+          <div key={subItem.title}>
+            <SidebarMenuSubItem>
+              <SidebarMenuSubButton asChild>
+                <div className={`flex items-center gap-2 px-3 py-2 text-sm font-medium ${
+                  isGroupActive(subItem.items) ? "text-sidebar-accent-foreground" : ""
+                }`}>
+                  <subItem.icon className="h-4 w-4" />
+                  <span>{subItem.title}</span>
+                </div>
+              </SidebarMenuSubButton>
+            </SidebarMenuSubItem>
+            {subItem.items.map((nestedItem: any) => (
+              <SidebarMenuSubItem key={nestedItem.title} className="ml-4">
+                <SidebarMenuSubButton asChild>
+                  <NavLink 
+                    to={nestedItem.url} 
+                    className={getNavCls}
+                  >
+                    <nestedItem.icon className="h-4 w-4" />
+                    <span>{nestedItem.title}</span>
+                  </NavLink>
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
+            ))}
+          </div>
+        )
+      } else {
+        return (
+          <SidebarMenuSubItem key={subItem.title}>
+            <SidebarMenuSubButton asChild>
+              <NavLink 
+                to={subItem.url} 
+                className={getNavCls}
+              >
+                <subItem.icon className="h-4 w-4" />
+                <span>{subItem.title}</span>
+              </NavLink>
+            </SidebarMenuSubButton>
+          </SidebarMenuSubItem>
+        )
+      }
+    })
   }
 
   return (
@@ -223,19 +308,7 @@ export function AppSidebar() {
                       {!collapsed && (
                         <CollapsibleContent>
                           <SidebarMenuSub>
-                            {item.items.map((subItem) => (
-                              <SidebarMenuSubItem key={subItem.title}>
-                                <SidebarMenuSubButton asChild>
-                                  <NavLink 
-                                    to={subItem.url} 
-                                    className={getNavCls}
-                                  >
-                                    <subItem.icon className="h-4 w-4" />
-                                    <span>{subItem.title}</span>
-                                  </NavLink>
-                                </SidebarMenuSubButton>
-                              </SidebarMenuSubItem>
-                            ))}
+                            {renderSubItems(item.items)}
                           </SidebarMenuSub>
                         </CollapsibleContent>
                       )}
