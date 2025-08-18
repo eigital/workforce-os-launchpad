@@ -116,6 +116,54 @@ export type Database = {
         }
         Relationships: []
       }
+      blocked_days: {
+        Row: {
+          company_id: string
+          created_at: string
+          created_by: string
+          department_id: string | null
+          description: string | null
+          end_date: string
+          id: string
+          is_recurring: boolean | null
+          location_id: string | null
+          recurrence_pattern: Json | null
+          start_date: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          created_by: string
+          department_id?: string | null
+          description?: string | null
+          end_date: string
+          id?: string
+          is_recurring?: boolean | null
+          location_id?: string | null
+          recurrence_pattern?: Json | null
+          start_date: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          created_by?: string
+          department_id?: string | null
+          description?: string | null
+          end_date?: string
+          id?: string
+          is_recurring?: boolean | null
+          location_id?: string | null
+          recurrence_pattern?: Json | null
+          start_date?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       business_setup: {
         Row: {
           business_goals: string[] | null
@@ -335,6 +383,51 @@ export type Database = {
           participant_1?: string
           participant_2?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      employee_time_off_balances: {
+        Row: {
+          accrued_hours: number | null
+          balance_hours: number | null
+          carry_over_hours: number | null
+          created_at: string
+          employee_id: string
+          id: string
+          last_accrual_date: string | null
+          pending_hours: number | null
+          time_off_type_id: string
+          updated_at: string
+          used_hours: number | null
+          year: number
+        }
+        Insert: {
+          accrued_hours?: number | null
+          balance_hours?: number | null
+          carry_over_hours?: number | null
+          created_at?: string
+          employee_id: string
+          id?: string
+          last_accrual_date?: string | null
+          pending_hours?: number | null
+          time_off_type_id: string
+          updated_at?: string
+          used_hours?: number | null
+          year: number
+        }
+        Update: {
+          accrued_hours?: number | null
+          balance_hours?: number | null
+          carry_over_hours?: number | null
+          created_at?: string
+          employee_id?: string
+          id?: string
+          last_accrual_date?: string | null
+          pending_hours?: number | null
+          time_off_type_id?: string
+          updated_at?: string
+          used_hours?: number | null
+          year?: number
         }
         Relationships: []
       }
@@ -1041,6 +1134,171 @@ export type Database = {
           shift_date?: string
           start_time?: string
           status?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      time_off_policies: {
+        Row: {
+          accrual_method: string | null
+          accrual_rate: number | null
+          carry_over_limit: number | null
+          company_id: string
+          created_at: string
+          id: string
+          is_active: boolean | null
+          max_balance: number | null
+          metadata: Json | null
+          probation_period_days: number | null
+          reset_date: string | null
+          time_off_type_id: string
+          updated_at: string
+        }
+        Insert: {
+          accrual_method?: string | null
+          accrual_rate?: number | null
+          carry_over_limit?: number | null
+          company_id: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          max_balance?: number | null
+          metadata?: Json | null
+          probation_period_days?: number | null
+          reset_date?: string | null
+          time_off_type_id: string
+          updated_at?: string
+        }
+        Update: {
+          accrual_method?: string | null
+          accrual_rate?: number | null
+          carry_over_limit?: number | null
+          company_id?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          max_balance?: number | null
+          metadata?: Json | null
+          probation_period_days?: number | null
+          reset_date?: string | null
+          time_off_type_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      time_off_requests: {
+        Row: {
+          attachment_url: string | null
+          company_id: string
+          created_at: string
+          employee_id: string
+          end_date: string
+          end_time: string | null
+          id: string
+          is_partial_day: boolean | null
+          notes: string | null
+          reason: string | null
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          start_date: string
+          start_time: string | null
+          status: string | null
+          submitted_at: string | null
+          time_off_type_id: string
+          total_hours: number
+          updated_at: string
+        }
+        Insert: {
+          attachment_url?: string | null
+          company_id: string
+          created_at?: string
+          employee_id: string
+          end_date: string
+          end_time?: string | null
+          id?: string
+          is_partial_day?: boolean | null
+          notes?: string | null
+          reason?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          start_date: string
+          start_time?: string | null
+          status?: string | null
+          submitted_at?: string | null
+          time_off_type_id: string
+          total_hours: number
+          updated_at?: string
+        }
+        Update: {
+          attachment_url?: string | null
+          company_id?: string
+          created_at?: string
+          employee_id?: string
+          end_date?: string
+          end_time?: string | null
+          id?: string
+          is_partial_day?: boolean | null
+          notes?: string | null
+          reason?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          start_date?: string
+          start_time?: string | null
+          status?: string | null
+          submitted_at?: string | null
+          time_off_type_id?: string
+          total_hours?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      time_off_types: {
+        Row: {
+          advance_notice_days: number | null
+          color: string | null
+          company_id: string
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          is_paid: boolean | null
+          max_consecutive_days: number | null
+          name: string
+          requires_approval: boolean | null
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          advance_notice_days?: number | null
+          color?: string | null
+          company_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_paid?: boolean | null
+          max_consecutive_days?: number | null
+          name: string
+          requires_approval?: boolean | null
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          advance_notice_days?: number | null
+          color?: string | null
+          company_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_paid?: boolean | null
+          max_consecutive_days?: number | null
+          name?: string
+          requires_approval?: boolean | null
+          sort_order?: number | null
           updated_at?: string
         }
         Relationships: []

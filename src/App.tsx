@@ -29,6 +29,9 @@ import Help from "./pages/Help";
 import Messages from "./pages/communication/Messages";
 import Announcements from "./pages/communication/Announcements";
 import Notifications from "./pages/communication/Notifications";
+import TimeOffRequests from "./pages/TimeOffRequests";
+import TimeOffCalendar from "./pages/TimeOffCalendar";
+import BlockedDays from "./pages/BlockedDays";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +49,9 @@ const App = () => (
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/schedule/time-off" element={<TimeOff />} />
+            <Route path="/schedule/time-off/requests" element={<TimeOffRequests />} />
+            <Route path="/schedule/time-off/calendar" element={<TimeOffCalendar />} />
+            <Route path="/schedule/time-off/blocked-days" element={<BlockedDays />} />
             <Route path="/schedule/availability" element={<Availability />} />
             <Route path="/schedule/shift-pool" element={<ShiftPool />} />
             <Route path="/team" element={<Team />} />

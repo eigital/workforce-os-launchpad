@@ -1,5 +1,5 @@
 import { useState } from "react"
-  import { 
+import { 
   Calendar, 
   Users, 
   UserPlus, 
@@ -24,7 +24,10 @@ import { useState } from "react"
   Search,
   Coins,
   Bell,
-  Megaphone
+  Megaphone,
+  CalendarRange,
+  CalendarClock,
+  Ban
 } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
 
@@ -64,7 +67,17 @@ const navigationItems = [
     icon: Calendar,
     items: [
       { title: "Schedules", url: "/schedule", icon: CalendarDays },
-      { title: "Time Off", url: "/schedule/time-off", icon: CalendarX },
+      { 
+        title: "Time Off", 
+        url: "/schedule/time-off", 
+        icon: CalendarX,
+        items: [
+          { title: "Overview", url: "/schedule/time-off", icon: CalendarRange },
+          { title: "Requests", url: "/schedule/time-off/requests", icon: CalendarClock },
+          { title: "Calendar", url: "/schedule/time-off/calendar", icon: CalendarDays },
+          { title: "Blocked Days", url: "/schedule/time-off/blocked-days", icon: Ban },
+        ]
+      },
       { title: "Availability", url: "/schedule/availability", icon: Clock },
       { title: "Shift Pool", url: "/schedule/shift-pool", icon: GitBranch },
     ]
