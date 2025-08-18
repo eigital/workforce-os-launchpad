@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Calendar, Plus, Clock, CheckCircle, XCircle, AlertCircle, Users, CalendarDays } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import AppLayout from "@/components/layouts/AppLayout"
 
 export default function TimeOff() {
   const navigate = useNavigate()
@@ -46,12 +47,13 @@ export default function TimeOff() {
   }
 
   return (
-    <div className="flex-1 space-y-6 p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Time Off</h1>
-          <p className="text-muted-foreground">Manage employee time off requests and balances</p>
-        </div>
+    <AppLayout title="Time Off" subtitle="Manage employee time off requests and balances">
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">Time Off</h1>
+            <p className="text-muted-foreground">Manage employee time off requests and balances</p>
+          </div>
         <div className="flex gap-2">
           <Button onClick={() => navigate("/schedule/time-off/requests")}>
             <Plus className="h-4 w-4 mr-2" />
@@ -206,6 +208,7 @@ export default function TimeOff() {
           </div>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </AppLayout>
   )
 }

@@ -14,6 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Plus, Search, Calendar as CalendarIcon, Edit, Trash2, Ban } from "lucide-react"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
+import AppLayout from "@/components/layouts/AppLayout"
 
 export default function BlockedDays() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -97,12 +98,13 @@ export default function BlockedDays() {
   }
 
   return (
-    <div className="flex-1 space-y-6 p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Blocked Days</h1>
-          <p className="text-muted-foreground">Manage days when time off requests are restricted</p>
-        </div>
+    <AppLayout title="Blocked Days" subtitle="Manage days when time off requests are restricted">
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">Blocked Days</h1>
+            <p className="text-muted-foreground">Manage days when time off requests are restricted</p>
+          </div>
         <Dialog open={showNewBlockedDayModal} onOpenChange={setShowNewBlockedDayModal}>
           <DialogTrigger asChild>
             <Button>
@@ -324,6 +326,7 @@ export default function BlockedDays() {
           </Table>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </AppLayout>
   )
 }

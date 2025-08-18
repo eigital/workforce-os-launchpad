@@ -13,6 +13,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Plus, Search, Filter, CheckCircle, XCircle, AlertCircle, Calendar as CalendarIcon, Download } from "lucide-react"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
+import AppLayout from "@/components/layouts/AppLayout"
 
 export default function TimeOffRequests() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -118,12 +119,13 @@ export default function TimeOffRequests() {
   }
 
   return (
-    <div className="flex-1 space-y-6 p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Time Off Requests</h1>
-          <p className="text-muted-foreground">Manage and review employee time off requests</p>
-        </div>
+    <AppLayout title="Time Off Requests" subtitle="Manage and review employee time off requests">
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">Time Off Requests</h1>
+            <p className="text-muted-foreground">Manage and review employee time off requests</p>
+          </div>
         <div className="flex gap-2">
           <Button variant="outline">
             <Download className="h-4 w-4 mr-2" />
@@ -333,6 +335,7 @@ export default function TimeOffRequests() {
           </Table>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </AppLayout>
   )
 }

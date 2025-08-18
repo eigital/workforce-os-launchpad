@@ -6,6 +6,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Users, Download } from "lucide-react"
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, addMonths, subMonths } from "date-fns"
+import AppLayout from "@/components/layouts/AppLayout"
 
 export default function TimeOffCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date())
@@ -90,12 +91,13 @@ export default function TimeOffCalendar() {
     .slice(0, 5)
 
   return (
-    <div className="flex-1 space-y-6 p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Time Off Calendar</h1>
-          <p className="text-muted-foreground">View approved and pending time off requests</p>
-        </div>
+    <AppLayout title="Time Off Calendar" subtitle="View approved and pending time off requests">
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">Time Off Calendar</h1>
+            <p className="text-muted-foreground">View approved and pending time off requests</p>
+          </div>
         <div className="flex gap-2">
           <Button variant="outline">
             <Download className="h-4 w-4 mr-2" />
@@ -276,6 +278,7 @@ export default function TimeOffCalendar() {
           </Card>
         </div>
       </div>
-    </div>
+      </div>
+    </AppLayout>
   )
 }
