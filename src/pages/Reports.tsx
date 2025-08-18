@@ -3,6 +3,7 @@ import { Search, Star, ChevronRight, Activity, Users, Clock, Calendar, Timer, Ca
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
+import AppLayout from "@/components/layouts/AppLayout"
 
 interface Report {
   name: string;
@@ -178,34 +179,21 @@ export default function Reports() {
   })).filter(category => category.reports.length > 0)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
-      {/* Header */}
-      <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container max-w-7xl mx-auto px-6 py-8">
-          <div className="flex flex-col gap-4">
-            <div>
-              <h1 className="text-4xl font-bold tracking-tight">Reports Overview</h1>
-              <p className="text-xl text-muted-foreground mt-2">
-                Powerful insights and analytics for your WorkforceOS operations
-              </p>
-            </div>
-            
-            {/* Search */}
-            <div className="relative max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-              <Input
-                placeholder="Search for a report..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
+    <AppLayout title="Reports Overview" subtitle="Powerful insights and analytics for your WorkforceOS operations">
+      <div className="bg-gradient-to-br from-background to-muted/20 min-h-full">
+        {/* Search */}
+        <div className="mb-8">
+          <div className="relative max-w-md">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+            <Input
+              placeholder="Search for a report..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
           </div>
         </div>
-      </div>
 
-      {/* Content */}
-      <div className="container max-w-7xl mx-auto px-6 py-8">
         <div className="grid gap-8">
           <div className="text-center max-w-3xl mx-auto">
             <h2 className="text-2xl font-semibold mb-4">All Reports</h2>
@@ -274,6 +262,6 @@ export default function Reports() {
           )}
         </div>
       </div>
-    </div>
+    </AppLayout>
   )
 }
