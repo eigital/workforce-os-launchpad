@@ -9,7 +9,7 @@ interface SignInModalProps {
 export default function SignInModal({ isOpen, onClose }: SignInModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[320px] bg-background/95 backdrop-blur-lg border border-border/30 shadow-elegant animate-scale-in p-4">
+      <DialogContent className="sm:max-w-[280px] bg-background/95 backdrop-blur-lg border border-border/30 shadow-elegant animate-scale-in p-3">
         <DialogHeader className="space-y-1 pb-2">
           <DialogTitle className="text-lg font-semibold text-center">Welcome back</DialogTitle>
           <DialogDescription className="text-center text-muted-foreground text-xs">

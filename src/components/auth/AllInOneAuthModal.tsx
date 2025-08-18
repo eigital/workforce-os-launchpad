@@ -669,7 +669,7 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-xs bg-background border border-border shadow-lg p-4">
+      <DialogContent className="sm:max-w-[280px] bg-background/95 backdrop-blur-lg border border-border/30 shadow-elegant animate-scale-in p-3">
         <DialogHeader className="sr-only">
           <DialogTitle>
             {mode === 'signin' ? 'Sign In' : 'Create Account'}
