@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { QuickEntryDialog } from "@/components/logbook/QuickEntryDialog";
 import { EmailSummaryDialog } from "@/components/logbook/EmailSummaryDialog";
+import { LogEntrySection } from "@/components/logbook/LogEntrySection";
 
 interface LogCategory {
   id: string;
@@ -434,6 +435,66 @@ export default function LogBook() {
               </div>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Individual Log Entry Sections */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <LogEntrySection
+            title="Task Summary"
+            icon={CheckCircle}
+            categoryId="task-summary"
+            entries={entries.filter(e => e.category?.name?.toLowerCase().includes('task') || e.title.toLowerCase().includes('task')).slice(0, 3)}
+            onRefresh={loadEntries}
+            placeholder="Summarize completed tasks and accomplishments..."
+          />
+          
+          <LogEntrySection
+            title="Daily Shift Notes"
+            icon={Clock}
+            categoryId="shift-notes"
+            entries={entries.filter(e => e.category?.name?.toLowerCase().includes('shift') || e.title.toLowerCase().includes('shift')).slice(0, 3)}
+            onRefresh={loadEntries}
+            placeholder="Record shift observations, team updates, or general notes..."
+          />
+          
+          <LogEntrySection
+            title="Employee Performance"
+            icon={Users}
+            categoryId="performance"
+            entries={entries.filter(e => e.category?.name?.toLowerCase().includes('performance') || e.title.toLowerCase().includes('performance')).slice(0, 3)}
+            onRefresh={loadEntries}
+            placeholder="Log employee performance feedback and ratings..."
+            showRating={true}
+          />
+          
+          <LogEntrySection
+            title="Repairs & Maintenance"
+            icon={AlertTriangle}
+            categoryId="maintenance"
+            entries={entries.filter(e => e.category?.name?.toLowerCase().includes('maintenance') || e.title.toLowerCase().includes('repair')).slice(0, 3)}
+            onRefresh={loadEntries}
+            placeholder="Document equipment issues, repairs, or maintenance tasks..."
+          />
+          
+          <LogEntrySection
+            title="Customer Feedback"
+            icon={Star}
+            categoryId="feedback"
+            entries={entries.filter(e => e.category?.name?.toLowerCase().includes('feedback') || e.title.toLowerCase().includes('customer')).slice(0, 3)}
+            onRefresh={loadEntries}
+            placeholder="Record customer comments, complaints, or suggestions..."
+            showRating={true}
+          />
+          
+          <LogEntrySection
+            title="Daily Sales Log"
+            icon={DollarSign}
+            categoryId="sales"
+            entries={entries.filter(e => e.category?.name?.toLowerCase().includes('sales') || e.title.toLowerCase().includes('sales')).slice(0, 3)}
+            onRefresh={loadEntries}
+            placeholder="Add sales notes, promotions, or observations..."
+            showAmount={true}
+          />
         </div>
 
         {/* Controls */}
