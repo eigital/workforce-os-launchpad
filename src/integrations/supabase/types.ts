@@ -164,6 +164,63 @@ export type Database = {
         }
         Relationships: []
       }
+      business_metrics: {
+        Row: {
+          avg_shift_score: number | null
+          company_id: string
+          created_at: string
+          created_by: string
+          customer_count: number | null
+          date: string
+          id: string
+          labor_cost: number | null
+          labor_percentage: number | null
+          overtime_hours: number | null
+          overtime_risk_level: string | null
+          sales_amount: number | null
+          total_hours_worked: number | null
+          updated_at: string
+          weather_condition: string | null
+          weather_temperature: number | null
+        }
+        Insert: {
+          avg_shift_score?: number | null
+          company_id: string
+          created_at?: string
+          created_by: string
+          customer_count?: number | null
+          date?: string
+          id?: string
+          labor_cost?: number | null
+          labor_percentage?: number | null
+          overtime_hours?: number | null
+          overtime_risk_level?: string | null
+          sales_amount?: number | null
+          total_hours_worked?: number | null
+          updated_at?: string
+          weather_condition?: string | null
+          weather_temperature?: number | null
+        }
+        Update: {
+          avg_shift_score?: number | null
+          company_id?: string
+          created_at?: string
+          created_by?: string
+          customer_count?: number | null
+          date?: string
+          id?: string
+          labor_cost?: number | null
+          labor_percentage?: number | null
+          overtime_hours?: number | null
+          overtime_risk_level?: string | null
+          sales_amount?: number | null
+          total_hours_worked?: number | null
+          updated_at?: string
+          weather_condition?: string | null
+          weather_temperature?: number | null
+        }
+        Relationships: []
+      }
       business_setup: {
         Row: {
           business_goals: string[] | null
@@ -386,6 +443,54 @@ export type Database = {
         }
         Relationships: []
       }
+      email_summaries: {
+        Row: {
+          company_id: string
+          content_data: Json | null
+          created_at: string
+          created_by: string
+          date: string
+          id: string
+          recipients: string[]
+          scheduled_for: string | null
+          sent_at: string | null
+          sent_by: string | null
+          status: string | null
+          summary_type: string
+          updated_at: string
+        }
+        Insert: {
+          company_id: string
+          content_data?: Json | null
+          created_at?: string
+          created_by: string
+          date?: string
+          id?: string
+          recipients?: string[]
+          scheduled_for?: string | null
+          sent_at?: string | null
+          sent_by?: string | null
+          status?: string | null
+          summary_type?: string
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string
+          content_data?: Json | null
+          created_at?: string
+          created_by?: string
+          date?: string
+          id?: string
+          recipients?: string[]
+          scheduled_for?: string | null
+          sent_at?: string | null
+          sent_by?: string | null
+          status?: string | null
+          summary_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       employee_time_off_balances: {
         Row: {
           accrued_hours: number | null
@@ -574,7 +679,9 @@ export type Database = {
       }
       log_entries: {
         Row: {
+          assigned_to: string | null
           attachments: Json | null
+          business_impact: string | null
           category_id: string
           company_id: string
           content: string
@@ -582,6 +689,8 @@ export type Database = {
           created_by: string
           department_id: string | null
           entry_date: string
+          entry_type: string | null
+          follow_up_date: string | null
           id: string
           last_modified_by: string | null
           location_id: string | null
@@ -594,7 +703,9 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          assigned_to?: string | null
           attachments?: Json | null
+          business_impact?: string | null
           category_id: string
           company_id: string
           content: string
@@ -602,6 +713,8 @@ export type Database = {
           created_by: string
           department_id?: string | null
           entry_date?: string
+          entry_type?: string | null
+          follow_up_date?: string | null
           id?: string
           last_modified_by?: string | null
           location_id?: string | null
@@ -614,7 +727,9 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          assigned_to?: string | null
           attachments?: Json | null
+          business_impact?: string | null
           category_id?: string
           company_id?: string
           content?: string
@@ -622,6 +737,8 @@ export type Database = {
           created_by?: string
           department_id?: string | null
           entry_date?: string
+          entry_type?: string | null
+          follow_up_date?: string | null
           id?: string
           last_modified_by?: string | null
           location_id?: string | null
@@ -1256,9 +1373,12 @@ export type Database = {
           created_by: string
           employee_id: string
           feedback_notes: string | null
+          follow_up_required: boolean | null
           id: string
           log_entry_id: string | null
+          manager_notes: string | null
           overall_rating: number | null
+          performance_category: string | null
           performance_rating: number | null
           punctuality_rating: number | null
           recognition_points: number | null
@@ -1275,9 +1395,12 @@ export type Database = {
           created_by: string
           employee_id: string
           feedback_notes?: string | null
+          follow_up_required?: boolean | null
           id?: string
           log_entry_id?: string | null
+          manager_notes?: string | null
           overall_rating?: number | null
+          performance_category?: string | null
           performance_rating?: number | null
           punctuality_rating?: number | null
           recognition_points?: number | null
@@ -1294,9 +1417,12 @@ export type Database = {
           created_by?: string
           employee_id?: string
           feedback_notes?: string | null
+          follow_up_required?: boolean | null
           id?: string
           log_entry_id?: string | null
+          manager_notes?: string | null
           overall_rating?: number | null
+          performance_category?: string | null
           performance_rating?: number | null
           punctuality_rating?: number | null
           recognition_points?: number | null
