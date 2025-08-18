@@ -106,7 +106,15 @@ const navigationItems = [
       { title: "Settings", url: "/tasks/settings", icon: Shield },
     ]
   },
-  { title: "Log Book", url: "/log-book", icon: BookOpen },
+  {
+    title: "Log Book",
+    icon: BookOpen,
+    items: [
+      { title: "View Logs", url: "/log-book", icon: BookOpen },
+      { title: "Categories", url: "/log-book/categories", icon: Search },
+      { title: "Search", url: "/log-book/search", icon: Search },
+    ]
+  },
   { title: "Time Clocking", url: "/time-clocking", icon: Clock },
   {
     title: "Tip Management",

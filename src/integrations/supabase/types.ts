@@ -524,6 +524,162 @@ export type Database = {
         }
         Relationships: []
       }
+      log_categories: {
+        Row: {
+          color: string | null
+          company_id: string
+          created_at: string
+          created_by: string
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          is_required: boolean | null
+          name: string
+          sort_order: number | null
+          template_fields: Json | null
+          updated_at: string
+        }
+        Insert: {
+          color?: string | null
+          company_id: string
+          created_at?: string
+          created_by: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_required?: boolean | null
+          name: string
+          sort_order?: number | null
+          template_fields?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          color?: string | null
+          company_id?: string
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          is_required?: boolean | null
+          name?: string
+          sort_order?: number | null
+          template_fields?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      log_entries: {
+        Row: {
+          attachments: Json | null
+          category_id: string
+          company_id: string
+          content: string
+          created_at: string
+          created_by: string
+          department_id: string | null
+          entry_date: string
+          id: string
+          last_modified_by: string | null
+          location_id: string | null
+          metadata: Json | null
+          priority: string | null
+          shift_time: string | null
+          status: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          attachments?: Json | null
+          category_id: string
+          company_id: string
+          content: string
+          created_at?: string
+          created_by: string
+          department_id?: string | null
+          entry_date?: string
+          id?: string
+          last_modified_by?: string | null
+          location_id?: string | null
+          metadata?: Json | null
+          priority?: string | null
+          shift_time?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          attachments?: Json | null
+          category_id?: string
+          company_id?: string
+          content?: string
+          created_at?: string
+          created_by?: string
+          department_id?: string | null
+          entry_date?: string
+          id?: string
+          last_modified_by?: string | null
+          location_id?: string | null
+          metadata?: Json | null
+          priority?: string | null
+          shift_time?: string | null
+          status?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      log_templates: {
+        Row: {
+          category_id: string
+          company_id: string
+          created_at: string
+          created_by: string
+          description: string | null
+          field_definitions: Json | null
+          id: string
+          is_default: boolean | null
+          name: string
+          template_content: string
+          updated_at: string
+          usage_count: number | null
+        }
+        Insert: {
+          category_id: string
+          company_id: string
+          created_at?: string
+          created_by: string
+          description?: string | null
+          field_definitions?: Json | null
+          id?: string
+          is_default?: boolean | null
+          name: string
+          template_content: string
+          updated_at?: string
+          usage_count?: number | null
+        }
+        Update: {
+          category_id?: string
+          company_id?: string
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          field_definitions?: Json | null
+          id?: string
+          is_default?: boolean | null
+          name?: string
+          template_content?: string
+          updated_at?: string
+          usage_count?: number | null
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           channel_id: string | null
@@ -1086,6 +1242,66 @@ export type Database = {
           id?: string
           step_key?: string
           step_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      shift_feedback: {
+        Row: {
+          achievements: string[] | null
+          areas_for_improvement: string[] | null
+          communication_rating: number | null
+          company_id: string
+          created_at: string
+          created_by: string
+          employee_id: string
+          feedback_notes: string | null
+          id: string
+          log_entry_id: string | null
+          overall_rating: number | null
+          performance_rating: number | null
+          punctuality_rating: number | null
+          recognition_points: number | null
+          shift_date: string
+          teamwork_rating: number | null
+          updated_at: string
+        }
+        Insert: {
+          achievements?: string[] | null
+          areas_for_improvement?: string[] | null
+          communication_rating?: number | null
+          company_id: string
+          created_at?: string
+          created_by: string
+          employee_id: string
+          feedback_notes?: string | null
+          id?: string
+          log_entry_id?: string | null
+          overall_rating?: number | null
+          performance_rating?: number | null
+          punctuality_rating?: number | null
+          recognition_points?: number | null
+          shift_date: string
+          teamwork_rating?: number | null
+          updated_at?: string
+        }
+        Update: {
+          achievements?: string[] | null
+          areas_for_improvement?: string[] | null
+          communication_rating?: number | null
+          company_id?: string
+          created_at?: string
+          created_by?: string
+          employee_id?: string
+          feedback_notes?: string | null
+          id?: string
+          log_entry_id?: string | null
+          overall_rating?: number | null
+          performance_rating?: number | null
+          punctuality_rating?: number | null
+          recognition_points?: number | null
+          shift_date?: string
+          teamwork_rating?: number | null
           updated_at?: string
         }
         Relationships: []

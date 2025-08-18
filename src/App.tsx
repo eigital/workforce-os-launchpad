@@ -26,6 +26,8 @@ import Payroll from "./pages/Payroll";
 import Reports from "./pages/Reports";
 import QuickStart from "./pages/QuickStart";
 import Help from "./pages/Help";
+import LogBookCategories from "./pages/LogBookCategories";
+import LogBookSearch from "./pages/LogBookSearch";
 import Messages from "./pages/communication/Messages";
 import Announcements from "./pages/communication/Announcements";
 import Notifications from "./pages/communication/Notifications";
@@ -69,6 +71,8 @@ const App = () => (
             <Route path="/communication/messages" element={<Messages />} />
             <Route path="/communication/announcements" element={<Announcements />} />
             <Route path="/communication/notifications" element={<Notifications />} />
+            <Route path="/log-book/categories" element={<LogBookCategories />} />
+            <Route path="/log-book/search" element={<LogBookSearch />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
