@@ -80,6 +80,7 @@ export default function LogBook() {
     weatherTemp: 0,
   });
   const [businessMetrics, setBusinessMetrics] = useState<BusinessMetrics | null>(null);
+  const [companyId, setCompanyId] = useState<string>('');
   const [isEmailSummaryOpen, setIsEmailSummaryOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -167,6 +168,8 @@ export default function LogBook() {
         .single();
 
       if (!userCompanies?.company_id) return;
+
+      setCompanyId(userCompanies.company_id);
 
       // Load basic metrics
       const { data: entries } = await supabase
@@ -301,7 +304,7 @@ export default function LogBook() {
             </CardHeader>
             <CardContent>
               <WeatherWidget 
-                companyId={businessMetrics?.company_id || ''}
+                companyId={companyId}
                 locationName="New York"
                 showRefresh={true}
               />
