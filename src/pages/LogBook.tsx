@@ -13,9 +13,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { QuickEntryDialog } from "@/components/logbook/QuickEntryDialog";
 import { EmailSummaryDialog } from "@/components/logbook/EmailSummaryDialog";
+import { QuickEntryDialog } from "@/components/logbook/QuickEntryDialog";
 import { LogEntrySection } from "@/components/logbook/LogEntrySection";
+import { WeatherWidget } from "@/components/weather/WeatherWidget";
 
 interface LogCategory {
   id: string;
@@ -299,8 +300,11 @@ export default function LogBook() {
               <Cloud className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{dashboardMetrics.weatherTemp}°</div>
-              <p className="text-xs text-muted-foreground">{dashboardMetrics.weatherCondition || 'Clear'}</p>
+              <WeatherWidget 
+                companyId={businessMetrics?.company_id || ''}
+                locationName="New York"
+                showRefresh={true}
+              />
             </CardContent>
           </Card>
           
@@ -457,15 +461,16 @@ export default function LogBook() {
             placeholder="Record shift observations, team updates, or general notes..."
           />
           
-          <LogEntrySection
-            title="Employee Performance"
-            icon={Users}
-            categoryId="performance"
-            entries={entries.filter(e => e.category?.name?.toLowerCase().includes('performance') || e.title.toLowerCase().includes('performance')).slice(0, 3)}
-            onRefresh={loadEntries}
-            placeholder="Log employee performance feedback and ratings..."
-            showRating={true}
-          />
+            <LogEntrySection
+              title="Employee Performance"
+              icon={Users}
+              categoryId="performance"
+              entries={entries.filter(e => e.category?.name?.toLowerCase().includes('performance') || e.title.toLowerCase().includes('performance')).slice(0, 3)}
+              onRefresh={loadEntries}
+              placeholder="Log employee performance feedback and ratings..."
+              showRating={true}
+              showEmployeeSelect={true}
+            />
           
           <LogEntrySection
             title="Repairs & Maintenance"

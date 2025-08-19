@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Star, Clock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -18,6 +19,13 @@ interface LogEntry {
   priority: string;
 }
 
+interface Employee {
+  id: string;
+  first_name: string;
+  last_name: string;
+  status: string;
+}
+
 interface LogEntrySectionProps {
   title: string;
   icon: React.ComponentType<{ className?: string }>;
@@ -27,6 +35,7 @@ interface LogEntrySectionProps {
   placeholder?: string;
   showRating?: boolean;
   showAmount?: boolean;
+  showEmployeeSelect?: boolean;
 }
 
 export function LogEntrySection({ 
@@ -37,9 +46,34 @@ export function LogEntrySection({
   onRefresh,
   placeholder = "Add your log entry...",
   showRating = false,
-  showAmount = false
+  showAmount = false,
+  showEmployeeSelect = false
 }: LogEntrySectionProps) {
   const { user } = useAuth();
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [selectedEmployee, setSelectedEmployee] = useState("");
+
+  // Load employees if needed
+  useEffect(() => {
+    if (showEmployeeSelect) {
+      loadEmployees();
+    }
+  }, [showEmployeeSelect]);
+
+  const loadEmployees = async () => {
+    try {
+      const { data: employeesData, error } = await supabase
+        .from('employees')
+        .select('id, first_name, last_name, status')
+        .eq('status', 'active')
+        .order('first_name');
+
+      if (error) throw error;
+      setEmployees(employeesData || []);
+    } catch (error) {
+      console.error('Error loading employees:', error);
+    }
+  };
   const [content, setContent] = useState("");
   const [amount, setAmount] = useState("");
   const [rating, setRating] = useState(0);
@@ -73,6 +107,15 @@ export function LogEntrySection({
         entryContent = `Rating: ${rating}/5 stars\n${content}`;
       }
 
+      // Add employee info if provided
+      if (showEmployeeSelect && selectedEmployee) {
+        const employee = employees.find(emp => emp.id === selectedEmployee);
+        if (employee) {
+          entryTitle += ` - ${employee.first_name} ${employee.last_name}`;
+          entryContent = `Employee: ${employee.first_name} ${employee.last_name}\n${entryContent}`;
+        }
+      }
+
       const { error } = await supabase
         .from('log_entries')
         .insert({
@@ -88,6 +131,7 @@ export function LogEntrySection({
         setContent("");
         setAmount("");
         setRating(0);
+        setSelectedEmployee("");
         onRefresh();
         toast.success(`${title} entry added successfully`);
       }
@@ -150,6 +194,25 @@ export function LogEntrySection({
                   </button>
                 ))}
               </div>
+            </div>
+          )}
+          
+          {/* Employee Selection */}
+          {showEmployeeSelect && (
+            <div>
+              <Label className="text-sm">Employee</Label>
+              <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
+                <SelectTrigger className="mt-1">
+                  <SelectValue placeholder="Select an employee" />
+                </SelectTrigger>
+                <SelectContent className="bg-background border z-50">
+                  {employees.map((employee) => (
+                    <SelectItem key={employee.id} value={employee.id}>
+                      {employee.first_name} {employee.last_name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           )}
           
