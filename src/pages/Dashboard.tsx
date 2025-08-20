@@ -30,9 +30,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import EmailVerificationBanner from '@/components/dashboard/EmailVerificationBanner';
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/AppSidebar";
-import CommunicationHeader from '@/components/communication/CommunicationHeader';
+import AppLayout from '@/components/layouts/AppLayout';
 
 
 export default function Dashboard() {
@@ -158,39 +156,11 @@ export default function Dashboard() {
   }
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full">
-        <AppSidebar />
-        
-        <main className="flex-1">
-          {/* Header */}
-          <header className="h-16 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
-            <div className="flex h-16 items-center gap-4 px-6">
-              <SidebarTrigger />
-              <div className="flex-1">
-                <h1 className="text-xl font-semibold text-foreground">
-                  Welcome back, {profile?.first_name || 'there'}!
-                </h1>
-                {company && (
-                  <p className="text-sm text-muted-foreground">{company.name}</p>
-                )}
-              </div>
-              <div className="flex items-center gap-2">
-                <CommunicationHeader />
-                <Button variant="outline" size="sm">
-                  <Settings className="h-4 w-4 mr-2" />
-                  Settings
-                </Button>
-                <Button variant="outline" size="sm" onClick={handleSignOut}>
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Sign Out
-                </Button>
-              </div>
-            </div>
-          </header>
-
-          {/* Content */}
-          <div className="p-6">
+    <AppLayout 
+      title={`Welcome back, ${profile?.first_name || 'there'}!`}
+      subtitle={company?.name}
+    >
+      <div>
             <EmailVerificationBanner />
             
             <div className="flex gap-6">
@@ -579,8 +549,6 @@ export default function Dashboard() {
               )}
             </div>
           </div>
-        </main>
-      </div>
-    </SidebarProvider>
+    </AppLayout>
   );
 }

@@ -34,6 +34,7 @@ import Notifications from "./pages/communication/Notifications";
 import TimeOffRequests from "./pages/TimeOffRequests";
 import TimeOffCalendar from "./pages/TimeOffCalendar";
 import BlockedDays from "./pages/BlockedDays";
+import OvertimeAnalysis from "./pages/reports/OvertimeAnalysis";
 
 const queryClient = new QueryClient();
 
@@ -65,6 +66,7 @@ const App = () => (
             <Route path="/tip-management" element={<TipManagement />} />
             <Route path="/tip-management/settings" element={<TipManagementSettings />} />
             <Route path="/reports" element={<Reports />} />
+            <Route path="/reports/overtime-analysis" element={<OvertimeAnalysis />} />
             <Route path="/help" element={<Help />} />
             <Route path="/payroll" element={<Payroll />} />
             <Route path="/quick-start" element={<QuickStart />} />
