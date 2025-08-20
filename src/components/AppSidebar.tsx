@@ -217,7 +217,7 @@ export function AppSidebar() {
   }
   
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "bg-sidebar-accent text-foreground font-semibold" : "hover:bg-sidebar-accent/50"
+    isActive ? "bg-sidebar-accent text-black font-bold" : "hover:bg-sidebar-accent/50"
 
   const toggleGroup = (title: string) => {
     setOpenGroups(prev => 
@@ -296,7 +296,7 @@ export function AppSidebar() {
                         <SidebarMenuButton
                           className={`w-full justify-between ${
                             isGroupActive(item.items) 
-                              ? "bg-sidebar-accent text-foreground font-semibold" 
+                              ? "bg-sidebar-accent text-black font-bold" 
                               : "hover:bg-sidebar-accent/50"
                           }`}
                         >
