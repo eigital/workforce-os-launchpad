@@ -150,6 +150,13 @@ export default function Schedule() {
 
   const createDefaultDepartments = async (companyId: string) => {
     try {
+      // Validate company_id before proceeding
+      if (!companyId || companyId === '00000000-0000-0000-0000-000000000000') {
+        throw new Error('Invalid company ID provided')
+      }
+
+      console.log('Creating default departments for company:', companyId)
+
       // Create Back of House department
       const { data: bohDept, error: bohError } = await supabase
         .from('departments')
@@ -162,7 +169,10 @@ export default function Schedule() {
         .select()
         .single()
 
-      if (bohError) throw bohError
+      if (bohError) {
+        console.error('Error creating Back of House department:', bohError)
+        throw bohError
+      }
 
       // Create Front of House department
       const { data: fohDept, error: fohError } = await supabase
@@ -176,7 +186,10 @@ export default function Schedule() {
         .select()
         .single()
 
-      if (fohError) throw fohError
+      if (fohError) {
+        console.error('Error creating Front of House department:', fohError)
+        throw fohError
+      }
 
       // Create positions for Back of House
       const bohPositions = [
