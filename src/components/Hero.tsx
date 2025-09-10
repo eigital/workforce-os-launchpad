@@ -16,7 +16,7 @@ const Hero = ({ onOpenSignUp }: HeroProps) => {
             <div className="space-y-4">
               <div className="inline-flex items-center px-4 py-2 bg-primary/10 rounded-full border border-primary/20">
                 <span className="text-sm font-medium text-primary">
-                  🚀 Trusted by 50,000+ businesses
+                  🚀 Trusted by Thousands' of businesses
                 </span>
               </div>
               
