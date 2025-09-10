@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useUserRole, isManager } from "@/hooks/useUserRole";
 
 interface Employee {
   id: string;
@@ -71,6 +72,7 @@ export default function Team() {
   const [selectedRole, setSelectedRole] = useState<string>("all");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const { toast } = useToast();
+  const { role: userRole } = useUserRole();
 
   useEffect(() => {
     loadData();
@@ -80,10 +82,23 @@ export default function Team() {
     try {
       setLoading(true);
       
-      // Load employees
+      // Check user role to determine data access level
+      const { data: userRole, error: roleError } = await supabase
+        .from('user_companies')
+        .select('role')
+        .eq('user_id', (await supabase.auth.getUser()).data.user?.id)
+        .single();
+
+      const isManagerRole = ['owner', 'admin', 'manager'].includes(userRole?.role || '');
+
+      // Load employees with role-based column selection
       const { data: employeesData, error: employeesError } = await supabase
         .from('employees')
-        .select('*')
+        .select(
+          isManagerRole 
+            ? '*' // Managers can see all data including PII
+            : 'id, company_id, first_name, last_name, employee_id, status, hire_date, positions, created_at, updated_at, metadata' // Regular employees see only basic info
+        )
         .order('created_at', { ascending: false });
 
       if (employeesError) throw employeesError;
@@ -124,7 +139,7 @@ export default function Team() {
   const filteredEmployees = employees.filter(employee => {
     const matchesSearch = !searchTerm || 
       `${employee.first_name} ${employee.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (isManager(userRole) && employee.email?.toLowerCase().includes(searchTerm.toLowerCase())) ||
       employee.employee_id?.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesStatus = selectedStatus === "all" || employee.status === selectedStatus;

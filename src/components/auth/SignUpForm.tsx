@@ -92,11 +92,7 @@ export default function SignUpForm() {
   const watchedPassword = watch('password', '');
 
   const onSubmit = async (data: SignUpForm) => {
-    console.log('Form submitted with data:', data);
-    console.log('Selected role:', selectedRole);
-    
     if (!selectedRole) {
-      console.log('No role selected');
       toast({
         title: 'Role required',
         description: 'Please select your role to continue.',
@@ -105,21 +101,10 @@ export default function SignUpForm() {
       return;
     }
 
-    console.log('Starting signup process...');
     setLoading(true);
     
     try {
       const redirectUrl = `${window.location.origin}/onboarding`;
-      console.log('Calling supabase.auth.signUp with:', {
-        email: data.email,
-        redirectUrl,
-        metadata: {
-          first_name: data.firstName,
-          last_name: data.lastName,
-          phone_number: data.phoneNumber,
-          role: selectedRole,
-        }
-      });
       
       const { error } = await supabase.auth.signUp({
         email: data.email,
@@ -145,10 +130,7 @@ export default function SignUpForm() {
         },
       });
 
-      console.log('Supabase signup response:', { error });
-
       if (error) {
-        console.error('Signup error:', error);
         toast({
           title: 'Sign up failed',
           description: error.message,
@@ -157,20 +139,17 @@ export default function SignUpForm() {
         return;
       }
 
-      console.log('Signup successful, showing confirmation');
       // Show success state instead of redirecting
       setUserEmail(data.email);
       setEmailSent(true);
       
     } catch (error) {
-      console.error('Unexpected error during signup:', error);
       toast({
         title: 'An error occurred',
         description: 'Please try again later',
         variant: 'destructive',
       });
     } finally {
-      console.log('Signup process completed, setting loading to false');
       setLoading(false);
     }
   };
@@ -201,10 +180,7 @@ export default function SignUpForm() {
 
   return (
     <form 
-      onSubmit={(e) => {
-        console.log('Form onSubmit triggered');
-        handleSubmit(onSubmit)(e);
-      }} 
+      onSubmit={handleSubmit(onSubmit)} 
       className="space-y-3"
     >
       <div className="space-y-1">
