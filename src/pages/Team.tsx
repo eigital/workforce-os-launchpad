@@ -92,14 +92,13 @@ export default function Team() {
       const isManagerRole = ['owner', 'admin', 'manager'].includes(userRole?.role || '');
 
       // Load employees with role-based column selection
-      const { data: employeesData, error: employeesError } = await supabase
-        .from('employees')
-        .select(
-          isManagerRole 
-            ? '*' // Managers can see all data including PII
-            : 'id, company_id, first_name, last_name, employee_id, status, hire_date, positions, created_at, updated_at, metadata' // Regular employees see only basic info
-        )
-        .order('created_at', { ascending: false });
+      const employeesQuery = supabase.from('employees');
+      
+      const { data: employeesData, error: employeesError } = isManagerRole
+        ? await employeesQuery.select('*').order('created_at', { ascending: false })
+        : await employeesQuery
+            .select('id, first_name, last_name, employee_id, status, hire_date, positions, metadata, created_at, updated_at')
+            .order('created_at', { ascending: false });
 
       if (employeesError) throw employeesError;
 
