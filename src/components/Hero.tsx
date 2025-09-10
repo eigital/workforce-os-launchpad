@@ -68,7 +68,7 @@ const Hero = ({ onOpenSignUp }: HeroProps) => {
                 ⭐ 4.9/5 from 12,000+ reviews
               </div>
               <div className="text-sm text-muted-foreground">
-                🔒 SOC 2 Compliant
+                🔒 Compliant to global security standards with end-to-end encryption
               </div>
             </div>
           </div>
