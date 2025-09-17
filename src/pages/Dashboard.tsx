@@ -29,14 +29,17 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useUserRole, isManager } from '@/hooks/useUserRole';
 import EmailVerificationBanner from '@/components/dashboard/EmailVerificationBanner';
 import AppLayout from '@/components/layouts/AppLayout';
+import { SecurityAuditPanel } from '@/components/security/SecurityAuditPanel';
 
 
 export default function Dashboard() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { role: userRole } = useUserRole();
   const [profile, setProfile] = useState<any>(null);
   const [company, setCompany] = useState<any>(null);
   const [showQuickStart, setShowQuickStart] = useState(true);
@@ -381,6 +384,11 @@ export default function Dashboard() {
                     </div>
                   </CardContent>
                 </Card>
+
+                {/* Security Audit Panel - Only for Managers */}
+                {isManager(userRole) && (
+                  <SecurityAuditPanel />
+                )}
 
                 {/* Bottom Stats */}
                 <div className="grid grid-cols-2 gap-6">

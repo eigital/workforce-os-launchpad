@@ -31,22 +31,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useUserRole, isManager } from "@/hooks/useUserRole";
-
-interface Employee {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email?: string;
-  phone_number?: string;
-  employee_id?: string;
-  status: string;
-  hire_date?: string;
-  hourly_rate?: number;
-  positions?: string[];
-  metadata?: any;
-  created_at: string;
-  updated_at: string;
-}
+import { useSecureEmployeeData, SecureEmployee } from "@/hooks/useSecureEmployeeData";
 
 interface Department {
   id: string;
@@ -62,7 +47,7 @@ interface Location {
 }
 
 export default function Team() {
-  const [employees, setEmployees] = useState<Employee[]>([]);
+  const { employees, loading: employeesLoading, isManagerRole } = useSecureEmployeeData();
   const [departments, setDepartments] = useState<Department[]>([]);
   const [locations, setLocations] = useState<Location[]>([]);
   const [loading, setLoading] = useState(true);
@@ -81,26 +66,6 @@ export default function Team() {
   const loadData = async () => {
     try {
       setLoading(true);
-      
-      // Check user role to determine data access level
-      const { data: userRole, error: roleError } = await supabase
-        .from('user_companies')
-        .select('role')
-        .eq('user_id', (await supabase.auth.getUser()).data.user?.id)
-        .single();
-
-      const isManagerRole = ['owner', 'admin', 'manager'].includes(userRole?.role || '');
-
-      // Load employees with role-based column selection
-      const employeesQuery = supabase.from('employees');
-      
-      const { data: employeesData, error: employeesError } = isManagerRole
-        ? await employeesQuery.select('*').order('created_at', { ascending: false })
-        : await employeesQuery
-            .select('id, first_name, last_name, employee_id, status, hire_date, positions, metadata, created_at, updated_at')
-            .order('created_at', { ascending: false });
-
-      if (employeesError) throw employeesError;
 
       // Load departments
       const { data: departmentsData, error: departmentsError } = await supabase
@@ -120,7 +85,6 @@ export default function Team() {
 
       if (locationsError) throw locationsError;
 
-      setEmployees(employeesData || []);
       setDepartments(departmentsData || []);
       setLocations(locationsData || []);
     } catch (error) {
@@ -138,7 +102,7 @@ export default function Team() {
   const filteredEmployees = employees.filter(employee => {
     const matchesSearch = !searchTerm || 
       `${employee.first_name} ${employee.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (isManager(userRole) && employee.email?.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (isManagerRole && employee.email?.toLowerCase().includes(searchTerm.toLowerCase())) ||
       employee.employee_id?.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesStatus = selectedStatus === "all" || employee.status === selectedStatus;
@@ -150,7 +114,7 @@ export default function Team() {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
 
-  if (loading) {
+  if (loading || employeesLoading) {
     return (
       <SidebarProvider>
         <AppSidebar />
