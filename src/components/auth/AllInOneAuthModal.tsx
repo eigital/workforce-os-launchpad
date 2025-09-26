@@ -264,17 +264,17 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
       case 1:
         if (mode === 'signin') {
           return (
-            <div className="space-y-3">
-              <div className="text-center space-y-1">
-                <h2 className="text-lg font-semibold">Welcome back</h2>
-                <p className="text-xs text-muted-foreground">Sign in to your account</p>
+            <div className="space-y-4">
+              <div className="text-center space-y-2">
+                <h2 className="text-xl font-semibold">Welcome back</h2>
+                <p className="text-sm text-muted-foreground">Sign in to your account</p>
               </div>
               
-              <div className="flex justify-center gap-3">
-                <div className="flex flex-col items-center gap-1">
+              <div className="flex justify-center gap-4">
+                <div className="flex flex-col items-center gap-2">
                   <Button
                     variant="outline"
-                    className="w-8 h-8 p-0"
+                    className="w-10 h-10 p-0"
                     onClick={() => handleAuthMethodSelect('google')}
                     disabled={loading}
                     title="Continue with Google"
@@ -289,10 +289,10 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                   <span className="text-xs text-muted-foreground">Google</span>
                 </div>
                 
-                <div className="flex flex-col items-center gap-1">
+                <div className="flex flex-col items-center gap-2">
                   <Button
                     variant="outline"
-                    className="w-8 h-8 p-0"
+                    className="w-10 h-10 p-0"
                     onClick={() => handleAuthMethodSelect('microsoft')}
                     disabled={loading}
                     title="Continue with Microsoft"
@@ -308,10 +308,10 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                   <span className="text-xs text-muted-foreground">Microsoft</span>
                 </div>
                 
-                <div className="flex flex-col items-center gap-1">
+                <div className="flex flex-col items-center gap-2">
                   <Button
                     variant="outline"
-                    className="w-8 h-8 p-0"
+                    className="w-10 h-10 p-0"
                     onClick={() => handleAuthMethodSelect('apple')}
                     disabled={loading}
                     title="Continue with Apple"
@@ -323,10 +323,10 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                   <span className="text-xs text-muted-foreground">Apple</span>
                 </div>
                 
-                <div className="flex flex-col items-center gap-1">
+                <div className="flex flex-col items-center gap-2">
                   <Button
                     variant="outline"
-                    className="w-8 h-8 p-0"
+                    className="w-10 h-10 p-0"
                     onClick={() => setSelectedAuthMethod('email')}
                     title="Sign in with Email"
                   >
@@ -335,10 +335,10 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                   <span className="text-xs text-muted-foreground">Email</span>
                 </div>
                 
-                <div className="flex flex-col items-center gap-1">
+                <div className="flex flex-col items-center gap-2">
                   <Button
                     variant="outline"
-                    className="w-8 h-8 p-0"
+                    className="w-10 h-10 p-0"
                     onClick={() => setSelectedAuthMethod('sms')}
                     title="Sign in with SMS"
                   >
@@ -357,7 +357,7 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                     const password = formData.get('password') as string;
                     handleEmailSignIn(email, password);
                   }}
-                  className="space-y-2 mt-3 pt-3 border-t"
+                  className="space-y-3 mt-4 pt-4 border-t"
                 >
                   <div className="space-y-1">
                     <Input 
@@ -365,7 +365,7 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                       name="email"
                       type="email" 
                       placeholder="Email"
-                      className="h-8 text-sm"
+                      className="h-10 text-sm"
                       required
                     />
                   </div>
@@ -377,30 +377,30 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                         name="password"
                         type={showPassword ? 'text' : 'password'}
                         placeholder="Password"
-                        className="h-8 text-sm pr-8"
+                        className="h-10 text-sm pr-10"
                         required
                       />
                       <Button
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="absolute right-0 top-0 h-8 w-8 p-0 hover:bg-transparent"
+                        className="absolute right-0 top-0 h-10 w-10 p-0 hover:bg-transparent"
                         onClick={() => setShowPassword(!showPassword)}
                       >
-                        {showPassword ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </Button>
                     </div>
                   </div>
                   
-                  <Button type="submit" className="w-full h-8 text-sm bg-primary text-primary-foreground" disabled={loading}>
+                  <Button type="submit" className="w-full h-10 text-sm bg-primary text-primary-foreground" disabled={loading}>
                     {loading ? 'Signing in...' : 'Sign In'}
                   </Button>
                 </form>
               )}
               
-              <div className="text-center text-xs">
+              <div className="text-center text-sm pt-2">
                 <span className="text-muted-foreground">Don't have an account? </span>
-                <Button variant="link" className="p-0 h-auto text-xs" onClick={onModeSwitch}>
+                <Button variant="link" className="p-0 h-auto text-sm" onClick={onModeSwitch}>
                   Start free trial
                 </Button>
               </div>
@@ -408,17 +408,17 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
           );
         } else {
           return (
-            <div className="space-y-3">
-              <div className="text-center space-y-1">
-                <h2 className="text-lg font-semibold">Start Free Trial</h2>
-                <p className="text-xs text-muted-foreground">Create your account</p>
+            <div className="space-y-4">
+              <div className="text-center space-y-2">
+                <h2 className="text-xl font-semibold">Start Free Trial</h2>
+                <p className="text-sm text-muted-foreground">Create your account</p>
               </div>
               
-              <div className="flex justify-center gap-3">
-                <div className="flex flex-col items-center gap-1">
+              <div className="flex justify-center gap-4">
+                <div className="flex flex-col items-center gap-2">
                   <Button
                     variant="outline"
-                    className="w-8 h-8 p-0"
+                    className="w-10 h-10 p-0"
                     onClick={() => handleAuthMethodSelect('google')}
                     disabled={loading}
                     title="Continue with Google"
@@ -433,10 +433,10 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                   <span className="text-xs text-muted-foreground">Google</span>
                 </div>
                 
-                <div className="flex flex-col items-center gap-1">
+                <div className="flex flex-col items-center gap-2">
                   <Button
                     variant="outline"
-                    className="w-8 h-8 p-0"
+                    className="w-10 h-10 p-0"
                     onClick={() => handleAuthMethodSelect('microsoft')}
                     disabled={loading}
                     title="Continue with Microsoft"
@@ -452,10 +452,10 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                   <span className="text-xs text-muted-foreground">Microsoft</span>
                 </div>
                 
-                <div className="flex flex-col items-center gap-1">
+                <div className="flex flex-col items-center gap-2">
                   <Button
                     variant="outline"
-                    className="w-8 h-8 p-0"
+                    className="w-10 h-10 p-0"
                     onClick={() => handleAuthMethodSelect('apple')}
                     disabled={loading}
                     title="Continue with Apple"
@@ -467,10 +467,10 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                   <span className="text-xs text-muted-foreground">Apple</span>
                 </div>
                 
-                <div className="flex flex-col items-center gap-1">
+                <div className="flex flex-col items-center gap-2">
                   <Button
                     variant="outline"
-                    className="w-8 h-8 p-0"
+                    className="w-10 h-10 p-0"
                     onClick={() => handleAuthMethodSelect('email')}
                     title="Sign up with Email"
                   >
@@ -479,10 +479,10 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                   <span className="text-xs text-muted-foreground">Email</span>
                 </div>
                 
-                <div className="flex flex-col items-center gap-1">
+                <div className="flex flex-col items-center gap-2">
                   <Button
                     variant="outline"
-                    className="w-8 h-8 p-0"
+                    className="w-10 h-10 p-0"
                     onClick={() => handleAuthMethodSelect('sms')}
                     title="Sign up with SMS"
                   >
@@ -492,9 +492,9 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                 </div>
               </div>
               
-              <div className="text-center text-xs">
+              <div className="text-center text-sm pt-2">
                 <span className="text-muted-foreground">Already have an account? </span>
-                <Button variant="link" className="p-0 h-auto text-xs" onClick={onModeSwitch}>
+                <Button variant="link" className="p-0 h-auto text-sm" onClick={onModeSwitch}>
                   Sign in
                 </Button>
               </div>
@@ -504,22 +504,22 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
 
       case 2:
         return (
-          <div className="space-y-3">
-            <div className="text-center space-y-1">
-              <h2 className="text-lg font-semibold">Tell us about yourself</h2>
-              <p className="text-xs text-muted-foreground">Personal details</p>
+          <div className="space-y-4">
+            <div className="text-center space-y-2">
+              <h2 className="text-xl font-semibold">Tell us about yourself</h2>
+              <p className="text-sm text-muted-foreground">Personal details</p>
             </div>
             
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               <Input
                 {...form.register('firstName')}
                 placeholder="First name"
-                className="h-8 text-sm"
+                className="h-10 text-sm"
               />
               <Input
                 {...form.register('lastName')}
                 placeholder="Last name"
-                className="h-8 text-sm"
+                className="h-10 text-sm"
               />
             </div>
 
@@ -529,7 +529,7 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                   type="email"
                   {...form.register('email')}
                   placeholder="Email"
-                  className="h-8 text-sm"
+                  className="h-10 text-sm"
                 />
                 
                 <div className="relative">
@@ -537,16 +537,16 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                     type={showPassword ? 'text' : 'password'}
                     {...form.register('password')}
                     placeholder="Password"
-                    className="h-8 text-sm pr-8"
+                    className="h-10 text-sm pr-10"
                   />
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-0 top-0 h-8 w-8 p-0 hover:bg-transparent"
+                    className="absolute right-0 top-0 h-10 w-10 p-0 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </Button>
                 </div>
                 
@@ -554,7 +554,7 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
                   type="password"
                   {...form.register('confirmPassword')}
                   placeholder="Confirm password"
-                  className="h-8 text-sm"
+                  className="h-10 text-sm"
                 />
               </>
             )}
@@ -606,21 +606,21 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
 
       case 3:
         return (
-          <div className="space-y-3">
-            <div className="text-center space-y-1">
-              <h2 className="text-lg font-semibold">Company Information</h2>
-              <p className="text-xs text-muted-foreground">Tell us about your {watchedRole === 'business_owner' ? 'business' : 'company'}</p>
+          <div className="space-y-4">
+            <div className="text-center space-y-2">
+              <h2 className="text-xl font-semibold">Company Information</h2>
+              <p className="text-sm text-muted-foreground">Tell us about your {watchedRole === 'business_owner' ? 'business' : 'company'}</p>
             </div>
             
-            <div className="space-y-2">
+            <div className="space-y-3">
               <Input
                 {...form.register('companyName')}
                 placeholder="Company name"
-                className="h-8 text-sm"
+                className="h-10 text-sm"
               />
               
               <Select onValueChange={(value) => setValue('industry', value)}>
-                <SelectTrigger className="h-8 text-sm">
+                <SelectTrigger className="h-10 text-sm">
                   <SelectValue placeholder="Industry" />
                 </SelectTrigger>
                 <SelectContent>
@@ -634,7 +634,7 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
               </Select>
               
               <Select onValueChange={(value) => setValue('companySize', value)}>
-                <SelectTrigger className="h-8 text-sm">
+                <SelectTrigger className="h-10 text-sm">
                   <SelectValue placeholder="Company size" />
                 </SelectTrigger>
                 <SelectContent>
@@ -647,13 +647,13 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
               </Select>
             </div>
             
-            <div className="flex gap-2 pt-2">
-              <Button variant="outline" onClick={handlePreviousStep} className="flex-1 h-8 text-sm">
+            <div className="flex gap-3 pt-3">
+              <Button variant="outline" onClick={handlePreviousStep} className="flex-1 h-10 text-sm">
                 Back
               </Button>
               <Button 
                 onClick={form.handleSubmit(handleFinalSubmit)} 
-                className="flex-1 h-8 text-sm"
+                className="flex-1 h-10 text-sm"
                 disabled={loading}
               >
                 {loading ? 'Creating...' : 'Create Account'}
@@ -669,7 +669,7 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[280px] bg-background/95 backdrop-blur-lg border border-border/30 shadow-elegant animate-scale-in p-3">
+      <DialogContent className="w-[95vw] max-w-[420px] max-h-[90vh] overflow-y-auto bg-background/95 backdrop-blur-lg border border-border/30 shadow-elegant animate-scale-in p-4 sm:p-6">
         <DialogHeader className="sr-only">
           <DialogTitle>
             {mode === 'signin' ? 'Sign In' : 'Create Account'}
@@ -680,12 +680,12 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
         </DialogHeader>
         
         {mode === 'signup' && currentStep > 1 && (
-          <div className="mb-3">
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-xs text-muted-foreground">Step {currentStep} of {totalSteps}</span>
-              <span className="text-xs text-muted-foreground">{Math.round((currentStep / totalSteps) * 100)}%</span>
+          <div className="mb-4">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm text-muted-foreground">Step {currentStep} of {totalSteps}</span>
+              <span className="text-sm text-muted-foreground">{Math.round((currentStep / totalSteps) * 100)}%</span>
             </div>
-            <Progress value={(currentStep / totalSteps) * 100} className="h-1" />
+            <Progress value={(currentStep / totalSteps) * 100} className="h-2" />
           </div>
         )}
         
