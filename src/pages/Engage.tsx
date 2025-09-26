@@ -34,6 +34,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useSecureEmployeeData } from "@/hooks/useSecureEmployeeData";
 
 interface EngagementMetrics {
   satisfaction: {
@@ -80,22 +81,20 @@ export default function Engage() {
   const [dateRange, setDateRange] = useState("week");
   const [demoDataEnabled, setDemoDataEnabled] = useState(false);
   const { toast } = useToast();
+  const { employees, loading: employeesLoading } = useSecureEmployeeData();
 
   useEffect(() => {
-    loadEngagementData();
-  }, [selectedLocation, dateRange]);
+    if (!employeesLoading) {
+      loadEngagementData();
+    }
+  }, [selectedLocation, dateRange, employees, employeesLoading]);
 
   const loadEngagementData = async () => {
     try {
       setLoading(true);
       
-      // Load employees for basic metrics
-      const { data: employees, error: employeesError } = await supabase
-        .from('employees')
-        .select('*')
-        .eq('status', 'active');
-
-      if (employeesError) throw employeesError;
+      // Use secure employee data from hook (no PII exposed to non-managers)
+      const activeEmployees = employees.filter(emp => emp.status === 'active');
 
       // For now, we'll use placeholder data since engagement tracking isn't fully implemented
       setMetrics({
@@ -110,7 +109,7 @@ export default function Engage() {
           droppedShifts: 0,
           avgTenure: 0
         },
-        employeeCount: employees?.length || 0
+        employeeCount: activeEmployees.length
       });
 
       setPerformance({
@@ -156,7 +155,7 @@ export default function Engage() {
     }
   };
 
-  if (loading) {
+  if (loading || employeesLoading) {
     return (
       <SidebarProvider>
         <AppSidebar />

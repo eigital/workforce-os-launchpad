@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/separator"
 import { supabase } from "@/integrations/supabase/client"
 import { useAuth } from "@/hooks/useAuth"
 import { useToast } from "@/hooks/use-toast"
+import { useSecureEmployeeData } from "@/hooks/useSecureEmployeeData"
 import { format, addDays, startOfWeek, endOfWeek } from "date-fns"
 import { AppSidebar } from "@/components/AppSidebar"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
@@ -50,10 +51,10 @@ export default function Schedule() {
   const [selectedDepartment, setSelectedDepartment] = useState("All departments")
   const [currentWeek, setCurrentWeek] = useState(new Date())
   const [departments, setDepartments] = useState<Department[]>([])
-  const [employees, setEmployees] = useState<Employee[]>([])
   const [locations, setLocations] = useState<Location[]>([])
   const [companyId, setCompanyId] = useState<string>("")
   const [loading, setLoading] = useState(true)
+  const { employees, loading: employeesLoading } = useSecureEmployeeData()
   const [addEmployeeModal, setAddEmployeeModal] = useState(false)
   const [newEmployee, setNewEmployee] = useState({
     first_name: "",
@@ -122,14 +123,7 @@ export default function Schedule() {
 
       setDepartments(formattedDepartments)
 
-      // Load employees
-      const { data: employeesData } = await supabase
-        .from('employees')
-        .select('*')
-        .eq('company_id', userCompany.company_id)
-        .eq('status', 'active')
-
-      setEmployees(employeesData || [])
+      // Employees are loaded via useSecureEmployeeData hook (secure, no PII exposure)
 
       // Create default departments if none exist
       if (!departmentsData || departmentsData.length === 0) {
@@ -284,7 +278,7 @@ export default function Schedule() {
     setCurrentWeek(new Date())
   }
 
-  if (loading) {
+  if (loading || employeesLoading) {
     return (
       <SidebarProvider>
         <AppSidebar />
