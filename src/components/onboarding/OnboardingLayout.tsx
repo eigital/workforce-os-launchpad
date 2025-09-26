@@ -75,10 +75,10 @@ export default function OnboardingLayout({
       <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40" />
       
       {/* Modal container */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="relative w-full max-w-md sm:max-w-[480px] mx-auto">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
+        <div className="relative w-full max-w-[95vw] sm:max-w-[520px] lg:max-w-[600px] mx-auto max-h-[90vh] flex flex-col">
           {/* Progress bar - positioned above the modal */}
-          <div className="mb-4 px-1">
+          <div className="mb-3 px-1 flex-shrink-0">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs text-white/70">
                 Step {currentStep} of {totalSteps}
@@ -91,25 +91,25 @@ export default function OnboardingLayout({
           </div>
 
           {/* Modal content - Glass effect */}
-          <div className="bg-background/70 backdrop-blur-xl border border-white/20 rounded-lg shadow-2xl shadow-black/25 animate-scale-in relative ring-1 ring-white/10">
+          <div className="bg-background/70 backdrop-blur-xl border border-white/20 rounded-lg shadow-2xl shadow-black/25 animate-scale-in relative ring-1 ring-white/10 flex flex-col min-h-0">
             {/* Close button */}
             <button
               onClick={() => setShowExitDialog(true)}
-              className="absolute right-4 top-4 p-1 rounded-sm opacity-70 hover:opacity-100 transition-opacity"
+              className="absolute right-3 top-3 p-1 rounded-sm opacity-70 hover:opacity-100 transition-opacity z-10"
             >
               <X className="h-4 w-4" />
             </button>
 
-            {/* Header */}
-            <div className="text-center pt-6 pb-4 px-6">
-              <h1 className="text-xl font-semibold mb-1">{title}</h1>
+            {/* Header - Sticky */}
+            <div className="text-center pt-4 pb-3 px-4 sm:px-6 flex-shrink-0 bg-background/70 backdrop-blur-xl rounded-t-lg">
+              <h1 className="text-lg sm:text-xl font-semibold mb-1">{title}</h1>
               {subtitle && (
-                <p className="text-muted-foreground text-sm">{subtitle}</p>
+                <p className="text-muted-foreground text-xs sm:text-sm">{subtitle}</p>
               )}
             </div>
 
-            {/* Content */}
-            <div className="px-6 pb-6">
+            {/* Content - Scrollable */}
+            <div className="px-4 sm:px-6 pb-4 sm:pb-6 overflow-y-auto min-h-0 flex-1">
               {children}
             </div>
           </div>

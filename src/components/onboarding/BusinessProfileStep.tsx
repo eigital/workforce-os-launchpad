@@ -218,18 +218,10 @@ export default function BusinessProfileStep({ onNext }: BusinessProfileStepProps
   };
 
   return (
-    <div className="space-y-6">
-      <div className="text-center space-y-2">
-        <Building className="h-12 w-12 text-primary mx-auto" />
-        <h2 className="text-2xl font-bold text-foreground">Tell us about your business</h2>
-        <p className="text-muted-foreground">
-          This information helps us customize WorkforceOS for your needs
-        </p>
-      </div>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <div className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
         {/* Business Name */}
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <Label htmlFor="businessName" className="text-sm font-medium">
             Business Name *
           </Label>
@@ -240,13 +232,13 @@ export default function BusinessProfileStep({ onNext }: BusinessProfileStepProps
             className={errors.businessName ? 'border-destructive' : ''}
           />
           {errors.businessName && (
-            <p className="text-sm text-destructive">{errors.businessName.message}</p>
+            <p className="text-xs text-destructive">{errors.businessName.message}</p>
           )}
         </div>
 
         {/* Industry and Business Type */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="space-y-1.5">
             <Label className="text-sm font-medium">Industry *</Label>
             <Controller
               name="industry"
@@ -267,11 +259,11 @@ export default function BusinessProfileStep({ onNext }: BusinessProfileStepProps
               )}
             />
             {errors.industry && (
-              <p className="text-sm text-destructive">{errors.industry.message}</p>
+              <p className="text-xs text-destructive">{errors.industry.message}</p>
             )}
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <Label className="text-sm font-medium">Business Type *</Label>
             <Controller
               name="businessType"
@@ -292,14 +284,14 @@ export default function BusinessProfileStep({ onNext }: BusinessProfileStepProps
               )}
             />
             {errors.businessType && (
-              <p className="text-sm text-destructive">{errors.businessType.message}</p>
+              <p className="text-xs text-destructive">{errors.businessType.message}</p>
             )}
           </div>
         </div>
 
         {/* Employee and Location Count */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="space-y-1.5">
             <Label className="text-sm font-medium">Number of Employees *</Label>
             <Controller
               name="employeeCount"
@@ -320,11 +312,11 @@ export default function BusinessProfileStep({ onNext }: BusinessProfileStepProps
               )}
             />
             {errors.employeeCount && (
-              <p className="text-sm text-destructive">{errors.employeeCount.message}</p>
+              <p className="text-xs text-destructive">{errors.employeeCount.message}</p>
             )}
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <Label className="text-sm font-medium">Number of Locations *</Label>
             <Controller
               name="locationCount"
@@ -345,30 +337,30 @@ export default function BusinessProfileStep({ onNext }: BusinessProfileStepProps
               )}
             />
             {errors.locationCount && (
-              <p className="text-sm text-destructive">{errors.locationCount.message}</p>
+              <p className="text-xs text-destructive">{errors.locationCount.message}</p>
             )}
           </div>
         </div>
 
         {/* Address */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           <div className="flex items-center gap-2">
             <MapPin className="h-4 w-4 text-muted-foreground" />
             <Label className="text-sm font-medium">Business Address *</Label>
           </div>
           
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <Input
               placeholder="Street Address"
               {...register('address')}
               className={errors.address ? 'border-destructive' : ''}
             />
             {errors.address && (
-              <p className="text-sm text-destructive">{errors.address.message}</p>
+              <p className="text-xs text-destructive">{errors.address.message}</p>
             )}
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <div>
               <Input
                 placeholder="City"
@@ -376,7 +368,7 @@ export default function BusinessProfileStep({ onNext }: BusinessProfileStepProps
                 className={errors.city ? 'border-destructive' : ''}
               />
               {errors.city && (
-                <p className="text-sm text-destructive">{errors.city.message}</p>
+                <p className="text-xs text-destructive">{errors.city.message}</p>
               )}
             </div>
             <div>
@@ -386,7 +378,7 @@ export default function BusinessProfileStep({ onNext }: BusinessProfileStepProps
                 className={errors.state ? 'border-destructive' : ''}
               />
               {errors.state && (
-                <p className="text-sm text-destructive">{errors.state.message}</p>
+                <p className="text-xs text-destructive">{errors.state.message}</p>
               )}
             </div>
             <div>
@@ -396,14 +388,14 @@ export default function BusinessProfileStep({ onNext }: BusinessProfileStepProps
                 className={errors.zipCode ? 'border-destructive' : ''}
               />
               {errors.zipCode && (
-                <p className="text-sm text-destructive">{errors.zipCode.message}</p>
+                <p className="text-xs text-destructive">{errors.zipCode.message}</p>
               )}
             </div>
           </div>
         </div>
 
         {/* Phone Number */}
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <div className="flex items-center gap-2">
             <Phone className="h-4 w-4 text-muted-foreground" />
             <Label htmlFor="phoneNumber" className="text-sm font-medium">
@@ -418,7 +410,7 @@ export default function BusinessProfileStep({ onNext }: BusinessProfileStepProps
         </div>
 
         {/* Description */}
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <Label htmlFor="description" className="text-sm font-medium">
             Business Description (Optional)
           </Label>
@@ -426,11 +418,11 @@ export default function BusinessProfileStep({ onNext }: BusinessProfileStepProps
             id="description"
             placeholder="Tell us more about your business..."
             {...register('description')}
-            rows={3}
+            rows={2}
           />
         </div>
 
-        <div className="flex gap-3 pt-4">
+        <div className="flex gap-3 pt-3">
           <Button 
             type="button"
             variant="outline" 
