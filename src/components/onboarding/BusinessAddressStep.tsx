@@ -5,35 +5,51 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from '@/hooks/use-toast';
 import { MapPin } from 'lucide-react';
+import { countries, getStatesForCountry, validatePostalCode } from '@/lib/addressData';
 
 interface BusinessAddressStepProps {
   onNext: () => void;
 }
 
 const businessAddressSchema = z.object({
-  address: z.string().min(1, 'Address is required'),
+  addressLine1: z.string().min(1, 'Street address is required'),
+  addressLine2: z.string().optional(),
   city: z.string().min(1, 'City is required'),
-  state: z.string().min(1, 'State is required'),
-  zipCode: z.string().min(1, 'ZIP code is required'),
+  state: z.string().min(1, 'State/Province is required'),
+  postalCode: z.string().min(1, 'Postal code is required'),
+  country: z.string().min(1, 'Country is required'),
+}).refine((data) => validatePostalCode(data.postalCode, data.country), {
+  message: 'Invalid postal code format for selected country',
+  path: ['postalCode'],
 });
 
 type BusinessAddressForm = z.infer<typeof businessAddressSchema>;
 
 export default function BusinessAddressStep({ onNext }: BusinessAddressStepProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState('US');
   const { user } = useAuth();
 
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<BusinessAddressForm>({
     resolver: zodResolver(businessAddressSchema),
+    defaultValues: {
+      country: 'US',
+    },
   });
+
+  const watchedCountry = watch('country');
+  const availableStates = getStatesForCountry(watchedCountry || selectedCountry);
 
   const onSubmit = async (data: BusinessAddressForm) => {
     setIsLoading(true);
@@ -79,20 +95,61 @@ export default function BusinessAddressStep({ onNext }: BusinessAddressStepProps
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* Street Address */}
+        {/* Country */}
         <div className="space-y-2">
-          <Label htmlFor="address" className="text-sm font-medium">
+          <Label className="text-sm font-medium">
+            Country *
+          </Label>
+          <Select
+            value={watchedCountry || selectedCountry}
+            onValueChange={(value) => {
+              setValue('country', value);
+              setSelectedCountry(value);
+              setValue('state', ''); // Reset state when country changes
+            }}
+          >
+            <SelectTrigger className={errors.country ? 'border-destructive' : ''}>
+              <SelectValue placeholder="Select country" />
+            </SelectTrigger>
+            <SelectContent>
+              {countries.map((country) => (
+                <SelectItem key={country.code} value={country.code}>
+                  {country.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors.country && (
+            <p className="text-xs text-destructive">{errors.country.message}</p>
+          )}
+        </div>
+
+        {/* Street Address Line 1 */}
+        <div className="space-y-2">
+          <Label htmlFor="addressLine1" className="text-sm font-medium">
             Street Address *
           </Label>
           <Input
-            id="address"
+            id="addressLine1"
             placeholder="123 Main Street"
-            {...register('address')}
-            className={errors.address ? 'border-destructive' : ''}
+            {...register('addressLine1')}
+            className={errors.addressLine1 ? 'border-destructive' : ''}
           />
-          {errors.address && (
-            <p className="text-xs text-destructive">{errors.address.message}</p>
+          {errors.addressLine1 && (
+            <p className="text-xs text-destructive">{errors.addressLine1.message}</p>
           )}
+        </div>
+
+        {/* Street Address Line 2 */}
+        <div className="space-y-2">
+          <Label htmlFor="addressLine2" className="text-sm font-medium">
+            Address Line 2
+          </Label>
+          <Input
+            id="addressLine2"
+            placeholder="Apt, Suite, Unit (Optional)"
+            {...register('addressLine2')}
+          />
         </div>
 
         {/* City */}
@@ -111,34 +168,50 @@ export default function BusinessAddressStep({ onNext }: BusinessAddressStepProps
           )}
         </div>
 
-        {/* State and ZIP Code */}
+        {/* State and Postal Code */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="state" className="text-sm font-medium">
-              State *
+            <Label className="text-sm font-medium">
+              {watchedCountry === 'US' ? 'State' : watchedCountry === 'CA' ? 'Province' : 'State/Province'} *
             </Label>
-            <Input
-              id="state"
-              placeholder="State"
-              {...register('state')}
-              className={errors.state ? 'border-destructive' : ''}
-            />
+            {availableStates.length > 0 ? (
+              <Select
+                onValueChange={(value) => setValue('state', value)}
+              >
+                <SelectTrigger className={errors.state ? 'border-destructive' : ''}>
+                  <SelectValue placeholder={`Select ${watchedCountry === 'US' ? 'state' : watchedCountry === 'CA' ? 'province' : 'state/province'}`} />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableStates.map((state) => (
+                    <SelectItem key={state.code} value={state.code}>
+                      {state.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            ) : (
+              <Input
+                placeholder="State/Province"
+                {...register('state')}
+                className={errors.state ? 'border-destructive' : ''}
+              />
+            )}
             {errors.state && (
               <p className="text-xs text-destructive">{errors.state.message}</p>
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="zipCode" className="text-sm font-medium">
-              ZIP Code *
+            <Label htmlFor="postalCode" className="text-sm font-medium">
+              {watchedCountry === 'US' ? 'ZIP Code' : 'Postal Code'} *
             </Label>
             <Input
-              id="zipCode"
-              placeholder="12345"
-              {...register('zipCode')}
-              className={errors.zipCode ? 'border-destructive' : ''}
+              id="postalCode"
+              placeholder={watchedCountry === 'US' ? '12345' : watchedCountry === 'CA' ? 'A1A 1A1' : 'Postal Code'}
+              {...register('postalCode')}
+              className={errors.postalCode ? 'border-destructive' : ''}
             />
-            {errors.zipCode && (
-              <p className="text-xs text-destructive">{errors.zipCode.message}</p>
+            {errors.postalCode && (
+              <p className="text-xs text-destructive">{errors.postalCode.message}</p>
             )}
           </div>
         </div>
