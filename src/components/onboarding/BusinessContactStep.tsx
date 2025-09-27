@@ -68,10 +68,13 @@ export default function BusinessContactStep({ onNext }: BusinessContactStepProps
         location_count: parseInt(combinedData.locationCount?.split('-')[0]) || 1,
         timezone: userTimezone,
         address: {
-          street: combinedData.address,
+          // Handle both old and new address formats
+          addressLine1: combinedData.addressLine1 || combinedData.address,
+          addressLine2: combinedData.addressLine2,
           city: combinedData.city,
           state: combinedData.state,
-          zipCode: combinedData.zipCode
+          postalCode: combinedData.postalCode || combinedData.zipCode,
+          country: combinedData.country || 'US'
         },
         settings: {
           business_type: combinedData.businessType,

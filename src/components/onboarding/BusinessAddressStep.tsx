@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -40,6 +40,7 @@ export default function BusinessAddressStep({ onNext }: BusinessAddressStepProps
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<BusinessAddressForm>({
     resolver: zodResolver(businessAddressSchema),
@@ -47,6 +48,32 @@ export default function BusinessAddressStep({ onNext }: BusinessAddressStepProps
       country: 'US',
     },
   });
+
+  // Load existing data on mount
+  useEffect(() => {
+    const loadExistingData = async () => {
+      if (!user) return;
+      
+      try {
+        const { data, error } = await supabase
+          .from('onboarding_progress')
+          .select('data')
+          .eq('user_id', user.id)
+          .eq('step_name', 'business_address')
+          .maybeSingle();
+
+        if (data?.data && typeof data.data === 'object') {
+          const addressData = data.data as BusinessAddressForm;
+          reset(addressData);
+          setSelectedCountry(addressData.country || 'US');
+        }
+      } catch (error) {
+        console.error('Error loading address data:', error);
+      }
+    };
+
+    loadExistingData();
+  }, [user, reset]);
 
   const watchedCountry = watch('country');
   const availableStates = getStatesForCountry(watchedCountry || selectedCountry);
@@ -176,6 +203,7 @@ export default function BusinessAddressStep({ onNext }: BusinessAddressStepProps
             </Label>
             {availableStates.length > 0 ? (
               <Select
+                value={watch('state') || ''}
                 onValueChange={(value) => setValue('state', value)}
               >
                 <SelectTrigger className={errors.state ? 'border-destructive' : ''}>
