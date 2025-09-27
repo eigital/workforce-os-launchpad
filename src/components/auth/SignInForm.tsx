@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/use-toast';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const signInSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -24,6 +24,7 @@ interface SignInFormProps {
 export default function SignInForm({ onSuccess }: SignInFormProps = {}) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -83,12 +84,14 @@ export default function SignInForm({ onSuccess }: SignInFormProps = {}) {
       // Call the success callback to close modal
       onSuccess?.();
       
-      // Redirect based on onboarding status after modal closes
+      // Only redirect if we're on the landing page
       setTimeout(() => {
-        if (profile?.onboarding_completed) {
-          window.location.href = '/dashboard';
-        } else {
-          window.location.href = '/onboarding';
+        if (window.location.pathname === '/') {
+          if (profile?.onboarding_completed) {
+            navigate('/dashboard');
+          } else {
+            navigate('/onboarding');
+          }
         }
       }, 100);
     } catch (error) {

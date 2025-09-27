@@ -160,14 +160,7 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
       
       onClose();
       
-      // Redirect based on onboarding status
-      setTimeout(() => {
-        if (profile?.onboarding_completed) {
-          window.location.href = '/dashboard';
-        } else {
-          window.location.href = '/onboarding';
-        }
-      }, 100);
+          // Stay on current page if user is on landing page, otherwise don't redirect
     } catch (error: any) {
       toast({
         title: 'Sign in failed',
@@ -238,12 +231,14 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
           
           onClose();
           
-          // Redirect to onboarding where company creation will be handled
+          // Only redirect if we're on the landing page
           setTimeout(() => {
-            if (data.role === 'business_owner') {
-              window.location.href = '/onboarding';
-            } else {
-              window.location.href = '/dashboard';
+            if (window.location.pathname === '/') {
+              if (data.role === 'business_owner') {
+                window.location.href = '/onboarding';
+              } else {
+                window.location.href = '/dashboard';
+              }
             }
           }, 500);
         }

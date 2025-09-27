@@ -115,8 +115,30 @@ export default function WelcomeStep({ onNext }: WelcomeStepProps) {
     }
   };
 
+  const handleSelectAll = () => {
+    if (selectedGoals.length === GOALS.length) {
+      setSelectedGoals([]);
+    } else {
+      setSelectedGoals(GOALS.map(goal => goal.id));
+    }
+  };
+
   return (
     <div className="space-y-4">
+      <div className="flex justify-between items-center">
+        <h3 className="text-sm font-medium text-muted-foreground">
+          {selectedGoals.length} of {GOALS.length} goals selected
+        </h3>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleSelectAll}
+          className="text-xs"
+        >
+          {selectedGoals.length === GOALS.length ? 'Deselect All' : 'Select All'}
+        </Button>
+      </div>
+      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {GOALS.map((goal) => {
           const IconComponent = goal.icon;
