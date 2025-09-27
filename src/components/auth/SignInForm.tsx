@@ -84,16 +84,7 @@ export default function SignInForm({ onSuccess }: SignInFormProps = {}) {
       // Call the success callback to close modal
       onSuccess?.();
       
-      // Only redirect if we're on the landing page
-      setTimeout(() => {
-        if (window.location.pathname === '/') {
-          if (profile?.onboarding_completed) {
-            navigate('/dashboard');
-          } else {
-            navigate('/onboarding');
-          }
-        }
-      }, 100);
+      // Modal closes and Index.tsx will handle the redirect automatically
     } catch (error) {
       toast({
         title: 'An error occurred',

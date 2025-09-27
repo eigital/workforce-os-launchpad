@@ -160,7 +160,7 @@ export default function AllInOneAuthModal({ isOpen, onClose, mode, onModeSwitch 
       
       onClose();
       
-          // Stay on current page if user is on landing page, otherwise don't redirect
+      // Modal closes and Index.tsx will handle the redirect automatically
     } catch (error: any) {
       toast({
         title: 'Sign in failed',

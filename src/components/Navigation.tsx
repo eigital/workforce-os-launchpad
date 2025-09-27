@@ -5,16 +5,44 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu, X, ChevronDown, Calendar, Clock, DollarSign, Users, BarChart3, Smartphone } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Menu, X, ChevronDown, Calendar, Clock, DollarSign, Users, BarChart3, Smartphone, LogOut, LayoutDashboard } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { User } from "@supabase/supabase-js";
+import { toast } from "@/hooks/use-toast";
 
 interface NavigationProps {
+  user?: User | null;
   onOpenSignUp?: () => void;
   onOpenSignIn?: () => void;
 }
 
-const Navigation = ({ onOpenSignUp, onOpenSignIn }: NavigationProps) => {
+const Navigation = ({ user, onOpenSignUp, onOpenSignIn }: NavigationProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      navigate('/');
+      toast({
+        title: "Signed out successfully",
+        description: "You have been signed out of your account.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error signing out",
+        description: "There was an error signing out. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDashboard = () => {
+    navigate('/dashboard');
+  };
 
   const products = [
     {
@@ -113,12 +141,39 @@ const Navigation = ({ onOpenSignUp, onOpenSignIn }: NavigationProps) => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" className="text-foreground hover:text-primary" onClick={onOpenSignIn}>
-              Sign In
-            </Button>
-            <Button variant="hero" size="sm" onClick={onOpenSignUp}>
-              Start Free Trial
-            </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={user.user_metadata?.avatar_url} />
+                    <AvatarFallback className="bg-gradient-hero text-white">
+                      {user.email?.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-foreground font-medium">{user.user_metadata?.full_name || user.email}</span>
+                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56 bg-background border border-primary/20 shadow-elegant" align="end">
+                  <DropdownMenuItem onClick={handleDashboard} className="cursor-pointer">
+                    <LayoutDashboard className="h-4 w-4 mr-2" />
+                    Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-destructive">
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Button variant="ghost" className="text-foreground hover:text-primary" onClick={onOpenSignIn}>
+                  Sign In
+                </Button>
+                <Button variant="hero" size="sm" onClick={onOpenSignUp}>
+                  Start Free Trial
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -185,12 +240,36 @@ const Navigation = ({ onOpenSignUp, onOpenSignIn }: NavigationProps) => {
                 Integrations
               </a>
               <div className="flex flex-col space-y-2 pt-4">
-                <Button variant="ghost" className="w-full" onClick={onOpenSignIn}>
-                  Sign In
-                </Button>
-                <Button variant="hero" className="w-full" onClick={onOpenSignUp}>
-                  Start Free Trial
-                </Button>
+                {user ? (
+                  <>
+                    <div className="flex items-center gap-2 px-3 py-2 border-b border-primary/10 mb-2">
+                      <Avatar className="h-6 w-6">
+                        <AvatarImage src={user.user_metadata?.avatar_url} />
+                        <AvatarFallback className="bg-gradient-hero text-white text-xs">
+                          {user.email?.charAt(0).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="text-sm font-medium">{user.user_metadata?.full_name || user.email}</span>
+                    </div>
+                    <Button variant="ghost" className="w-full justify-start" onClick={handleDashboard}>
+                      <LayoutDashboard className="h-4 w-4 mr-2" />
+                      Dashboard
+                    </Button>
+                    <Button variant="ghost" className="w-full justify-start text-destructive" onClick={handleSignOut}>
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button variant="ghost" className="w-full" onClick={onOpenSignIn}>
+                      Sign In
+                    </Button>
+                    <Button variant="hero" className="w-full" onClick={onOpenSignUp}>
+                      Start Free Trial
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>
