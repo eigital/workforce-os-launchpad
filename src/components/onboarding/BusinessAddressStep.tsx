@@ -196,8 +196,8 @@ export default function BusinessAddressStep({ onNext }: BusinessAddressStepProps
         </div>
 
         {/* State and Postal Code */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="space-y-2 min-w-0">
             <Label className="text-sm font-medium">
               {watchedCountry === 'US' ? 'State' : watchedCountry === 'CA' ? 'Province' : 'State/Province'} *
             </Label>
@@ -206,12 +206,12 @@ export default function BusinessAddressStep({ onNext }: BusinessAddressStepProps
                 value={watch('state') || ''}
                 onValueChange={(value) => setValue('state', value)}
               >
-                <SelectTrigger className={errors.state ? 'border-destructive' : ''}>
+                <SelectTrigger className={`w-full ${errors.state ? 'border-destructive' : ''}`}>
                   <SelectValue placeholder={`Select ${watchedCountry === 'US' ? 'state' : watchedCountry === 'CA' ? 'province' : 'state/province'}`} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="z-50 bg-background">
                   {availableStates.map((state) => (
-                    <SelectItem key={state.code} value={state.code}>
+                    <SelectItem key={state.code} value={state.code} className="truncate">
                       {state.name}
                     </SelectItem>
                   ))}
@@ -221,14 +221,14 @@ export default function BusinessAddressStep({ onNext }: BusinessAddressStepProps
               <Input
                 placeholder="State/Province"
                 {...register('state')}
-                className={errors.state ? 'border-destructive' : ''}
+                className={`w-full ${errors.state ? 'border-destructive' : ''}`}
               />
             )}
             {errors.state && (
               <p className="text-xs text-destructive">{errors.state.message}</p>
             )}
           </div>
-          <div className="space-y-2">
+          <div className="space-y-2 min-w-0">
             <Label htmlFor="postalCode" className="text-sm font-medium">
               {watchedCountry === 'US' ? 'ZIP Code' : 'Postal Code'} *
             </Label>
@@ -236,7 +236,7 @@ export default function BusinessAddressStep({ onNext }: BusinessAddressStepProps
               id="postalCode"
               placeholder={watchedCountry === 'US' ? '12345' : watchedCountry === 'CA' ? 'A1A 1A1' : 'Postal Code'}
               {...register('postalCode')}
-              className={errors.postalCode ? 'border-destructive' : ''}
+              className={`w-full ${errors.postalCode ? 'border-destructive' : ''}`}
             />
             {errors.postalCode && (
               <p className="text-xs text-destructive">{errors.postalCode.message}</p>
