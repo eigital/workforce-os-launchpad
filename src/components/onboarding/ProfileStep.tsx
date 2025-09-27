@@ -69,12 +69,12 @@ export default function ProfileStep({ onNext }: ProfileStepProps) {
       const { data: userData } = await supabase.auth.getUser();
       await supabase
         .from('onboarding_progress')
-        .insert([{
+        .upsert([{
           user_id: userData.user?.id,
           step_name: 'profile_info',
           completed: true,
           data: data
-        }]);
+        }], { onConflict: 'user_id,step_name' });
 
       onNext();
     } catch (error: any) {

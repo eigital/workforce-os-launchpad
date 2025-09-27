@@ -92,7 +92,7 @@ export default function BasicBusinessInfoStep({ onNext }: BasicBusinessInfoStepP
           step_name: 'basic_business_info',
           completed: true,
           data: data
-        }]);
+        }], { onConflict: 'user_id,step_name' });
 
       if (progressError) throw progressError;
 

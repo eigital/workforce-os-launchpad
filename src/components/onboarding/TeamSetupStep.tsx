@@ -43,12 +43,12 @@ export default function TeamSetupStep({ onNext }: TeamSetupStepProps) {
       const { data: userData } = await supabase.auth.getUser();
       await supabase
         .from('onboarding_progress')
-        .insert({
+        .upsert([{
           user_id: userData.user?.id,
           step_name: 'team_setup',
           completed: true,
           data: { team_members: teamMembers } as any
-        });
+        }], { onConflict: 'user_id,step_name' });
 
       // Here you would typically send invitations to team members
       // For now, we'll just save the data and continue

@@ -25,13 +25,15 @@ export default function CompleteStep({ onComplete }: CompleteStepProps) {
       if (error) throw error;
 
       // Save completion step
+      const { data: { user } } = await supabase.auth.getUser();
       await supabase
         .from('onboarding_progress')
-        .insert([{
+        .upsert([{
+          user_id: user?.id,
           step_name: 'completed',
           completed: true,
           data: { completed_at: new Date().toISOString() }
-        }]);
+        }], { onConflict: 'user_id,step_name' });
 
       onComplete();
     } catch (error: any) {

@@ -60,7 +60,7 @@ export default function MobileAppStep({ onNext }: MobileAppStepProps) {
           step_name: 'mobile_app',
           completed: true,
           data: { selected_option: selectedOption || 'skip' }
-        }]);
+        }], { onConflict: 'user_id,step_name' });
 
       if (progressError) {
         console.error('Error saving progress:', progressError);
