@@ -4,7 +4,10 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import OnboardingLayout from '@/components/onboarding/OnboardingLayout';
 import WelcomeStep from '@/components/onboarding/WelcomeStep';
-import BusinessProfileStep from '@/components/onboarding/BusinessProfileStep';
+import BasicBusinessInfoStep from '@/components/onboarding/BasicBusinessInfoStep';
+import BusinessSizeStep from '@/components/onboarding/BusinessSizeStep';
+import BusinessAddressStep from '@/components/onboarding/BusinessAddressStep';
+import BusinessContactStep from '@/components/onboarding/BusinessContactStep';
 import SchedulingSetupStep from '@/components/onboarding/SchedulingSetupStep';
 import DepartmentRoleStep from '@/components/onboarding/DepartmentRoleStep';
 import LocationSetupStep from '@/components/onboarding/LocationSetupStep';
@@ -15,14 +18,17 @@ import CompleteStep from '@/components/onboarding/CompleteStep';
 
 const STEPS = [
   { id: 1, title: "Welcome", subtitle: "What brings you to WorkforceOS?" },
-  { id: 2, title: "Business Profile", subtitle: "Tell us about your business" },
-  { id: 3, title: "Scheduling Setup", subtitle: "Configure your scheduling preferences" },
-  { id: 4, title: "Departments & Roles", subtitle: "Set up your organization structure" },
-  { id: 5, title: "Location Setup", subtitle: "Add your business location" },
-  { id: 6, title: "Team Setup", subtitle: "Add your team members" },
-  { id: 7, title: "Mobile App", subtitle: "Get the mobile app for your team" },
-  { id: 8, title: "Trial Features", subtitle: "Explore your premium trial" },
-  { id: 9, title: "All Set!", subtitle: "Your account is ready to use" },
+  { id: 2, title: "Basic Business Info", subtitle: "Tell us about your business" },
+  { id: 3, title: "Business Size", subtitle: "How big is your business?" },
+  { id: 4, title: "Business Address", subtitle: "Where is your business located?" },
+  { id: 5, title: "Contact & Details", subtitle: "Final business details" },
+  { id: 6, title: "Scheduling Setup", subtitle: "Configure your scheduling preferences" },
+  { id: 7, title: "Departments & Roles", subtitle: "Set up your organization structure" },
+  { id: 8, title: "Location Setup", subtitle: "Add your business location" },
+  { id: 9, title: "Team Setup", subtitle: "Add your team members" },
+  { id: 10, title: "Mobile App", subtitle: "Get the mobile app for your team" },
+  { id: 11, title: "Trial Features", subtitle: "Explore your premium trial" },
+  { id: 12, title: "All Set!", subtitle: "Your account is ready to use" },
 ];
 
 export default function Onboarding() {
@@ -229,8 +235,14 @@ export default function Onboarding() {
     switch (stepTitle) {
       case "Welcome":
         return <WelcomeStep onNext={handleNext} />;
-      case "Business Profile":
-        return <BusinessProfileStep onNext={handleNext} />;
+      case "Basic Business Info":
+        return <BasicBusinessInfoStep onNext={handleNext} />;
+      case "Business Size":
+        return <BusinessSizeStep onNext={handleNext} />;
+      case "Business Address":
+        return <BusinessAddressStep onNext={handleNext} />;
+      case "Contact & Details":
+        return <BusinessContactStep onNext={handleNext} />;
       case "Scheduling Setup":
         return <SchedulingSetupStep onNext={handleNext} />;
       case "Departments & Roles":
