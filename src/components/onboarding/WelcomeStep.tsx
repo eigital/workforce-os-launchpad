@@ -90,7 +90,7 @@ export default function WelcomeStep({ onNext }: WelcomeStepProps) {
           step_name: 'welcome_goals',
           completed: true,
           data: { goals: selectedGoals }
-        }]);
+        }], { onConflict: 'user_id,step_name' });
 
       if (error) {
         console.error('Error saving goals:', error);
