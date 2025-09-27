@@ -196,7 +196,7 @@ export default function BusinessAddressStep({ onNext }: BusinessAddressStepProps
         </div>
 
         {/* State and Postal Code */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           <div className="space-y-2 min-w-0">
             <Label className="text-sm font-medium">
               {watchedCountry === 'US' ? 'State' : watchedCountry === 'CA' ? 'Province' : 'State/Province'} *
