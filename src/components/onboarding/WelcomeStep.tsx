@@ -117,15 +117,8 @@ export default function WelcomeStep({ onNext }: WelcomeStepProps) {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold text-foreground">Welcome to WorkforceOS!</h2>
-        <p className="text-muted-foreground">
-          Let's get you set up. What brings you to WorkforceOS today?
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {GOALS.map((goal) => {
           const IconComponent = goal.icon;
           const isSelected = selectedGoals.includes(goal.id);

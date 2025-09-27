@@ -76,7 +76,7 @@ export default function OnboardingLayout({
       
       {/* Modal container */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
-        <div className="relative w-full max-w-[95vw] sm:max-w-[520px] lg:max-w-[600px] mx-auto max-h-[90vh] flex flex-col">
+        <div className="relative w-full max-w-[95vw] sm:max-w-[520px] lg:max-w-[600px] mx-auto h-fit max-h-[90vh] flex flex-col">
           {/* Progress bar - positioned above the modal */}
           <div className="mb-3 px-1 flex-shrink-0">
             <div className="flex items-center justify-between mb-2">
@@ -108,8 +108,8 @@ export default function OnboardingLayout({
               )}
             </div>
 
-            {/* Content - Scrollable */}
-            <div className="px-4 sm:px-6 pb-4 sm:pb-6 overflow-y-auto min-h-0 flex-1">
+            {/* Content */}
+            <div className="px-4 sm:px-6 pb-4 sm:pb-6">
               {children}
             </div>
           </div>
