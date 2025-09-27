@@ -109,7 +109,7 @@ export default function OnboardingLayout({
             </div>
 
             {/* Content */}
-            <div className="px-4 sm:px-6 pb-4 sm:pb-6">
+            <div className="px-4 sm:px-6 pt-4 pb-4 sm:pb-6">
               {children}
             </div>
           </div>
