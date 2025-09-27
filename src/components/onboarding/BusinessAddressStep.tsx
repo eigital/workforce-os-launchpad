@@ -89,7 +89,7 @@ export default function BusinessAddressStep({ onNext }: BusinessAddressStepProps
           step_name: 'business_address',
           completed: true,
           data: data
-        }]);
+        }], { onConflict: 'user_id,step_name' });
 
       if (progressError) throw progressError;
 

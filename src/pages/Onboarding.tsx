@@ -113,7 +113,7 @@ export default function Onboarding() {
             step_name: 'profile_info',
             completed: true,
             data: { first_name: profile.first_name, last_name: profile.last_name, phone_number: profile.phone_number }
-          }]);
+          }], { onConflict: 'user_id,step_name' });
         completedSteps.push('profile_info');
         console.log('Auto-marked profile step as completed - data already exists');
       }
@@ -202,7 +202,7 @@ export default function Onboarding() {
           step_name: 'company_info',
           completed: true,
           data: { ...companyData, auto_created: true }
-        }]);
+        }], { onConflict: 'user_id,step_name' });
 
       console.log('Company auto-created successfully from metadata');
     } catch (error) {

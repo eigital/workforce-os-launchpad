@@ -79,7 +79,7 @@ export default function BusinessSizeStep({ onNext }: BusinessSizeStepProps) {
           step_name: 'business_size',
           completed: true,
           data: data
-        }]);
+        }], { onConflict: 'user_id,step_name' });
 
       if (progressError) throw progressError;
 

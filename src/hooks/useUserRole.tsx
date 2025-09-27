@@ -25,7 +25,7 @@ export const useUserRole = (): UserRole => {
           .from('user_companies')
           .select('role')
           .eq('user_id', user.id)
-          .single();
+          .maybeSingle();
 
         if (error) {
           console.error('Error fetching user role:', error);
