@@ -7,6 +7,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -19,16 +20,36 @@ export default function AppLayout({ children, title, subtitle }: AppLayoutProps)
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const [signingOut, setSigningOut] = useState(false);
+
   const handleSignOut = async () => {
+    if (signingOut) return;
+    
+    setSigningOut(true);
     try {
-      await supabase.auth.signOut();
-      navigate('/');
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      
+      // Clear any cached data
+      localStorage.clear();
+      sessionStorage.clear();
+      
+      // Navigate after successful sign out
+      navigate('/', { replace: true });
+      
+      toast({
+        title: "Signed out successfully",
+        description: "You have been signed out of your account",
+      });
     } catch (error: any) {
+      console.error('Sign out error:', error);
       toast({
         title: "Error",
-        description: "Failed to sign out",
+        description: error.message || "Failed to sign out",
         variant: "destructive",
       });
+    } finally {
+      setSigningOut(false);
     }
   };
 
@@ -58,9 +79,14 @@ export default function AppLayout({ children, title, subtitle }: AppLayoutProps)
                   <Settings className="h-4 w-4 mr-2" />
                   Settings
                 </Button>
-                <Button variant="outline" size="sm" onClick={handleSignOut}>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={handleSignOut}
+                  disabled={signingOut}
+                >
                   <LogOut className="h-4 w-4 mr-2" />
-                  Sign Out
+                  {signingOut ? "Signing out..." : "Sign Out"}
                 </Button>
               </div>
             </div>

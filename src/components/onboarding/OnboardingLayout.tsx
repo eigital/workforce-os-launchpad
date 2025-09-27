@@ -26,11 +26,21 @@ export default function OnboardingLayout({
 
   const handleExitConfirm = () => {
     setShowExitDialog(false);
-    navigate('/dashboard');
-    toast({
-      title: 'Onboarding paused',
-      description: 'You can complete your setup anytime from your dashboard.',
-    });
+    try {
+      navigate('/dashboard', { replace: true });
+      toast({
+        title: 'Onboarding paused',
+        description: 'You can complete your setup anytime from your dashboard.',
+      });
+    } catch (error) {
+      console.error('Navigation error:', error);
+      // Fallback to home page if dashboard navigation fails
+      navigate('/', { replace: true });
+      toast({
+        title: 'Redirected to home',
+        description: 'Please sign in again to access your dashboard.',
+      });
+    }
   };
 
   return (
