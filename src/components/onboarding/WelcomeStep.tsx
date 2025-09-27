@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
@@ -157,19 +156,6 @@ export default function WelcomeStep({ onNext }: WelcomeStepProps) {
           );
         })}
       </div>
-
-      {selectedGoals.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {selectedGoals.map(goalId => {
-            const goal = GOALS.find(g => g.id === goalId);
-            return (
-              <Badge key={goalId} variant="secondary">
-                {goal?.label}
-              </Badge>
-            );
-          })}
-        </div>
-      )}
 
       <div className="flex gap-3">
         <Button 
