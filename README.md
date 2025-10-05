@@ -1,73 +1,85 @@
-# Welcome to your Lovable project
+# workforceOS - The Complete Workforce Management Platform
 
-## Project info
+A comprehensive workforce management solution built to streamline scheduling, time tracking, team communication, and HR operations for modern businesses.
 
-**URL**: https://lovable.dev/projects/e2519e81-e670-43fd-bc01-80b605eb42d8
+## Features
 
-## How can I edit this code?
+- **Team Management** - Manage employees, roles, and departments
+- **Smart Scheduling** - Create and optimize employee schedules
+- **Time Tracking** - Clock in/out, time off requests, and overtime management
+- **Communication** - Built-in messaging, announcements, and notifications
+- **Reporting & Analytics** - Comprehensive insights into workforce metrics
+- **AI-Powered Assistant** - Get help and answers instantly
+- **Mobile Ready** - Responsive design for on-the-go management
 
-There are several ways of editing your application.
+## Technology Stack
 
-**Use Lovable**
+This project is built with modern web technologies:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e2519e81-e670-43fd-bc01-80b605eb42d8) and start prompting.
+- **Vite** - Fast build tool and dev server
+- **TypeScript** - Type-safe JavaScript
+- **React** - UI component library
+- **shadcn-ui** - Beautiful component system
+- **Tailwind CSS** - Utility-first styling
+- **Supabase** - Backend and authentication
 
-Changes made via Lovable will be committed automatically to this repo.
+## Getting Started
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Node.js & npm installed ([install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+### Local Development
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
+# Navigate to the project directory
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
+# Install dependencies
 npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Development
 
-**Use GitHub Codespaces**
+### Project Structure
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```
+src/
+├── components/     # Reusable UI components
+├── pages/         # Page components and routes
+├── hooks/         # Custom React hooks
+├── lib/           # Utility functions
+├── integrations/  # Third-party integrations
+└── styles/        # Global styles
+```
 
-## What technologies are used for this project?
+### Available Scripts
 
-This project is built with:
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Deployment
 
-## How can I deploy this project?
+This application can be deployed to any static hosting service that supports single-page applications.
 
-Simply open [Lovable](https://lovable.dev/projects/e2519e81-e670-43fd-bc01-80b605eb42d8) and click on Share -> Publish.
+## Contributing
 
-## Can I connect a custom domain to my Lovable project?
+We welcome contributions! Please follow these guidelines:
 
-Yes, you can!
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## License
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+All rights reserved.
