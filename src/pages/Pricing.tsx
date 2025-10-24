@@ -1,9 +1,38 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Check, Star, Zap, Shield, ArrowRight } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import AllInOneAuthModal from "@/components/auth/AllInOneAuthModal";
 
 const Pricing = () => {
+  const navigate = useNavigate();
+  const { user, loading } = useAuth();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signup');
+
+  // Redirect authenticated users to dashboard
+  useEffect(() => {
+    if (!loading && user) {
+      navigate('/dashboard');
+    }
+  }, [user, loading, navigate]);
+
+  const handleOpenSignUp = () => {
+    setAuthMode('signup');
+    setIsAuthModalOpen(true);
+  };
+
+  const handleOpenSignIn = () => {
+    setAuthMode('signin');
+    setIsAuthModalOpen(true);
+  };
+
+  const handleModeSwitch = () => {
+    setAuthMode(authMode === 'signin' ? 'signup' : 'signin');
+  };
   const plans = [
     {
       name: "Starter",
@@ -172,7 +201,11 @@ const Pricing = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <Navigation 
+        user={user}
+        onOpenSignUp={handleOpenSignUp}
+        onOpenSignIn={handleOpenSignIn}
+      />
       
       {/* Hero Section */}
       <section className="pt-20 pb-16 bg-gradient-to-br from-background via-feature to-background">
@@ -261,6 +294,7 @@ const Pricing = () => {
                   variant={plan.popular ? "hero" : "outline"} 
                   className="w-full"
                   size="lg"
+                  onClick={plan.cta.includes('Contact') ? undefined : handleOpenSignUp}
                 >
                   {plan.cta}
                 </Button>
@@ -298,7 +332,7 @@ const Pricing = () => {
                   </div>
                 </div>
                 <p className="text-muted-foreground text-sm mb-4">{addon.description}</p>
-                <Button variant="outline" size="sm" className="w-full">
+                <Button variant="outline" size="sm" className="w-full" onClick={handleOpenSignUp}>
                   Add to Plan
                 </Button>
               </div>
@@ -367,7 +401,7 @@ const Pricing = () => {
           </div>
 
           <div className="text-center mt-8">
-            <Button variant="hero" size="lg">
+            <Button variant="hero" size="lg" onClick={handleOpenSignUp}>
               Start Your Free Trial
               <ArrowRight className="h-5 w-5 ml-2" />
             </Button>
@@ -406,7 +440,7 @@ const Pricing = () => {
             <p className="text-xl mb-8 text-white/90">
               No credit card required.
             </p>
-            <Button variant="accent" size="lg" className="text-black font-semibold">
+            <Button variant="accent" size="lg" className="text-black font-semibold" onClick={handleOpenSignUp}>
               Start Free Trial
             </Button>
           </div>
@@ -414,6 +448,13 @@ const Pricing = () => {
       </section>
 
       <Footer />
+
+      <AllInOneAuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)}
+        mode={authMode}
+        onModeSwitch={handleModeSwitch}
+      />
     </div>
   );
 };
