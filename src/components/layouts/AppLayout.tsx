@@ -75,18 +75,19 @@ export default function AppLayout({ children, title, subtitle }: AppLayoutProps)
               </div>
               <div className="flex items-center gap-2">
                 <CommunicationHeader />
-                <Button variant="outline" size="sm">
-                  <Settings className="h-4 w-4 mr-2" />
-                  Settings
+                <Button variant="outline" size="sm" className="hidden md:inline-flex">
+                  <Settings className="h-4 w-4 md:mr-2" />
+                  <span className="hidden md:inline">Settings</span>
                 </Button>
                 <Button 
                   variant="outline" 
                   size="sm" 
                   onClick={handleSignOut}
                   disabled={signingOut}
+                  className="hidden md:inline-flex"
                 >
-                  <LogOut className="h-4 w-4 mr-2" />
-                  {signingOut ? "Signing out..." : "Sign Out"}
+                  <LogOut className="h-4 w-4 md:mr-2" />
+                  <span className="hidden md:inline">{signingOut ? "Signing out..." : "Sign Out"}</span>
                 </Button>
               </div>
             </div>

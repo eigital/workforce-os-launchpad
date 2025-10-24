@@ -176,7 +176,7 @@ export default function Dashboard() {
                   </CardHeader>
                   <CardContent>
                     <Tabs defaultValue="sales-labor" className="w-full">
-                      <TabsList className="grid w-full grid-cols-4">
+                      <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                         <TabsTrigger value="sales-labor">Sales vs. Labor</TabsTrigger>
                         <TabsTrigger value="whos-working">Who's working?</TabsTrigger>
                         <TabsTrigger value="location-overview">Location Overview</TabsTrigger>
@@ -353,7 +353,7 @@ export default function Dashboard() {
                     </p>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       <div className="text-center p-4">
                         <div className="flex justify-center mb-3">
                           <Users className="h-8 w-8 text-blue-600" />
@@ -391,7 +391,7 @@ export default function Dashboard() {
                 )}
 
                 {/* Bottom Stats */}
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <Card>
                     <CardHeader className="text-center">
                       <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">

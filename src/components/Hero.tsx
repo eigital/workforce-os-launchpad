@@ -63,7 +63,7 @@ const Hero = ({ onOpenSignUp }: HeroProps) => {
             </div>
 
             {/* Trust Indicators */}
-            <div className="flex items-center gap-6 pt-4 border-t border-primary/10">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 pt-4 border-t border-primary/10">
               <div className="text-sm text-muted-foreground">
                 ⭐ 4.9/5 from 12,000+ reviews
               </div>
