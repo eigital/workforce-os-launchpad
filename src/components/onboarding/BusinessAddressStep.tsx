@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
@@ -41,6 +41,7 @@ export default function BusinessAddressStep({ onNext }: BusinessAddressStepProps
     setValue,
     watch,
     reset,
+    control,
     formState: { errors },
   } = useForm<BusinessAddressForm>({
     resolver: zodResolver(businessAddressSchema),
@@ -127,25 +128,31 @@ export default function BusinessAddressStep({ onNext }: BusinessAddressStepProps
           <Label className="text-sm font-medium">
             Country *
           </Label>
-          <Select
-            value={watchedCountry || selectedCountry}
-            onValueChange={(value) => {
-              setValue('country', value);
-              setSelectedCountry(value);
-              setValue('state', ''); // Reset state when country changes
-            }}
-          >
-            <SelectTrigger className={errors.country ? 'border-destructive' : ''}>
-              <SelectValue placeholder="Select country" />
-            </SelectTrigger>
-            <SelectContent>
-              {countries.map((country) => (
-                <SelectItem key={country.code} value={country.code}>
-                  {country.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Controller
+            name="country"
+            control={control}
+            render={({ field }) => (
+              <Select
+                value={field.value}
+                onValueChange={(value) => {
+                  field.onChange(value);
+                  setSelectedCountry(value);
+                  setValue('state', ''); // Reset state when country changes
+                }}
+              >
+                <SelectTrigger className={errors.country ? 'border-destructive' : ''}>
+                  <SelectValue placeholder="Select country" />
+                </SelectTrigger>
+                <SelectContent>
+                  {countries.map((country) => (
+                    <SelectItem key={country.code} value={country.code}>
+                      {country.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
           {errors.country && (
             <p className="text-xs text-destructive">{errors.country.message}</p>
           )}
@@ -202,21 +209,27 @@ export default function BusinessAddressStep({ onNext }: BusinessAddressStepProps
               {watchedCountry === 'US' ? 'State' : watchedCountry === 'CA' ? 'Province' : 'State/Province'} *
             </Label>
             {availableStates.length > 0 ? (
-              <Select
-                value={watch('state') || ''}
-                onValueChange={(value) => setValue('state', value)}
-              >
-                <SelectTrigger className={`w-full ${errors.state ? 'border-destructive' : ''}`}>
-                  <SelectValue placeholder={`Select ${watchedCountry === 'US' ? 'state' : watchedCountry === 'CA' ? 'province' : 'state/province'}`} />
-                </SelectTrigger>
-                <SelectContent className="z-50 bg-background">
-                  {availableStates.map((state) => (
-                    <SelectItem key={state.code} value={state.code} className="truncate">
-                      {state.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Controller
+                name="state"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    value={field.value || ''}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger className={`w-full ${errors.state ? 'border-destructive' : ''}`}>
+                      <SelectValue placeholder={`Select ${watchedCountry === 'US' ? 'state' : watchedCountry === 'CA' ? 'province' : 'state/province'}`} />
+                    </SelectTrigger>
+                    <SelectContent className="z-50 bg-background">
+                      {availableStates.map((state) => (
+                        <SelectItem key={state.code} value={state.code} className="truncate">
+                          {state.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
             ) : (
               <Input
                 placeholder="State/Province"
