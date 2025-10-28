@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Play, ArrowRight, CheckCircle } from "lucide-react";
+import { motion } from "framer-motion";
+import { getSpringConfig } from "@/lib/3d-utils";
 import dashboardHero from "@/assets/dashboard-hero.jpg";
 
 interface HeroProps {
@@ -7,8 +9,10 @@ interface HeroProps {
 }
 
 const Hero = ({ onOpenSignUp }: HeroProps) => {
+  const springConfig = getSpringConfig();
+  
   return (
-    <section className="pt-20 pb-16 bg-gradient-to-br from-background via-feature to-background">
+    <section className="pt-20 pb-16 relative overflow-hidden preserve-3d" style={{ transformStyle: 'preserve-3d' }}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
@@ -75,17 +79,24 @@ const Hero = ({ onOpenSignUp }: HeroProps) => {
 
           {/* Right Content - Dashboard Image */}
           <div className="relative">
-            <div className="relative z-10 animate-float">
+            <motion.div 
+              className="relative z-10"
+              initial={{ rotateY: -5, translateZ: 0 }}
+              whileInView={{ rotateY: 0, translateZ: 80 }}
+              whileHover={{ rotateY: -3, rotateX: 2, translateZ: 100 }}
+              transition={springConfig}
+              style={{ transformStyle: 'preserve-3d' }}
+            >
               <img
                 src={dashboardHero}
                 alt="workforceOS Dashboard Interface"
-                className="w-full h-auto rounded-2xl shadow-elegant border border-primary/10"
+                className="w-full h-auto rounded-2xl shadow-elegant border border-primary/10 backdrop-blur-[12px]"
               />
-            </div>
+            </motion.div>
             
             {/* Background decoration */}
-            <div className="absolute -top-8 -right-8 w-72 h-72 bg-gradient-hero opacity-20 rounded-full blur-3xl"></div>
-            <div className="absolute -bottom-8 -left-8 w-64 h-64 bg-gradient-accent opacity-15 rounded-full blur-3xl"></div>
+            <div className="absolute -top-8 -right-8 w-72 h-72 bg-gradient-hero opacity-20 rounded-full blur-3xl pointer-events-none"></div>
+            <div className="absolute -bottom-8 -left-8 w-64 h-64 bg-gradient-accent opacity-15 rounded-full blur-3xl pointer-events-none"></div>
           </div>
         </div>
       </div>

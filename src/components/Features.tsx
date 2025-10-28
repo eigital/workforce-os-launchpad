@@ -1,4 +1,5 @@
 import { Calendar, Clock, DollarSign, Users, BarChart3, Smartphone } from "lucide-react";
+import { Glass3D } from "@/components/3d/Glass3D";
 
 const Features = () => {
   const features = [
@@ -67,10 +68,13 @@ const Features = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => {
             const IconComponent = feature.icon;
+            const depth = index % 3 === 0 ? 'close' : index % 3 === 1 ? 'medium' : 'far';
             return (
-              <div
+              <Glass3D
                 key={index}
-                className="group p-8 bg-background rounded-2xl border border-primary/10 hover:border-primary/30 hover:shadow-elegant transition-all duration-300 hover:-translate-y-1"
+                depth={depth}
+                hoverEffect={true}
+                className="group p-8"
               >
                 <div className="mb-6">
                   <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-hero rounded-xl mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -84,7 +88,7 @@ const Features = () => {
                 <p className="text-muted-foreground leading-relaxed">
                   {feature.description}
                 </p>
-              </div>
+              </Glass3D>
             );
           })}
         </div>

@@ -72,12 +72,21 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				}
 			},
-			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
-			},
-			keyframes: {
+		borderRadius: {
+			lg: 'var(--radius)',
+			md: 'calc(var(--radius) - 2px)',
+			sm: 'calc(var(--radius) - 4px)'
+		},
+		perspective: {
+			'3d': '1100px',
+		},
+		backdropBlur: {
+			'glass': '12px',
+		},
+		transitionTimingFunction: {
+			'spring': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+		},
+		keyframes: {
 				'accordion-down': {
 					from: {
 						height: '0'

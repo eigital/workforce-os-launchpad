@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import FloatingAIButton from "@/components/ai/FloatingAIButton";
+import { PointerGlow } from "@/components/3d/PointerGlow";
+import { Route3D } from "@/components/3d/Route3D";
 import Index from "./pages/Index";
 import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
@@ -43,12 +45,15 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <FloatingAIButton />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
+        <div className="perspective-3d preserve-3d w-full min-h-screen">
+          <Toaster />
+          <Sonner />
+          <PointerGlow />
+          <FloatingAIButton />
+          <BrowserRouter>
+            <Route3D>
+              <Routes>
+                <Route path="/" element={<Index />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/onboarding" element={<Onboarding />} />
@@ -78,9 +83,11 @@ const App = () => (
             <Route path="/log-book/categories" element={<LogBookCategories />} />
             <Route path="/log-book/search" element={<LogBookSearch />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Route3D>
+          </BrowserRouter>
+        </div>
       </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>

@@ -1,6 +1,8 @@
 import React, { useState } from "react"
+import { motion } from "framer-motion"
+import { getSpringConfig } from "@/lib/3d-utils"
 import { 
-  Calendar, 
+  Calendar,
   Users, 
   UserPlus, 
   CheckSquare, 
@@ -30,6 +32,7 @@ import {
   Ban
 } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
+import { cn } from "@/lib/utils"
 
 import {
   Sidebar,
@@ -276,9 +279,23 @@ export function AppSidebar() {
     })
   }
 
+  const springConfig = getSpringConfig();
+
   return (
-    <Sidebar className={collapsed ? "w-14" : "w-64"} collapsible="icon">
-      <SidebarContent>
+    <motion.div
+      initial={{ rotateY: -10, opacity: 0 }}
+      animate={{ rotateY: 0, opacity: 1 }}
+      transition={springConfig}
+      style={{ transformStyle: 'preserve-3d' }}
+    >
+      <Sidebar 
+        className={cn(
+          collapsed ? "w-14" : "w-64",
+          "backdrop-blur-[12px] bg-white/[0.08] dark:bg-white/[0.08] border-r border-white/[0.16]"
+        )}
+        collapsible="icon"
+      >
+        <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-sidebar-foreground/70 uppercase tracking-wider px-3">
             Main Menu
@@ -345,5 +362,6 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
+    </motion.div>
   )
 }

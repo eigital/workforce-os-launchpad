@@ -55,12 +55,15 @@ export default function AppLayout({ children, title, subtitle }: AppLayoutProps)
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full">
+      <div className="min-h-screen flex w-full perspective-3d preserve-3d">
         <AppSidebar />
         
         <main className="flex-1">
           {/* Header */}
-          <header className="h-16 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
+          <header 
+            className="h-16 border-b backdrop-blur-[12px] bg-white/[0.08] dark:bg-white/[0.08] border-white/[0.16] sticky top-0 z-40"
+            style={{ transform: 'translateZ(48px)', transformStyle: 'preserve-3d' }}
+          >
             <div className="flex h-16 items-center gap-4 px-6">
               <SidebarTrigger />
               <div className="flex-1">
